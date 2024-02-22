@@ -4,7 +4,7 @@ function AutoVerify(props) {
   const { data } = props;
   return (
     <div>
-      <TableData Datas={[]} />
+      <TableData Datas={data} />
     </div>
   );
 }

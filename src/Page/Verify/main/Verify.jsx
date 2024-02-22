@@ -16,9 +16,11 @@ import ProcessCondition from "../Components/BadgeSelect/DefaultChip/ProcessCondi
 import AutoVerify from "../Components/BadgeSelect/DefaultChip/AutoVerify/AutoVerify";
 import MachineData from "../Components/BadgeSelect/MachineChip/MachineData/MachineData";
 
+import Loading from "../../../Components/common/loading/Loading-11/loading";
+
 function Verify() {
-  const [mcCode, setMcCode] = useState("R2-17-14");
-  const [lot, setLot] = useState("240135261");
+  const [mcCode, setMcCode] = useState("R2-07-11_A");
+  const [lot, setLot] = useState("904012312");
   const [IsLoading, setIsLoading] = useState(false);
   const [
     dataResponseFromLotMachineSearch,
@@ -111,6 +113,8 @@ function Verify() {
       //   const emcs = dataResponseFromLotMachineSearch[0].data.emcs;
       //   const lot_search = dataResponseFromLotMachineSearch[0].data.lot_search;
       const pm = dataResponseFromLotMachineSearch[0].data.pm;
+      const verdify_report =
+        dataResponseFromLotMachineSearch[0].data.verdify_report;
       console.log("pm:", pm);
       console.log("calibration:", calibration);
       console.log("edoc_emcs_detail:", edoc_emcs_detail);
@@ -145,8 +149,8 @@ function Verify() {
         setstatusedoc_emcs_detail("-");
       }
       setedoc_emcs_detail(edoc_emcs_detail);
-
-      fetchStatusAutoVerify();
+      setgroupdata_verify(verdify_report);
+      // fetchStatusAutoVerify();
       fetchStatusMachine();
     }
   }, [dataResponseFromLotMachineSearch]);
@@ -326,33 +330,66 @@ function Verify() {
     return datas;
   }
 
-  // ตัวอย่างฟังก์ชันดึง API จากต้นทาง
-  const fetchApiData = (datafromchip) => {
-    console.log(datafromchip);
-    setselectdatafromchip(datafromchip);
-    if (datafromchip === "Auto Verify") {
-      const inputString = mcCode;
-      const trimmedString = inputString.split("_")[0];
+  // // ตัวอย่างฟังก์ชันดึง API จากต้นทาง
+  // const fetchApiData = (datafromchip) => {
+  //   console.log(datafromchip);
+  //   setselectdatafromchip(datafromchip);
+  //   if (datafromchip === "Auto Verify") {
+  //     const inputString = mcCode;
+  //     const trimmedString = inputString.split("_")[0];
 
-      console.log(trimmedString); // ผลลัพธ์: "R2-36-64"
-      const requestData = {
-        mc_code: trimmedString,
-      };
-      axios
-        .get("http://10.17.66.242:3000/api/smart_eworking_calling/", {
-          params: requestData, // ส่ง mc_code ในรูปแบบของพารามิเตอร์ใน Axios
-        })
-        .then((response) => {
-          console.log(response);
+  //     console.log(trimmedString); // ผลลัพธ์: "R2-36-64"
+  //     const requestData = {
+  //       mc_code: trimmedString,
+  //     };
+  //     axios
+  //       .get("http://10.17.66.242:3000/api/smart_eworking_calling/", {
+  //         params: requestData, // ส่ง mc_code ในรูปแบบของพารามิเตอร์ใน Axios
+  //       })
+  //       .then((response) => {
+  //         console.log(response);
 
-          setdataautoverify(response.data);
-          // Swal.fire(StatusText, Status, "success");
-        })
-        .catch((error) => {
-          console.error("API Error:", error.message);
-          setdataautoverify([]);
-          // Swal.fire("ERROR", DatafromAPI, "error");
-        });
+  //         setdataautoverify(response.data);
+  //         // Swal.fire(StatusText, Status, "success");
+  //       })
+  //       .catch((error) => {
+  //         console.error("API Error:", error.message);
+  //         setdataautoverify([]);
+  //         // Swal.fire("ERROR", DatafromAPI, "error");
+  //       });
+  //   }
+  // };
+
+  const getDataVerify = async (jwpv_job_type, jwpv_mc_code) => {
+    const params = {
+      jwpv_job_type: jwpv_job_type,
+      jwpv_mc_code: jwpv_mc_code,
+    };
+
+    let config = {
+      method: "get",
+      maxBodyLength: Infinity,
+      url: `${import.meta.env.VITE_IP_API}${
+        import.meta.env.VITE_smart_jv_parameter_calling
+      }/getdataVerify`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      params: params, // เพิ่ม params เข้าไปใน config
+    };
+
+    try {
+      const response = await axios.request(config); // ใช้ config ที่กำหนดไว้
+
+      if (response.status === 200) {
+        console.log(response);
+        console.log(response.data);
+        setdataautoverify(response.data);
+        setselectdatafromchip("Auto Verify");
+      }
+      // setdataautoverify(response.data);
+    } catch (error) {
+      console.error("API Error:", error.message);
     }
   };
 
@@ -378,13 +415,19 @@ function Verify() {
         </div>
         <div>
           <button
-            className="bg-blue-100 p-2 m-1 rounded-2xl"
+            className="bg-slate-200 p-2 m-1 rounded-2xl text-black hover:bg-slate-400"
             onClick={() => requestApiLotSearch(lot, mcCode)}
           >
             Search
           </button>
         </div>
-        {IsLoading ? <>loading</> : <>done</>}
+        {IsLoading ? (
+          <>
+            <Loading />
+          </>
+        ) : (
+          <>done</>
+        )}
         {dataCardmc_lot_search && dataCardmc_lot_search.length > 0 ? (
           <div className="flex gap-2 justify-start">
             {dataCardmc_lot_search.map((item) => (
@@ -457,19 +500,18 @@ function Verify() {
                 }}
               />
 
-              {data.map((item, index) => (
-                <>
-                  <BadgeComponent_dataVerify
-                    statusautoverify={statusautoverify}
-                    itemlabel={item.label}
-                    onClick={
-                      () => fetchApiData(item.label)
-                      //   setselectdatafromchip(item.label)
-                    }
-                  />
-                </>
+              {groupdata_verify.map((item, index) => (
+                <BadgeComponent_dataVerify
+                  key={index} // Assuming `item.jwpv_job_type` + `item.jwpv_mc_code` combination is unique, you might use `${item.jwpv_job_type}-${item.jwpv_mc_code}` as a key instead of the index if preferred.
+                  statusautoverify={item.jwpv_param_tvalue}
+                  itemlabel={item.jwpv_job_type}
+                  onClick={() => {
+                    getDataVerify(item.jwpv_job_type, item.jwpv_mc_code);
+                    // setselectdatafromchip(item.jwpv_job_type);
+                  }}
+                />
               ))}
-
+              {/* {selectdatafromchip} */}
               <BadgeComponent_Machine_data
                 statusMachine={statusMachine}
                 label={"Machine Data"}

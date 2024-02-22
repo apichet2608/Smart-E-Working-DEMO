@@ -5,7 +5,7 @@ function loading() {
   return (
     <div>
       {/* <main id="container"> */}
-      <div className="dots-loader-11">
+      <div className="dots-loader-11 w-full">
         <div className="dot-loader-11"></div>
         <div className="dot-loader-11"></div>
         <div className="dot-loader-11"></div>

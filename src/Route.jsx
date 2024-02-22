@@ -8,10 +8,26 @@ import ForgotPassword from "./Page/LoginForm/ForgotPassword/main/ForgotPassword"
 import Newpassword from "./Page/LoginForm/ForgotPassword/main/Newpassword";
 import Verify from "./Page/Verify/main/Verify";
 import Appbar from "./Components/common/AppbarEworking/AppbarEworking";
+import { useLocation } from "react-router-dom";
+
 function RouteComponents() {
+  const location = useLocation();
+
+  React.useEffect(() => {
+    console.log(location.pathname);
+  }, [location.pathname]);
+
   return (
     <>
-      <Appbar />
+      {location.pathname === "/Login" ||
+      location.pathname === "/Register" ||
+      location.pathname === "/Forgot" ||
+      location.pathname === "/" ? null : (
+        <div className="">
+          <Appbar />
+        </div>
+      )}
+
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
