@@ -9,6 +9,7 @@ import "./App.css";
 import Box from "@mui/material/Box";
 import RouteComponents from "./Route";
 import { useAuth } from "./Contexts/AuthContext/AuthContext";
+
 // Define the theme configuration outside of the component
 const theme = createTheme({
   breakpoints: {
@@ -34,6 +35,8 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
+      {/* <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script> */}
+      {/* <iframe src="https://lottie.host/embed/18bf2570-4608-4e24-bef1-54b29880d410/LLkJPbCRS7.json"></iframe> */}
       <RouteComponents />
     </ThemeProvider>
   );

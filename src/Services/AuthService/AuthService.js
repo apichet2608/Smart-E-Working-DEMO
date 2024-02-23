@@ -7,7 +7,7 @@ export const checkTokenValidity = async () => {
 
     if (token) {
       const response = await fetch(
-        "http://127.0.0.1:3001/protected-route/login",
+        `${import.meta.env.VITE_IP_API_LOGIN}/userslogin/protected-route/login`,
         {
           method: "POST",
           headers: {

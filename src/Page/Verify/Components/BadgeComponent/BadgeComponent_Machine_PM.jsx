@@ -48,7 +48,7 @@ const BadgeComponent = ({
             padding: "3px",
             fontFamily: "Poppins, sans-serif",
             fontWeight: 500,
-            minWidth: "100px",
+            // minWidth: "100px",
             width: "100%",
             marginBottom: "14px",
           }}

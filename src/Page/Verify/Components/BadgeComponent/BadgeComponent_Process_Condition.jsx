@@ -30,10 +30,10 @@ const BadgeComponent = ({ statusedoc_emcs_detail, onClick, label }) => {
       <Chip
         label={label}
         onClick={onClick}
-        color="primary"
+        color={statusedoc_emcs_detail !== "-" ? "primary" : undefined}
         sx={{
           maxWidth: "100%",
-          fontFamily: "Poppins, sans-serif", // Setting fontFamily to "Poppins
+          fontFamily: "Poppins, sans-serif",
           fontWeight: 500,
         }}
       />

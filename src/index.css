@@ -15,6 +15,9 @@
 }
 
 body {
+  /* background-image: url("../public/Pic/1126863.jpg");
+  background-size: cover;
+  background-position: center; */
   font-weight: 400;
   background-color: var(--background-color-theme);
   color: var(--text-color-theme);

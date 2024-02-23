@@ -19,9 +19,10 @@ function RouteComponents() {
 
   return (
     <>
-      {location.pathname === "/Login" ||
-      location.pathname === "/Register" ||
-      location.pathname === "/Forgot" ||
+      {location.pathname === "/login" ||
+      location.pathname === "/register" ||
+      location.pathname === "/forgotpassword" ||
+      location.pathname === "/forgotpassword/newpassword" ||
       location.pathname === "/" ? null : (
         <div className="">
           <Appbar />
