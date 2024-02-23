@@ -12,7 +12,7 @@ const getDataemcs = async (
   let config = {
     method: "get",
     maxBodyLength: Infinity,
-    url: `http://10.17.66.242:7011/api/ewk/smart-emcs/`,
+    url: `http://10.17.66.242:7010/api/ewk/smart-emcs/`,
     headers: {
       "Content-Type": "application/json",
     },

@@ -1,12 +1,12 @@
 import axios from "axios";
 
-const getDataPM = async (mc_code) => {
-  const params = { mc_code };
+const getDataapprove = async (dld_product, dld_machine) => {
+  const params = { dld_product, dld_machine };
 
   let config = {
     method: "get",
     maxBodyLength: Infinity,
-    url: `http://10.17.66.242:7010/api/ewk/smart-pm/`,
+    url: `http://10.17.66.242:7010/api/ewk/smart-lq-approve/`,
     headers: {
       "Content-Type": "application/json",
     },
@@ -27,4 +27,4 @@ const getDataPM = async (mc_code) => {
   }
 };
 
-export default getDataPM; // Export ฟังก์ชันให้สามารถใ
+export default getDataapprove; // Export ฟังก์ชันให้สามารถใ

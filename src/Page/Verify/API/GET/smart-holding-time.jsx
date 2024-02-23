@@ -1,12 +1,12 @@
 import axios from "axios";
 
-const getDataPM = async (mc_code) => {
-  const params = { mc_code };
+const getDataholdingtime = async (lot) => {
+  const params = { lot };
 
   let config = {
     method: "get",
     maxBodyLength: Infinity,
-    url: `http://10.17.66.242:7010/api/ewk/smart-pm/`,
+    url: `http://10.17.66.242:7010/api/ewk/smart-holding-time/`,
     headers: {
       "Content-Type": "application/json",
     },
@@ -27,4 +27,4 @@ const getDataPM = async (mc_code) => {
   }
 };
 
-export default getDataPM; // Export ฟังก์ชันให้สามารถใ
+export default getDataholdingtime; // Export ฟังก์ชันให้สามารถใ
