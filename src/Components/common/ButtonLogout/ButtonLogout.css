@@ -9,10 +9,10 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  width: 45px;
-  height: 45px;
+  width: 42px;
+  height: 42px;
   border: none;
-  border-radius: 12px;
+  border-radius: 24px;
   cursor: pointer;
   position: relative;
   overflow: hidden;
@@ -52,7 +52,7 @@
 /* hover effect on button width */
 .Btn-Logout:hover {
   width: 125px;
-  border-radius: 5px;
+  border-radius: 24px;
   transition-duration: 0.3s;
 }
 

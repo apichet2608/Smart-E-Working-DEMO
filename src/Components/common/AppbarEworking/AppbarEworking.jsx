@@ -4,10 +4,17 @@ import { useAuth } from "../../../Contexts/AuthContext/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { setCookie } from "../../../../src/Services/Cookie/setCookie";
 import ButtonLogout from "../ButtonLogout/ButtonLogout";
+import AvatarUser from "./Components/AvatarUser/AvatarUser";
 function AppbarEworking() {
   const { tokenValid, isVerifyTokenLoading, userData, verifyToken } = useAuth();
-  console.log(userData);
+  console.log(userData.user);
   const navigate = useNavigate();
+
+  if (userData && userData.user && Object.keys(userData.user).length) {
+    console.log("มีข้อมูล");
+  } else {
+    console.log("ไม่มีข้อมูล");
+  }
 
   return (
     // <div className="flex justify-between p-2 ">
@@ -18,23 +25,21 @@ function AppbarEworking() {
       <div style={{ fontWeight: 800, fontSize: "24px" }}>Smart E working</div>
       <div className="flex gap-2">
         <ToggleThemeButton />
-        <ButtonLogout
+        {/* <ButtonLogout
           onClick={() => {
             navigate("/login");
             setCookie("TokenWeb", "", 30); // อัปเดตคุกกี้ด้วยสถานะธีมใหม่
           }}
-        />
+        /> */}
+        <div>
+          {userData && userData.user && Object.keys(userData.user).length ? (
+            <>
+              <AvatarUser />
+            </>
+          ) : null}
+        </div>
       </div>
-      <div>
-        <h2>รายชื่อผู้ใช้</h2>
-        <ul>
-          {userData.map((user, index) => (
-            <li key={index}>
-              ชื่อ: {user.user.username}, อีเมล: {user.user.email}
-            </li>
-          ))}
-        </ul>
-      </div>
+      {/* <div>{userData && userData.user && Object.keys(userData.user).length ? <>TEST</> : null}</div> */}
     </div>
   );
 }

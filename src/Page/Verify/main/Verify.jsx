@@ -3,7 +3,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 
 //API
-import { smart_fpc_eworking } from "../API/POST/smart_fpc_eworking";
+// import { smart_fpc_eworking } from "../API/POST/smart_fpc_eworking";
 //1
 import getDatalotsearch from "../API/GET/smart-fpc-lot";
 //2
@@ -16,7 +16,6 @@ import getDataemcs from "../API/GET/smart-emcs";
 import getDataVerify from "../API/GET/smart-verdify-report";
 //6
 // import getDataMachine from "../API/GET/smart_fpc_eworking_sacada";
-
 //7
 import getDataholdingtime from "../API/GET/smart-holding-time.jsx";
 import getDataapprove from "../API/GET/smart-lq-approve.jsx";
@@ -38,6 +37,8 @@ import Chip from "@mui/material/Chip";
 import Badge from "@mui/material/Badge";
 import Typography from "@mui/material/Typography";
 import Loading from "../../../Components/common/loading/Loading-08/loading";
+import BadgeComponenstApprove from "../Components/BadgeComponent/BadgeComponenstApprove.jsx";
+import BadgeComponenstGR_R from "../Components/BadgeComponent/BadgeComponenstGR_R.jsx";
 
 function Verify() {
   //user input
@@ -45,8 +46,8 @@ function Verify() {
   // const [lot, setLot] = useState("904013599");
   // const [mcCode, setMcCode] = useState("R2-03-22");
   // const [lot, setLot] = useState("904025535");
-  const [mcCode, setMcCode] = useState("R2-07-12_B");
-  const [lot, setLot] = useState("240132440");
+  const [mcCode, setMcCode] = useState("R2-07-11_A");
+  const [lot, setLot] = useState("240237269");
   const [IsLoading, setIsLoading] = useState(false);
 
   const [
@@ -77,7 +78,7 @@ function Verify() {
   const [edoc_emcs_detail, setedoc_emcs_detail] = useState([]);
 
   //! #Detail Card
-  const [groupdata_verify, setgroupdata_verify] = useState([]);
+  const [groupfaidata_verify, setgroupfaidata_verify] = useState([]);
   // when click get data
   const [dataautoverify, setdataautoverify] = useState([]);
 
@@ -98,6 +99,8 @@ function Verify() {
   const [selectdatafromship_mcData, setselectdatafromship_mcData] =
     useState("");
 
+  const [dataapprove, setdataapprove] = useState();
+  const [datagr_r, setdatagr_r] = useState();
   const handlesearch = async () => {
     setIsLoading(true);
     await requestApiLotSearch();
@@ -146,9 +149,9 @@ function Verify() {
         const response2 = await getDataVerify(mc_code, proc_grp_name);
         if (response2 && response2.data) {
           console.log(response2.data);
-          console.log(response2.data.verdify_report);
-          const verdify_report = response2.data.verdify_report;
-          setgroupdata_verify(verdify_report);
+          console.log(response2.data.fai_verify_report);
+          const fai_verify_report = response2.data.fai_verify_report;
+          setgroupfaidata_verify(fai_verify_report);
         }
       }
     };
@@ -233,9 +236,20 @@ function Verify() {
   const requestApprove = async () => {
     try {
       console.log("Done");
-      const response_data = await getDataapprove(lot, mcCode);
+      const response_data = await getDataapprove(lot, mcCode, mcCode);
       //response.data default
       console.log(response_data.data);
+
+      if (Object.keys(response_data.data.machine_upd).length === 0) {
+        setdataapprove(null);
+      } else {
+        setdataapprove(response_data.data.machine_upd);
+      }
+      if (Object.keys(response_data.data.status).length === 0) {
+        setdatagr_r(null);
+      } else {
+        setdatagr_r(response_data.data.status);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -378,10 +392,15 @@ function Verify() {
     return datas;
   }
 
-  const getDataVerifyTableFromExpress = async (jwpv_job_type, jwpv_mc_code) => {
+  const getDataVerifyTableFromExpress = async (
+    jwpv_job_type,
+    jwpv_mc_code,
+    proc_grp_name
+  ) => {
     const params = {
       jwpv_job_type: jwpv_job_type,
       jwpv_mc_code: jwpv_mc_code,
+      proc_grp_name: proc_grp_name,
     };
 
     let config = {
@@ -413,6 +432,7 @@ function Verify() {
 
   return (
     <div className="gap-6 grid">
+      {/* {dataapprove.dld_machine} */}
       <div className="container mx-auto my-1">
         <div className="flex justify-between">
           <div>Working Verify</div>
@@ -445,7 +465,7 @@ function Verify() {
           </>
         ) : (
           <>
-            <div className="container mx-auto">
+            <div className="container mx-auto pt-4">
               {dataCardmc_lot_search && dataCardmc_lot_search.length > 0 ? (
                 <div className="flex gap-2 justify-start">
                   {dataCardmc_lot_search.map((item) => (
@@ -488,6 +508,7 @@ function Verify() {
                     direction="row"
                     spacing={2}
                     // className="animate__animated animate__fadeIn"
+                    className="mt-8"
                   >
                     <BadgeComponent_Machine_PM
                       label="Machine PM"
@@ -514,9 +535,9 @@ function Verify() {
                       }}
                     />
 
-                    {groupdata_verify && groupdata_verify.length ? (
+                    {groupfaidata_verify && groupfaidata_verify.length ? (
                       <>
-                        {groupdata_verify.map((item, index) => (
+                        {groupfaidata_verify.map((item, index) => (
                           <BadgeComponent_dataVerify
                             key={index} // Assuming `item.jwpv_job_type` + `item.jwpv_mc_code` combination is unique, you might use `${item.jwpv_job_type}-${item.jwpv_mc_code}` as a key instead of the index if preferred.
                             statusautoverify={item.jwpv_param_tvalue}
@@ -524,7 +545,8 @@ function Verify() {
                             onClick={() => {
                               getDataVerifyTableFromExpress(
                                 item.jwpv_job_type,
-                                item.jwpv_mc_code
+                                item.jwpv_mc_code,
+                                dataCardmc_lot_search[0].proc_grp_name
                               );
                               // setselectdatafromchip(item.jwpv_job_type);
                             }}
@@ -540,6 +562,25 @@ function Verify() {
                       label={"Machine Data"}
                       onClick={() => setselectdatafromchip("Machine Data")}
                     />
+
+                    {dataapprove ? (
+                      <>
+                        <BadgeComponenstApprove
+                          label={"LQ Approve"}
+                          data={dataapprove}
+                          onClick={() => setselectdatafromchip("LQ Approve")}
+                        />
+                      </>
+                    ) : null}
+                    {datagr_r ? (
+                      <>
+                        <BadgeComponenstGR_R
+                          label={""}
+                          data={datagr_r}
+                          onClick={() => setselectdatafromchip("GR R")}
+                        />
+                      </>
+                    ) : null}
                   </Stack>
                 )}
             </div>
@@ -552,7 +593,7 @@ function Verify() {
                 <ProcessCondition data={edoc_emcs_detail} />
               )}
               {selectdatafromchip === "Auto Verify" && (
-                <AutoVerify data={dataautoverify} />
+                <AutoVerify data={dataautoverify} GR R />
               )}
               {selectdatafromchip === "Machine Data" && (
                 <>
@@ -583,6 +624,8 @@ function Verify() {
                   </div>
                 </>
               )}
+              {selectdatafromchip === "LQ Approve" && "LQ Approve"}
+              {selectdatafromchip === "GR R" && "GR R"}
             </div>
           </>
         )}

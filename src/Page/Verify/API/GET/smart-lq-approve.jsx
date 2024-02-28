@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const getDataapprove = async (dld_product, dld_machine) => {
-  const params = { dld_product, dld_machine };
+const getDataapprove = async (dld_product, dld_machine, mc_code) => {
+  const params = { dld_product, dld_machine, mc_code };
 
   let config = {
     method: "get",

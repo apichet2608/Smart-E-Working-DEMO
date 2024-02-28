@@ -90,7 +90,15 @@ function TableCheck({ Datas, isDarkMode }) {
       field: "jwpv_param_value",
       headerName: "Value",
       width: 150,
-      renderCell: (params) => <div>{parseFloat(params.value).toFixed(2)}</div>,
+      renderCell: (params) => {
+        // ตรวจสอบว่าค่าเป็น null หรือไม่
+        if (params.value === null) {
+          return <div></div>; // แสดงช่องว่างหากค่าเป็น null
+        } else {
+          // แปลงค่าเป็นทศนิยมสองตำแหน่งหากค่าไม่เป็น null
+          return <div>{parseFloat(params.value).toFixed(2)}</div>;
+        }
+      },
     },
 
     {
