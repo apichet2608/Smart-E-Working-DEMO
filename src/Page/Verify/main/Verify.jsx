@@ -39,6 +39,7 @@ import Typography from "@mui/material/Typography";
 import Loading from "../../../Components/common/loading/Loading-08/loading";
 import BadgeComponenstApprove from "../Components/BadgeComponent/BadgeComponenstApprove.jsx";
 import BadgeComponenstGR_R from "../Components/BadgeComponent/BadgeComponenstGR_R.jsx";
+import Op_id_input from "../Components/Op_id_input/Op_id_input.jsx";
 
 function Verify() {
   //user input
@@ -450,6 +451,7 @@ function Verify() {
             onChange={(e) => setLot(e.target.value)}
             className="Paper_Contents"
           />
+          <Op_id_input />
         </div>
         <div>
           <button

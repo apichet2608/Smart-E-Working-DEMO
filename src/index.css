@@ -37,6 +37,7 @@ body {
 
 input {
   background-color: var(--InputBgcolor-color-theme);
+  border-radius: 8px;
 }
 
 .Paper_Contents {
