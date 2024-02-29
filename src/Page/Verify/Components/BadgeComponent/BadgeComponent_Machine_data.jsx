@@ -20,7 +20,7 @@ const BadgeComponent = ({ onClick, statusMachine, label }) => {
               marginBottom: "14px",
             }}
           >
-            Active
+            PASS
           </Typography>
         ) : (
           <Typography
@@ -34,7 +34,7 @@ const BadgeComponent = ({ onClick, statusMachine, label }) => {
               marginBottom: "14px",
             }}
           >
-            In Active
+            FAIL
           </Typography>
         )
       }

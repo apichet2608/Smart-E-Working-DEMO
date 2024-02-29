@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ToggleThemeButton from "../ToggleThemeButton/ToggleThemeButton";
 import { useAuth } from "../../../Contexts/AuthContext/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +9,10 @@ function AppbarEworking() {
   const { tokenValid, isVerifyTokenLoading, userData, verifyToken } = useAuth();
   console.log(userData.user);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    verifyToken();
+  }, []);
 
   if (userData && userData.user && Object.keys(userData.user).length) {
     console.log("มีข้อมูล");

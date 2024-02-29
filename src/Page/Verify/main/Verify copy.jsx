@@ -488,9 +488,7 @@ function Verify() {
             values={lot}
             onChanges={(e) => setLot(e.target.value)}
           />
-          <div className="w-full">
-            <Op_id_input />
-          </div>
+          <Op_id_input />
         </div>
         <div>
           <button
@@ -506,7 +504,7 @@ function Verify() {
           </>
         ) : (
           <>
-            <div className="container mx-auto pt-4 ">
+            <div className="container mx-auto pt-4">
               {dataCardmc_lot_search && dataCardmc_lot_search.length > 0 ? (
                 <div className="flex gap-2 justify-start">
                   {dataCardmc_lot_search.map((item) => (
@@ -543,15 +541,11 @@ function Verify() {
                   ))}
                 </div>
               ) : null}
-            </div>
-            <div className="container mx-auto pt-4 ">
               {dataResponseFromLotMachineSearch &&
                 dataResponseFromLotMachineSearch.length > 0 && (
                   <Stack
                     direction="row"
                     spacing={2}
-                    useFlexGap
-                    flexWrap="wrap"
                     // className="animate__animated animate__fadeIn"
                     className="mt-8"
                   >

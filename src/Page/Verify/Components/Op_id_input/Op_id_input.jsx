@@ -45,7 +45,7 @@ function Op_id_input() {
   return (
     <form className="Paper_Contents w-full" onSubmit={handleSubmit}>
       {opData.map((data, index) => (
-        <div key={index}>
+        <div key={index} className="flex-warp">
           <input
             type="text"
             name="id"
@@ -53,6 +53,7 @@ function Op_id_input() {
             onChange={(e) => handleInputChange(index, e)}
             placeholder="OP ID"
             required
+            className="w-full"
           />
           <input
             type="password"
@@ -61,6 +62,7 @@ function Op_id_input() {
             onChange={(e) => handleInputChange(index, e)}
             placeholder="Password"
             required
+            className="w-full"
           />
           <button
             type="button"
@@ -76,18 +78,19 @@ function Op_id_input() {
           )}
         </div>
       ))}
-      <div className=" gap-2 flex pt-1">
-        <button type="button" onClick={handleAddInput} className="btn btn-sm">
+      <div className="flex-warp pt-1 w-full">
+        <button
+          type="button"
+          onClick={handleAddInput}
+          className="btn btn-sm w-full "
+        >
           Add More
           <GroupAddIcon />
         </button>
-        <button type="submit" className="btn btn-sm">
+        <button type="submit" className="btn btn-sm w-full">
           <PublishIcon />
         </button>
       </div>
-      {/* <div>
-        <button type="submit">Submit</button>
-      </div> */}
     </form>
   );
 }

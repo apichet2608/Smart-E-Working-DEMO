@@ -15,10 +15,10 @@ import Grid from "@mui/material/Grid";
 const theme = createTheme({
   breakpoints: {
     values: {
-      xs: 640, // breakpoint xs
-      sm: 768, // breakpoint sm
+      xs: 440, // breakpoint xs
+      sm: 640, // breakpoint sm
       md: 1072, // breakpoint md
-      lg: 1488, // breakpoint lg
+      lg: 1340, // breakpoint lg
       xl: 1872, // breakpoint xl
     },
   },

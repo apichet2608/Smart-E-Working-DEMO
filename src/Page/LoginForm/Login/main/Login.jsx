@@ -77,7 +77,7 @@ const LoginPage = () => {
           showConfirmButton: false,
           timer: 1000,
         });
-        navigate("/1");
+        navigate("/verify");
       }
       console.log("Login successful:", response);
     } catch (error) {

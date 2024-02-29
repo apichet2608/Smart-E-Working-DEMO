@@ -56,16 +56,16 @@ export default {
     },
     screens: {
       sm: "440px",
-      md: "640px", // Tablet M9 แนวตั้ง
-      lg: "1072px", // Tablet M9 แนวนอน
+      md: "640px", // Tablet M9 แนวตั้ง M9-2
+      lg: "1072px", // Tablet M9 แนวนอน M9
       xl: "1340px",
       "2xl": "1872px", //pc dev
     },
     container: {
       padding: {
         DEFAULT: "0.5rem",
-        md: "2px",
-        lg: "2px",
+        md: "1rem",
+        lg: "1rem",
       },
     },
     fontFamily: {

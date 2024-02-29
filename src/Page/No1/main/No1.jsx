@@ -4,11 +4,9 @@ import Grid from "@mui/material/Grid";
 
 function No1() {
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12} sm={12} md={6} lg={12} xl={12}>
-        <Components1 />
-      </Grid>
-    </Grid>
+    <div className="container mx-auto md:bg-red-500 lg:bg-blue-500">
+      <Components1 />
+    </div>
   );
 }
 
