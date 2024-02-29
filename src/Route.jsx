@@ -24,9 +24,9 @@ function RouteComponents() {
       location.pathname === "/forgotpassword" ||
       location.pathname === "/forgotpassword/newpassword" ||
       location.pathname === "/" ? null : (
-        <div className="">
-          <Appbar />
-        </div>
+        // <div className="container mx-auto w-full">
+        <Appbar />
+        // </div>
       )}
 
       <Routes>

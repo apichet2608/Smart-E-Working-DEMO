@@ -8,7 +8,7 @@ const BadgeComponent = ({ onClick, statusMachine, label }) => {
   return (
     <Badge
       badgeContent={
-        !statusMachine ? (
+        statusMachine ? (
           <Typography
             variant="caption"
             sx={{
@@ -43,7 +43,7 @@ const BadgeComponent = ({ onClick, statusMachine, label }) => {
       <Chip
         label={label}
         onClick={onClick}
-        color={statusMachine === false ? "primary" : undefined}
+        color={statusMachine ? "primary" : undefined}
         sx={{
           maxWidth: "100%",
           fontFamily: "Poppins, sans-serif", // Setting fontFamily to "Poppins

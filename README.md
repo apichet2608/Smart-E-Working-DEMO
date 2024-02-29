@@ -1,36 +1,20 @@
-# React + Vite
+https://www.figma.com/file/SWMMaRecuoztKPsXe6VAjf/Smart-E-Working?type=design&node-id=0%3A1&mode=design&t=hrAzP2rVY5tYuvPM-1
 
-[here](https://vitejs.dev/).
+tablet
+size :
+640 * 888
+1072 *456
 
-CSS
+TailwildCSS
+sm: "440px",
+md: "640px", // Tablet M9 แนวตั้ง
+lg: "1072px", // Tablet M9 แนวนอน
+xl: "1340px",
+"2xl": "1872px", //pc dev
 
-## Tailwindcss
-
-|- Link : [here](https://tailwindcss.com/).
-|
-
-## Animate.css
-
-|- Link : [here](https://animate.style/).
-
-Components
-
-## Material Design
-
-|- Link : [here](https://mui.com/material-ui/).
-|
-
-## daisyui
-
-|- [here](https://daisyui.com/).
-
-Font
-
-## Press Start 2P
-
-|- [here](https://fontsource.org/fonts/press-start-2p/install).
-|
-
-## Poppins
-
-|- [here](https://fontsource.org/fonts/poppins).
+MUI
+xs: 440, // breakpoint xs
+sm: 640, // breakpoint sm
+md: 1072, // breakpoint md
+lg: 1340, // breakpoint lg
+xl: 1872, // breakpoint xl

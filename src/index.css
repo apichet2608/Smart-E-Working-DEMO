@@ -37,7 +37,7 @@ body {
 
 input {
   background-color: var(--InputBgcolor-color-theme);
-  border-radius: 8px;
+  border-radius: 10px;
 }
 
 .Paper_Contents {
@@ -45,5 +45,16 @@ input {
   /* margin: 1px; */
   padding: 4px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
+  border-radius: 10px;
+}
+
+.Input_text {
+  height: 40px;
+  width: 250px;
+}
+
+.Button_Search {
+  height: 40px;
+  width: 100px;
+  margin-top: 10px;
 }

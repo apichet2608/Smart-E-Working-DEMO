@@ -55,15 +55,17 @@ export default {
       }),
     },
     screens: {
-      sm: "640px",
-      md: "768px",
-      lg: "1024px",
-      xl: "1488px",
+      sm: "440px",
+      md: "640px", // Tablet M9 แนวตั้ง
+      lg: "1072px", // Tablet M9 แนวนอน
+      xl: "1340px",
       "2xl": "1872px", //pc dev
     },
     container: {
       padding: {
         DEFAULT: "0.5rem",
+        md: "2px",
+        lg: "2px",
       },
     },
     fontFamily: {

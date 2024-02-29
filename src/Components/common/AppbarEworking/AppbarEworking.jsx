@@ -19,7 +19,7 @@ function AppbarEworking() {
   return (
     // <div className="flex justify-between p-2 ">
     <div
-      className="flex justify-between p-2"
+      className="flex justify-between p-2 w-full"
       // style={{ backgroundColor: "rgba(255, 255, 255, 0.05)" }}
     >
       <div style={{ fontWeight: 800, fontSize: "24px" }}>Smart E working</div>

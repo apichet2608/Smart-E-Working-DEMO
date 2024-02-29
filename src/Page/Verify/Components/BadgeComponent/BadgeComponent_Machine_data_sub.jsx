@@ -26,7 +26,7 @@ const BadgeComponent = ({ status, label, onClick, selectvalue }) => {
             fontWeight: 500,
           }}
         >
-          SCADA
+          {status ? "SCADA" : "FAIL"}
         </Typography>
       }
       sx={{ marginRight: 2 }}

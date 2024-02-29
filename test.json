@@ -1,0 +1,10 @@
+{
+  "status": "OK",
+  "message": "TEXT",
+  "is_pass": "PASS",
+  "data": {
+    "data": [{}],
+    "actv": [{}],
+    "set": [{}]
+  }
+}

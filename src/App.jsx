@@ -9,6 +9,7 @@ import "./App.css";
 import Box from "@mui/material/Box";
 import RouteComponents from "./Route";
 import { useAuth } from "./Contexts/AuthContext/AuthContext";
+import Grid from "@mui/material/Grid";
 
 // Define the theme configuration outside of the component
 const theme = createTheme({
@@ -16,7 +17,7 @@ const theme = createTheme({
     values: {
       xs: 640, // breakpoint xs
       sm: 768, // breakpoint sm
-      md: 1024, // breakpoint md
+      md: 1072, // breakpoint md
       lg: 1488, // breakpoint lg
       xl: 1872, // breakpoint xl
     },
@@ -35,9 +36,13 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
+      {/* <Grid container spacing={2}> */}
+      {/* <Grid item xs={12} sm={12} md={12} lg={12} xl={12}> */}
       {/* <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script> */}
       {/* <iframe src="https://lottie.host/embed/18bf2570-4608-4e24-bef1-54b29880d410/LLkJPbCRS7.json"></iframe> */}
       <RouteComponents />
+      {/* </Grid> */}
+      {/* </Grid> */}
     </ThemeProvider>
   );
 }

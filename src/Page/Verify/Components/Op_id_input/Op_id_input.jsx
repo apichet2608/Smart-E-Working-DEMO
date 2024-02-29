@@ -5,6 +5,15 @@ import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import PublishIcon from "@mui/icons-material/Publish";
 function Op_id_input() {
   const [opData, setOpData] = useState([{ id: "", password: "" }]);
+  // if ("BarcodeDetector" in window) {
+  //   // BarcodeDetector is supported
+  //   BarcodeDetector.getSupportedFormats().then((supportedFormats) => {
+  //     supportedFormats.forEach((format) => console.log(format));
+  //   });
+  // } else {
+  //   // BarcodeDetector is not supported
+  //   console.log("BarcodeDetector is not supported by this browser.");
+  // }
 
   const handleInputChange = (index, event) => {
     const { name, value } = event.target;
@@ -34,7 +43,7 @@ function Op_id_input() {
   };
 
   return (
-    <form className="Paper_Contents" onSubmit={handleSubmit}>
+    <form className="Paper_Contents w-full" onSubmit={handleSubmit}>
       {opData.map((data, index) => (
         <div key={index}>
           <input
