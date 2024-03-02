@@ -5,6 +5,10 @@ size :
 640 * 888
 1072 *456
 
+pc
+size :
+1912 \* 924
+
 TailwildCSS
 sm: "440px",
 md: "640px", // Tablet M9 แนวตั้ง

@@ -5,15 +5,15 @@ import Swal from "sweetalert2";
 //API
 // import { smart_fpc_eworking } from "../API/POST/smart_fpc_eworking";
 //1
-import getDatalotsearch from "../API/GET/smart-fpc-lot";
+import getDatalotsearch from "../API/GET/smart-fpc-lot.jsx";
 //2
-import getDataPM from "../API/GET/smart-pm";
+import getDataPM from "../API/GET/smart-pm.jsx";
 //3
-import getDataCal from "../API/GET/smart-cal-monthly-detail";
+import getDataCal from "../API/GET/smart-cal-monthly-detail.jsx";
 //4
-import getDataemcs from "../API/GET/smart-emcs";
+import getDataemcs from "../API/GET/smart-emcs.jsx";
 //5
-import getDataVerify from "../API/GET/smart-verdify-report";
+import getDataVerify from "../API/GET/smart-verdify-report.jsx";
 //6
 // import getDataMachine from "../API/GET/smart_fpc_eworking_sacada";
 //7
@@ -23,22 +23,22 @@ import CheckTooling from "../API/GET/CheckTooling.jsx";
 import CheckMateriale from "../API/GET/CheckMateriale.jsx";
 
 import Stack from "@mui/material/Stack";
-import BadgeComponent_Machine_PM from "../Components/BadgeComponent/BadgeComponent_Machine_PM";
-import BadgeComponent_Machine_Cal from "../Components/BadgeComponent/BadgeComponent_Machine_Cal";
-import BadgeComponent_Process_Condition from "../Components/BadgeComponent/BadgeComponent_Process_Condition";
-import BadgeComponent_dataVerify from "../Components/BadgeComponent/BadgeComponent_dataVerify";
-import BadgeComponent_Machine_data from "../Components/BadgeComponent/BadgeComponent_Machine_data";
-import BadgeComponent_Machine_data_sub from "../Components/BadgeComponent/BadgeComponent_Machine_data_sub";
-import NoDataBadgeWithChip from "../Components/BadgeComponent/NoDataBadgeWithChip";
-import MachinePM from "../Components/BadgeSelect/DefaultChip/MachinePM/MachinePM";
-import MachineCal from "../Components/BadgeSelect/DefaultChip/MachineCal/MachineCal";
-import ProcessCondition from "../Components/BadgeSelect/DefaultChip/ProcessCondition/ProcessCondition";
-import AutoVerify from "../Components/BadgeSelect/DefaultChip/AutoVerify/AutoVerify";
-import MachineData from "../Components/BadgeSelect/MachineChip/MachineData/MachineData";
+import BadgeComponent_Machine_PM from "../Components/BadgeComponent/BadgeComponent_Machine_PM.jsx";
+import BadgeComponent_Machine_Cal from "../Components/BadgeComponent/BadgeComponent_Machine_Cal.jsx";
+import BadgeComponent_Process_Condition from "../Components/BadgeComponent/BadgeComponent_Process_Condition.jsx";
+import BadgeComponent_dataVerify from "../Components/BadgeComponent/BadgeComponent_dataVerify.jsx";
+import BadgeComponent_Machine_data from "../Components/BadgeComponent/BadgeComponent_Machine_data.jsx";
+import BadgeComponent_Machine_data_sub from "../Components/BadgeComponent/BadgeComponent_Machine_data_sub.jsx";
+import NoDataBadgeWithChip from "../Components/BadgeComponent/NoDataBadgeWithChip.jsx";
+import MachinePM from "../Components/BadgeSelect/DefaultChip/MachinePM/MachinePM.jsx";
+import MachineCal from "../Components/BadgeSelect/DefaultChip/MachineCal/MachineCal.jsx";
+import ProcessCondition from "../Components/BadgeSelect/DefaultChip/ProcessCondition/ProcessCondition.jsx";
+import AutoVerify from "../Components/BadgeSelect/DefaultChip/AutoVerify/AutoVerify.jsx";
+import MachineData from "../Components/BadgeSelect/MachineChip/MachineData/MachineData.jsx";
 import Chip from "@mui/material/Chip";
 import Badge from "@mui/material/Badge";
 import Typography from "@mui/material/Typography";
-import Loading from "../../../Components/common/loading/Loading-08/loading";
+import Loading from "../../../Components/common/loading/Loading-08/loading.jsx";
 import BadgeComponenstApprove from "../Components/BadgeComponent/BadgeComponenstApprove.jsx";
 import BadgeComponenstGR_R from "../Components/BadgeComponent/BadgeComponenstGR_R.jsx";
 import Op_id_input from "../Components/Op_id_input/Op_id_input.jsx";

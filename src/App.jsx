@@ -19,7 +19,7 @@ const theme = createTheme({
       sm: 640, // breakpoint sm
       md: 1072, // breakpoint md
       lg: 1340, // breakpoint lg
-      xl: 1872, // breakpoint xl
+      xl: 1912, // breakpoint xl
     },
   },
 });
