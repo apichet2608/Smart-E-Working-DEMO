@@ -6,7 +6,7 @@ const CheckTooling = async (proc_grp_name, scan_job_id) => {
   let config = {
     method: "get",
     maxBodyLength: Infinity,
-    url: `http://127.0.0.1:3000/api/smart_ewk_scan_master_header/CheckTooling/`,
+    url: `http://10.17.66.242:3000/api/smart_ewk_scan_master_header/CheckTooling/`,
     headers: {
       "Content-Type": "application/json",
     },
