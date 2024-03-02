@@ -1,16 +1,16 @@
 import axios from "axios";
 
 const getDataVerify = async (mc_code, proc_grp_name) => {
-  const params = { mc_code, proc_grp_name };
+  const data = { mc_code, proc_grp_name };
 
   let config = {
-    method: "get",
+    method: "post",
     maxBodyLength: Infinity,
     url: `http://10.17.66.242:7010/api/ewk/smart-verdify-report/`,
     headers: {
       "Content-Type": "application/json",
     },
-    params, // ใช้ shorthand syntax ใน ES6
+    data, // ใช้ shorthand syntax ใน ES6
   };
 
   try {
