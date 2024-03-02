@@ -46,6 +46,7 @@ import ManageSearchIcon from "@mui/icons-material/ManageSearch";
 import TextFieldInputComponents from "../Components/TextInput/TextInput.jsx";
 import BadgeComponentsTooling from "../Components/BadgeComponent/BadgeComponentsTooling.jsx";
 import BadgeComponentsMatheriale from "../Components/BadgeComponent/BadgeComponentsMatheriale.jsx";
+import Timer from "../Components/Count_Time/Count_Time.jsx";
 function Verify() {
   //user input
   // const [mcCode, setMcCode] = useState("R2-17-13");
@@ -73,7 +74,7 @@ function Verify() {
 
   //! ##Machine Cal##
   //? STATUS
-  const [statuscalibration, setstatuscalibration] = useState(false);
+  const [statuscalibration, setstatuscalibration] = useState("");
   //? DATA
   const [calibration, setcalibration] = useState([]);
 
@@ -253,12 +254,13 @@ function Verify() {
     try {
       console.log("Done");
       const response_data = await getDataCal(mcCode);
-      if (response_data && response_data.data) {
+      console.log(response_data);
+      if (response_data && response_data.data.length > 0) {
         // Check if response_data and response_data.data are not null or undefined
         console.log(response_data.data);
         setcalibration(response_data.data);
 
-        const calibrationisAllLocked = [response_data.data].every((item) => {
+        const calibrationisAllLocked = response_data.data.every((item) => {
           const statusFilter = item.status_filter?.toLowerCase();
           console.log(statusFilter);
           return (
@@ -268,13 +270,15 @@ function Verify() {
           ); //ตรงเงื่อนไข return true
         });
         console.log(calibrationisAllLocked);
-        if (!calibrationisAllLocked) {
-          setstatuscalibration(true); //active
+        if (calibrationisAllLocked) {
+          setstatuscalibration("In Active"); //lock
         } else {
-          setstatuscalibration(false); //lock
+          setstatuscalibration("Active"); //active
         }
       } else {
         console.log("Response or response data is null or undefined");
+        setcalibration([]);
+        setstatuscalibration("-");
       }
     } catch (error) {
       console.error(error);
@@ -531,7 +535,8 @@ function Verify() {
             onChanges={(e) => setLot(e.target.value)}
           />
           <div className="w-full">
-            <Op_id_input />
+            {/* <Op_id_input /> */}
+            <Timer />
           </div>
         </div>
         <div>
@@ -647,7 +652,14 @@ function Verify() {
                     <BadgeComponent_Machine_data
                       statusMachine={statusMachine}
                       label={"Machine Data"}
-                      onClick={() => setselectdatafromchip("Machine Data")}
+                      // onClick={
+                      //   (() => fetchStatusMachine(),
+                      //   setselectdatafromchip("Machine Data"))
+                      // }
+                      onClick={() => {
+                        fetchStatusMachine();
+                        setselectdatafromchip("Machine Data");
+                      }}
                     />
 
                     {dataapprove ? (
@@ -672,7 +684,10 @@ function Verify() {
                       status={StatustoolingData}
                       datas={toolingData}
                     />
-                    <BadgeComponentsMatheriale status={StatusMaterialeData} />
+                    <BadgeComponentsMatheriale
+                      status={StatusMaterialeData}
+                      datas={MaterialeData}
+                    />
                   </Stack>
                 )}
             </div>

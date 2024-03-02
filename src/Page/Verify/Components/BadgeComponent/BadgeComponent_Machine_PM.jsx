@@ -53,7 +53,7 @@ const BadgeComponent = ({
             marginBottom: "14px",
           }}
         >
-          {status}
+          {status === "Lock / Inactive" ? "Lock" : status}
         </Typography>
       }
       sx={{ marginRight: 2 }}

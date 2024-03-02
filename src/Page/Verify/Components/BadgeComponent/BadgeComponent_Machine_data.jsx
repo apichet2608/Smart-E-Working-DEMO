@@ -34,7 +34,7 @@ const BadgeComponent = ({ onClick, statusMachine, label }) => {
               marginBottom: "14px",
             }}
           >
-            FAIL
+            -
           </Typography>
         )
       }

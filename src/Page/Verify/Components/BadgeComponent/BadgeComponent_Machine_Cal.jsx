@@ -8,11 +8,11 @@ const BadgeComponent = ({ status, onClick, label }) => {
   return (
     <Badge
       badgeContent={
-        status ? (
+        status === "-" ? (
           <Typography
             variant="caption"
             sx={{
-              backgroundColor: "rgba(0, 255, 0, 1)",
+              backgroundColor: "#757575",
               borderRadius: "10px",
               padding: "3px",
               fontFamily: "Poppins, sans-serif", // Setting fontFamily to "Poppins
@@ -20,21 +20,21 @@ const BadgeComponent = ({ status, onClick, label }) => {
               marginBottom: "14px",
             }}
           >
-            Active
+            -
           </Typography>
         ) : (
           <Typography
             variant="caption"
             sx={{
-              backgroundColor: "rgba(255, 0, 0, 1)",
+              backgroundColor: status === "Active" ? "#69ED2A" : "#ED4D2A",
               borderRadius: "10px",
               padding: "3px",
-              fontFamily: "Poppins, sans-serif", // Setting fontFamily to "Poppins
+              fontFamily: "Poppins, sans-serif",
               fontWeight: 500,
               marginBottom: "14px",
             }}
           >
-            In Active
+            {status}
           </Typography>
         )
       }
@@ -43,7 +43,7 @@ const BadgeComponent = ({ status, onClick, label }) => {
       <Chip
         label={label}
         onClick={onClick}
-        color={status ? "primary" : undefined}
+        color={status !== "-" ? "primary" : undefined}
         sx={{
           maxWidth: "100%",
           fontFamily: "Poppins, sans-serif", // Setting fontFamily to "Poppins
