@@ -85,7 +85,12 @@ function TableCheck({ Datas, isDarkMode }) {
     // { field: "jwpv_proc_group", headerName: "Procedure Group", width: 200 },
     // { field: "jwpv_param_code", headerName: "Parameter Code", width: 200 },
     // { field: "jwpv_param_name", headerName: "Parameter Name", width: 200 },
-    { field: "jwpv_param_title", headerName: "Parameter Title", width: 350 },
+    {
+      field: "jwpv_param_title",
+      headerName: "Parameter Title",
+      width: 350,
+    },
+
     {
       field: "jwpv_param_value",
       headerName: "Value",
@@ -105,7 +110,32 @@ function TableCheck({ Datas, isDarkMode }) {
       field: "jwpv_param_tvalue",
       headerName: "Report",
       width: 150,
+      renderCell: (params) => {
+        let backgroundColor = ""; // สีพื้นหลังเริ่มต้นเป็นสีว่าง
+        if (
+          params.row.jwpv_param_title === "Next Due" &&
+          new Date(params.row.jwpv_param_tvalue) > new Date()
+        ) {
+          backgroundColor = "#F15A59"; // ถ้าเป็น "Next Due" และมากกว่าวันที่ปัจจุบัน กำหนดสีเป็นแดง
+        }
+        return (
+          <div
+            style={{
+              backgroundColor,
+              padding: "8px", // เพิ่ม padding ให้กับเซลล์
+              margin: "2px", // เพิ่ม margin รอบๆ เซลล์
+              borderRadius: "4px", // เพิ่มขอบมนเล็กน้อย
+              color: backgroundColor === "#F15A59" ? "#ffffff" : "#000", // สีของตัวอักษร ถ้า backgroundColor เป็นสีแดงให้เป็นขาว ถ้าไม่ใช่ให้เป็นดำ
+              // textAlign: "center", // จัดให้ตัวอักษรตรงกลาง
+              fontWeight: "bold", // ตั้งให้ตัวอักษรหนา
+            }}
+          >
+            {params.value}
+          </div>
+        );
+      },
     },
+
     // { field: "is_send", headerName: "Is Send", width: 100 },
     // { field: "jwpv_dept", headerName: "Department", width: 200 },
     // { field: "jwpv_job_type", headerName: "Job Type", width: 200 },

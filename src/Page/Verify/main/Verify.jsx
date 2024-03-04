@@ -29,7 +29,7 @@ import BadgeComponent_Process_Condition from "../Components/BadgeComponent/Badge
 import BadgeComponent_dataVerify from "../Components/BadgeComponent/BadgeComponent_dataVerify";
 import BadgeComponent_Machine_data from "../Components/BadgeComponent/BadgeComponent_Machine_data";
 import BadgeComponent_Machine_data_sub from "../Components/BadgeComponent/BadgeComponent_Machine_data_sub";
-import NoDataBadgeWithChip from "../Components/BadgeComponent/NoDataBadgeWithChip";
+import BadgeComponentsFai_Verify from "../Components/BadgeComponent/BadgeComponentsFai_Verify.jsx";
 import MachinePM from "../Components/BadgeSelect/DefaultChip/MachinePM/MachinePM";
 import MachineCal from "../Components/BadgeSelect/DefaultChip/MachineCal/MachineCal";
 import ProcessCondition from "../Components/BadgeSelect/DefaultChip/ProcessCondition/ProcessCondition";
@@ -53,8 +53,8 @@ function Verify() {
   // const [lot, setLot] = useState("904013599");
   // const [mcCode, setMcCode] = useState("R2-03-22");
   // const [lot, setLot] = useState("904025535");
-  const [mcCode, setMcCode] = useState("R2-17-13");
-  const [lot, setLot] = useState("804011237");
+  const [mcCode, setMcCode] = useState("R2-07-11");
+  const [lot, setLot] = useState("240132983");
   const [IsLoading, setIsLoading] = useState(false);
 
   const [
@@ -261,14 +261,15 @@ function Verify() {
         setcalibration(response_data.data);
 
         const calibrationisAllLocked = response_data.data.every((item) => {
-          const statusFilter = item.status_filter?.toLowerCase();
+          const statusFilter = item.status_filter?.toLowerCase(); // Convert to lowercase here
           console.log(statusFilter);
           return (
             statusFilter === "lock" ||
             statusFilter === "locks" ||
-            statusFilter === "in active"
-          ); //ตรงเงื่อนไข return true
+            statusFilter === "inactive" // Corrected "in active" to "inactive"
+          );
         });
+
         console.log(calibrationisAllLocked);
         if (calibrationisAllLocked) {
           setstatuscalibration("In Active"); //lock
@@ -478,6 +479,7 @@ function Verify() {
     return datas;
   }
 
+  // ยกเลิกใช้
   const getDataVerifyTableFromExpress = async (
     jwpv_job_type,
     jwpv_mc_code,
@@ -629,24 +631,20 @@ function Verify() {
 
                     {groupfaidata_verify && groupfaidata_verify.length ? (
                       <>
-                        {groupfaidata_verify.map((item, index) => (
-                          <BadgeComponent_dataVerify
-                            key={index} // Assuming `item.jwpv_job_type` + `item.jwpv_mc_code` combination is unique, you might use `${item.jwpv_job_type}-${item.jwpv_mc_code}` as a key instead of the index if preferred.
-                            statusautoverify={item.jwpv_param_tvalue}
-                            itemlabel={item.jwpv_job_type}
-                            onClick={() => {
-                              getDataVerifyTableFromExpress(
-                                item.jwpv_job_type,
-                                item.jwpv_mc_code,
-                                dataCardmc_lot_search[0].proc_grp_name
-                              );
-                              // setselectdatafromchip(item.jwpv_job_type);
-                            }}
-                          />
-                        ))}
+                        <BadgeComponentsFai_Verify
+                          groupfaidata_verify={groupfaidata_verify}
+                          onClick={() => {
+                            setselectdatafromchip("Auto Verify Select");
+                          }}
+                        />
                       </>
                     ) : (
-                      <NoDataBadgeWithChip />
+                      <BadgeComponentsFai_Verify
+                        groupfaidata_verify={[]}
+                        onClick={() => {
+                          setselectdatafromchip("");
+                        }}
+                      />
                     )}
 
                     <BadgeComponent_Machine_data
@@ -699,8 +697,27 @@ function Verify() {
               {selectdatafromchip === "Process Condition" && (
                 <ProcessCondition data={edoc_emcs_detail} />
               )}
-              {selectdatafromchip === "Auto Verify" && (
-                <AutoVerify data={dataautoverify} GR R />
+              {selectdatafromchip === "Auto Verify Select" && (
+                <>
+                  {groupfaidata_verify.map((item, index) => (
+                    <BadgeComponent_dataVerify
+                      key={index} // Assuming `item.jwpv_job_type` + `item.jwpv_mc_code` combination is unique, you might use `${item.jwpv_job_type}-${item.jwpv_mc_code}` as a key instead of the index if preferred.
+                      statusautoverify={item.jwpv_param_tvalue}
+                      itemlabel={item.jwpv_job_type}
+                      onClick={() => {
+                        // getDataVerifyTableFromExpress(
+                        //   item.jwpv_job_type,
+                        //   item.jwpv_mc_code,
+                        //   dataCardmc_lot_search[0].proc_grp_name
+                        // );
+                        // setselectdatafromchip(item.jwpv_job_type);
+                        setdataautoverify(item.data);
+                        // setselectdatafromchip("Auto Verify");
+                      }}
+                    />
+                  ))}
+                  <AutoVerify data={dataautoverify} />
+                </>
               )}
               {selectdatafromchip === "Machine Data" && (
                 <>

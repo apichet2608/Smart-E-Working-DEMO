@@ -3,7 +3,7 @@ import Badge from "@mui/material/Badge";
 import Chip from "@mui/material/Chip";
 import Typography from "@mui/material/Typography";
 
-const NoDataBadgeWithChip = () => {
+const BadgeComponentsFai_Verify = ({ onClick, groupfaidata_verify }) => {
   return (
     <Badge
       badgeContent={
@@ -18,20 +18,32 @@ const NoDataBadgeWithChip = () => {
             // marginBottom: "14px",
           }}
         >
-          No Data
+          {groupfaidata_verify && groupfaidata_verify.length > 0
+            ? "Check"
+            : "-"}
         </Typography>
       }
-      color="error"
+      color={
+        groupfaidata_verify && groupfaidata_verify.length > 0
+          ? "success"
+          : "error"
+      }
     >
       <Chip
-        label="Auto Verify"
+        onClick={onClick}
+        label="Fai Verify"
         sx={{
           fontFamily: "Poppins, sans-serif",
           fontWeight: 500,
         }}
+        color={
+          groupfaidata_verify && groupfaidata_verify.length > 0
+            ? "primary"
+            : undefined
+        }
       />
     </Badge>
   );
 };
 
-export default NoDataBadgeWithChip;
+export default BadgeComponentsFai_Verify;
