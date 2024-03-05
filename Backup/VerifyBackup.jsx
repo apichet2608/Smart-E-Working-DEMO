@@ -10,13 +10,13 @@ import BadgeComponent_dataVerify from "../Components/BadgeComponent/BadgeCompone
 import BadgeComponent_Machine_data from "../Components/BadgeComponent/BadgeComponent_Machine_data";
 import BadgeComponent_Machine_data_sub from "../Components/BadgeComponent/BadgeComponent_Machine_data_sub";
 
-import MachinePM from "../Components/BadgeSelect/DefaultChip/MachinePM/MachinePM";
-import MachineCal from "../Components/BadgeSelect/DefaultChip/MachineCal/MachineCal";
-import ProcessCondition from "../Components/BadgeSelect/DefaultChip/ProcessCondition/ProcessCondition";
-import AutoVerify from "../Components/BadgeSelect/DefaultChip/AutoVerify/AutoVerify";
-import MachineData from "../Components/BadgeSelect/MachineChip/MachineData/MachineData";
+import MachinePM from "../src/Page/Verify/Components/BadgeSelect/DefaultChip/MachinePM/MachinePM";
+import MachineCal from "../src/Page/Verify/Components/BadgeSelect/DefaultChip/MachineCal/MachineCal";
+import ProcessCondition from "../src/Page/Verify/Components/BadgeSelect/DefaultChip/ProcessCondition/ProcessCondition";
+import AutoVerify from "../src/Page/Verify/Components/BadgeSelect/DefaultChip/AutoVerify/AutoVerify";
+import MachineData from "../src/Page/Verify/Components/BadgeSelect/MachineChip/MachineData/MachineData";
 
-import Loading from "../../../Components/common/loading/Loading-11/loading";
+import Loading from "../src/Components/common/loading/Loading-11/loading";
 
 function Verify() {
   const [mcCode, setMcCode] = useState("R2-07-11_A");

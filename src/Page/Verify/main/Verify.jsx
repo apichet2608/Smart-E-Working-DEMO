@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 
+import GetAPI from "../API/GET/GetAPI.jsx";
+import PostAPI from "../API/POST/PostAPI.jsx";
 //API
 // import { smart_fpc_eworking } from "../API/POST/smart_fpc_eworking";
 //1
@@ -23,13 +25,13 @@ import CheckTooling from "../API/GET/CheckTooling.jsx";
 import CheckMateriale from "../API/GET/CheckMateriale.jsx";
 
 import Stack from "@mui/material/Stack";
-import BadgeComponent_Machine_PM from "../Components/BadgeComponent/BadgeComponent_Machine_PM";
-import BadgeComponent_Machine_Cal from "../Components/BadgeComponent/BadgeComponent_Machine_Cal";
-import BadgeComponent_Process_Condition from "../Components/BadgeComponent/BadgeComponent_Process_Condition";
-import BadgeComponent_dataVerify from "../Components/BadgeComponent/BadgeComponent_dataVerify";
-import BadgeComponent_Machine_data from "../Components/BadgeComponent/BadgeComponent_Machine_data";
-import BadgeComponent_Machine_data_sub from "../Components/BadgeComponent/BadgeComponent_Machine_data_sub";
-import BadgeComponentsFai_Verify from "../Components/BadgeComponent/BadgeComponentsFai_Verify.jsx";
+import BadgeComponent_Machine_PM from "../Components/BadgeComponent/MachinePM/BadgeComponent_Machine_PM.jsx";
+import BadgeComponent_Machine_Cal from "../Components/BadgeComponent/MachineCal/BadgeComponent_Machine_Cal.jsx";
+import BadgeComponent_Process_Condition from "../Components/BadgeComponent/ProcessCondition/BadgeComponent_Process_Condition.jsx";
+import BadgeComponent_dataVerify from "../Components/BadgeComponent/FaiVerify/BadgeComponent_dataVerify.jsx";
+import BadgeComponent_Machine_data from "../Components/BadgeComponent/MachineData/BadgeComponent_Machine_data.jsx";
+import BadgeComponent_Machine_data_sub from "../Components/BadgeComponent/MachineData/BadgeComponent_Machine_data_sub.jsx";
+import BadgeComponentsFai_Verify from "../Components/BadgeComponent/FaiVerify/BadgeComponentsFai_Verify.jsx";
 import MachinePM from "../Components/BadgeSelect/DefaultChip/MachinePM/MachinePM";
 import MachineCal from "../Components/BadgeSelect/DefaultChip/MachineCal/MachineCal";
 import ProcessCondition from "../Components/BadgeSelect/DefaultChip/ProcessCondition/ProcessCondition";
@@ -44,9 +46,17 @@ import BadgeComponenstGR_R from "../Components/BadgeComponent/BadgeComponenstGR_
 import Op_id_input from "../Components/Op_id_input/Op_id_input.jsx";
 import ManageSearchIcon from "@mui/icons-material/ManageSearch";
 import TextFieldInputComponents from "../Components/TextInput/TextInput.jsx";
-import BadgeComponentsTooling from "../Components/BadgeComponent/BadgeComponentsTooling.jsx";
-import BadgeComponentsMatheriale from "../Components/BadgeComponent/BadgeComponentsMatheriale.jsx";
+import BadgeComponentsTooling from "../Components/BadgeComponent/Tooling/BadgeComponentsTooling.jsx";
+import BadgeComponentsMatheriale from "../Components/BadgeComponent/Matherial/BadgeComponentsMatheriale.jsx";
 import Timer from "../Components/Count_Time/Count_Time.jsx";
+import BadgeTooling from "../Components/BadgeComponent/Tooling/BadgeTooling.jsx";
+import BadgeDataTooling from "../Components/BadgeComponent/Tooling/BadgeToolingSelect.jsx";
+
+import BadgeEMCS from "../Components/BadgeComponent/EMCS/BadgeEMCS.jsx";
+import BadgeDataEMCSselect from "../Components/BadgeComponent/EMCS/BadgeEMCSselect.jsx";
+
+import BadgeOperation from "../Components/BadgeComponent/Operation/BadgeOperation.jsx";
+import BadgeDataOperationselect from "../Components/BadgeComponent/Operation/BadgeOperationSelect.jsx";
 function Verify() {
   //user input
   // const [mcCode, setMcCode] = useState("R2-17-13");
@@ -54,7 +64,7 @@ function Verify() {
   // const [mcCode, setMcCode] = useState("R2-03-22");
   // const [lot, setLot] = useState("904025535");
   const [mcCode, setMcCode] = useState("R2-07-11");
-  const [lot, setLot] = useState("240132983");
+  const [lot, setLot] = useState("904025152");
   const [IsLoading, setIsLoading] = useState(false);
 
   const [
@@ -68,7 +78,7 @@ function Verify() {
 
   //! ##Machine PM##
   //? STATUS
-  const [statuspm, setstatuspm] = useState("");
+  // const [statuspm, setstatuspm] = useState("");
   //? DATA
   const [pm, setpm] = useState([]);
 
@@ -106,187 +116,278 @@ function Verify() {
   const [selectdatafromship_mcData, setselectdatafromship_mcData] =
     useState("");
 
+  const [toolingData, settoolingData] = useState([]); //! main
+
   const [dataapprove, setdataapprove] = useState();
   const [datagr_r, setdatagr_r] = useState();
-
-  const [toolingData, settoolingData] = useState([]);
   const [StatustoolingData, setStatustoolingData] = useState("");
-
   const [MaterialeData, setMaterialeData] = useState([]);
   const [StatusMaterialeData, setStatusMaterialeData] = useState("");
+  const [apistatus, setapistatus] = useState([
+    {
+      api: "smart-fpc-lot",
+      message: "",
+      status: "",
+    },
+    {
+      api: "smart-pm",
+      message: "",
+      status: "",
+    },
+  ]);
+  const [emcsData, setemcsData] = useState([]); //! main
+  const [operatorData, setoperatorData] = useState([]); //! main
 
   const handlesearch = async () => {
     setIsLoading(true);
-    await requestApiLotSearch();
-    await requestApi_PM();
-    await requestApi_Cal_monthly_detail();
-    await fetchStatusMachine();
-    await requestholdingtime();
-    await requestApprove();
-    setIsLoading(false);
+    await requestApiLotSearch(); //! 1. smart-fpc-lot
 
     // await requestApiemcs();
   };
 
   useEffect(() => {
-    const fetchData = async () => {
+    const extractData = () => {
       if (dataCardmc_lot_search && dataCardmc_lot_search.length > 0) {
-        const proc_id = dataCardmc_lot_search[0].proc_id;
-        const lot_prd_name = dataCardmc_lot_search[0].lot_prd_name;
-        const lot_prd_name_split = dataCardmc_lot_search[0].lot_prd_name_split;
-        const mc_code = mcCode; // Assuming mcCode is defined elsewhere
-        const line = dataCardmc_lot_search[0].line || "null";
-        const proc_grp_name = dataCardmc_lot_search[0].proc_grp_name;
+        const firstItem = dataCardmc_lot_search[0];
+        return {
+          proc_id: firstItem.proc_id,
+          lot_prd_name: firstItem.lot_prd_name,
+          lot_prd_name_split: firstItem.lot_prd_name_split,
+          mc_code: mcCode, // Assuming mcCode is defined elsewhere
+          line: firstItem.line || "null",
+          proc_grp_name: firstItem.proc_grp_name,
+          scan_job_id: `${lot}_${firstItem.proc_grp_name}_${mcCode}`,
+        };
+      }
+      return null;
+    };
 
-        const scan_job_id = lot + `_` + proc_grp_name + `_` + mcCode;
-        console.log(scan_job_id);
-        console.log(proc_id);
-        console.log(lot_prd_name);
-        console.log(lot_prd_name_split);
-        console.log(mc_code);
-        console.log(line);
-        console.log(proc_grp_name);
-
-        // Call your API function with the extracted parameters
-        const response = await getDataemcs(
-          proc_id,
-          lot_prd_name,
-          lot_prd_name_split,
-          mc_code,
-          line
-        );
-        if (response && response.data && response.data.length !== 0) {
-          setstatusedoc_emcs_detail("Active");
-          setedoc_emcs_detail(response.data.detail);
-        } else {
-          setstatusedoc_emcs_detail("-");
-        }
-
-        const response2 = await getDataVerify(mc_code, proc_grp_name);
-        if (response2 && response2.data) {
-          console.log(response2.data);
-          console.log(response2.data.fai_verify_report);
-          const fai_verify_report = response2.data.fai_verify_report;
-          setgroupfaidata_verify(fai_verify_report);
-        }
-
-        const responseTooling = await CheckTooling(proc_grp_name, scan_job_id);
-        console.log(responseTooling);
-        if (responseTooling && responseTooling.data.length !== 0) {
-          console.log("OK");
-          const modifiedData = responseTooling.data.map((item) => {
-            // ตรวจสอบว่า item มี key scan_job_id อยู่แล้วหรือไม่
-            if (item.hasOwnProperty("scan_job_id")) {
-              // หากมีอยู่แล้ว, ไม่ต้องเพิ่มหรือแก้ไข scan_job_id
-              return item;
-            } else {
-              // หากไม่มี, เพิ่ม scan_job_id ตามที่ต้องการ
-              return {
-                ...item, // คัดลอกข้อมูลเดิม
-                scan_job_id: scan_job_id, // เพิ่ม key และ value ตามต้องการ
-                qr_code_input: "", // เพิ่ม key และ value ตามต้องการ
-                verify_status: "", // เพิ่ม key และ value ตามต้องการ
-                // anotherKey: "anotherValue", // ตัวอย่างการเพิ่ม key และ value อื่นๆ
-              };
-            }
-          });
-
-          // กำหนดข้อมูลที่ถูกแก้ไขแล้วให้กับตัวแปร state (settoolingData)
-          settoolingData(modifiedData);
-          setStatustoolingData(responseTooling.toolingStatus);
-        } else {
-          console.log("NO");
-          settoolingData(responseTooling.data);
-          setStatustoolingData(responseTooling.toolingStatus);
-        }
-
-        const responseMateriale = await CheckMateriale(
-          proc_grp_name,
-          scan_job_id
-        );
-        console.log(responseMateriale);
-        if (responseMateriale && responseMateriale.data.length !== 0) {
-          console.log("OK");
-          setMaterialeData(responseMateriale.data);
-          setStatusMaterialeData(responseMateriale.materialeStatus);
-        } else {
-          console.log("NO");
-          setMaterialeData(responseMateriale.data);
-          setStatusMaterialeData(responseMateriale.materialeStatus);
-        }
+    const fetchDataForEDoc = async (extractedData) => {
+      const response = await getDataemcs(
+        extractedData.proc_id,
+        extractedData.lot_prd_name,
+        extractedData.lot_prd_name_split,
+        extractedData.mc_code,
+        extractedData.line
+      );
+      if (response && response.data && response.data.length !== 0) {
+        setstatusedoc_emcs_detail("Active");
+        setedoc_emcs_detail(response.data.detail);
+      } else {
+        setstatusedoc_emcs_detail("-");
       }
     };
-    //4 ,5
-    fetchData();
-  }, [dataCardmc_lot_search]); // Empty dependency array means this effect runs only once after the component mounts
 
-  //1
-  const requestApiLotSearch = async () => {
-    try {
-      console.log("Done");
-      const response_data = await getDatalotsearch(lot, false);
-      //response.data default
-      console.log(response_data.data);
-      setdataCardmc_lot_search([response_data.data]);
-      setdataResponseFromLotMachineSearch([response_data.data]);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+    const fetchDataForVerification = async (extractedData) => {
+      const response = await getDataVerify(
+        extractedData.mc_code,
+        extractedData.proc_grp_name
+      );
+      if (response && response.data) {
+        setgroupfaidata_verify(response.data.fai_verify_report);
+      }
+    };
 
-  //2
-  const requestApi_PM = async () => {
-    try {
-      console.log("Done");
-      const response_data = await getDataPM(mcCode);
-      //response.data default
-      console.log(response_data.data);
-      console.log(response_data.data[0].stats_mc);
-      setstatuspm(response_data.data[0].stats_mc);
-      setpm(response_data.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  //3
-  const requestApi_Cal_monthly_detail = async () => {
-    try {
-      console.log("Done");
-      const response_data = await getDataCal(mcCode);
-      console.log(response_data);
-      if (response_data && response_data.data.length > 0) {
-        // Check if response_data and response_data.data are not null or undefined
-        console.log(response_data.data);
-        setcalibration(response_data.data);
-
-        const calibrationisAllLocked = response_data.data.every((item) => {
-          const statusFilter = item.status_filter?.toLowerCase(); // Convert to lowercase here
-          console.log(statusFilter);
-          return (
-            statusFilter === "lock" ||
-            statusFilter === "locks" ||
-            statusFilter === "inactive" // Corrected "in active" to "inactive"
-          );
-        });
-
-        console.log(calibrationisAllLocked);
-        if (calibrationisAllLocked) {
-          setstatuscalibration("In Active"); //lock
-        } else {
-          setstatuscalibration("Active"); //active
-        }
+    const checkToolingData = async (extractedData) => {
+      const response = await CheckTooling(
+        extractedData.proc_grp_name,
+        extractedData.scan_job_id
+      );
+      if (response && response.data.length !== 0) {
+        const modifiedData = response.data.map((item) => ({
+          ...item,
+          scan_job_id: extractedData.scan_job_id,
+          qr_code_input: "",
+          verify_status: "",
+        }));
+        settoolingData(modifiedData);
+        setStatustoolingData(response.toolingStatus);
       } else {
+        settoolingData([]);
+        setStatustoolingData(response.toolingStatus);
+      }
+    };
+
+    const checkMaterialeData = async (extractedData) => {
+      const response = await CheckMateriale(
+        extractedData.proc_grp_name,
+        extractedData.scan_job_id
+      );
+      if (response && response.data.length !== 0) {
+        setMaterialeData(response.data);
+        setStatusMaterialeData(response.materialeStatus);
+      } else {
+        setMaterialeData([]);
+        setStatusMaterialeData(response.materialeStatus);
+      }
+    };
+
+    const featchtoolData = async (extractedData) => {
+      console.log(extractedData);
+      const data = {
+        proc_id: extractedData.proc_id,
+      };
+      const url = `http://10.17.66.242:7010/api/ewk/smart-tool-type-tool/`;
+      const response = await PostAPI(data, url);
+      console.log(response);
+      if (response.status === "OK") {
+        console.log(response.data.data);
+        settoolingData(response.data.data);
+        //
+      } else if (response.status === "ERROR") {
+        //
+      } else {
+        //
+      }
+    };
+    const featchemcsData = async (extractedData) => {
+      console.log(extractedData);
+      const data = {
+        proc_id: extractedData.proc_id,
+      };
+      const url = `http://10.17.66.242:7010/api/ewk/smart-tool-type-emcs/`;
+      const response = await PostAPI(data, url);
+      console.log(response);
+      if (response.status === "OK") {
+        console.log(response.data.data);
+        setemcsData([response.data.data]);
+        //
+      } else if (response.status === "ERROR") {
+        //
+      } else {
+        //
+      }
+    };
+
+    const featchoperatorData = async (extractedData) => {
+      console.log(extractedData);
+      const data = {
+        proc_id: extractedData.proc_id,
+      };
+      const url = `http://10.17.66.242:7010/api/ewk/smart-tool-type-operator/`;
+      const response = await PostAPI(data, url);
+      console.log(response);
+      if (response.status === "OK") {
+        console.log(response.data.data);
+        setoperatorData([response.data.data]);
+        //
+      } else if (response.status === "ERROR") {
+        //
+      } else {
+        //
+      }
+    };
+
+    const fetchData = async () => {
+      const extractedData = extractData();
+      if (extractedData) {
+        await requestApi_PM(); //! 2.smart-pm
+        await requestApi_Cal_monthly_detail(); //! 3.smart-cal-monthly-detail
+        // await fetchDataForEDoc(extractedData); //! 4.smart-emcs
+        await fetchDataForVerification(extractedData); //! 5.smart-verdify-report
+        await requestholdingtime(); //! 6.smart-holding-time
+        await requestApprove(); //! 7. smart-lq-approve
+        await fetchStatusMachine(); //! 8.smart-fpc-scada-realtime-center
+        // await checkToolingData(extractedData);
+        // await checkMaterialeData(extractedData);
+        await featchtoolData(extractedData); //! 9. smart-tool-type-tool
+        await featchemcsData(extractedData); //! 10. smart-tool-type-emcs
+        await featchoperatorData(extractedData); //! 11 smart-tool-type-operator
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [dataCardmc_lot_search, mcCode]);
+
+  //? 1.smart-fpc-lot
+  const requestApiLotSearch = async () => {
+    const params = {
+      lot: lot,
+      is_roll: false,
+    };
+    const url = `http://10.17.66.242:7010/api/ewk/smart-fpc-lot/`;
+    try {
+      const response_data = await GetAPI(params, url);
+      if (response_data.status === "OK") {
+        setdataCardmc_lot_search([response_data.data.data]);
+        setdataResponseFromLotMachineSearch([response_data.data.data]);
+      } else if (response_data.status === "ERROR") {
+        setdataCardmc_lot_search([]);
+        setdataResponseFromLotMachineSearch([]);
+      } else {
+        console.log("Catch");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  //? 2 smart-pm
+  const requestApi_PM = async () => {
+    const params = { mc_code: mcCode };
+    const url = `http://10.17.66.242:7010/api/ewk/smart-pm/`;
+    try {
+      const response_data = await GetAPI(params, url);
+      //response.data default
+
+      if (response_data.status === "OK") {
+        setpm(response_data.data.data);
+      } else if (response_data.status === "ERROR") {
+        setpm([]);
+      } else {
+        console.log("Catch");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  //? 3 smart-cal-monthly-detail
+  const requestApi_Cal_monthly_detail = async () => {
+    const params = { mc_code: mcCode };
+    const url = `http://10.17.66.242:7010/api/ewk/smart-cal-monthly-detail/`;
+    try {
+      const response_data = await GetAPI(params, url);
+      if (response_data.status === "OK") {
+        if (response_data.data && response_data.data.data.length > 0) {
+          // Check if response_data and response_data.data are not null or undefined
+          setcalibration(response_data.data.data);
+          const calibrationisAllLocked = response_data.data.data.every(
+            (item) => {
+              const statusFilter = item.status_filter?.toLowerCase(); // Convert to lowercase here
+              console.log(statusFilter);
+              return (
+                statusFilter === "lock" ||
+                statusFilter === "locks" ||
+                statusFilter === "inactive"
+              );
+            }
+          );
+
+          // กรณีที่ชุดข้อมุลมี lock||locks||inactive === false
+          if (!calibrationisAllLocked) {
+            setstatuscalibration("In Active"); //lock
+          } else {
+            setstatuscalibration("Active"); //active
+          }
+        } else {
+          console.log("Response or response data is null or undefined");
+          setcalibration([]);
+          setstatuscalibration("-");
+        }
+      } else if (response_data.status === "ERROR") {
         console.log("Response or response data is null or undefined");
         setcalibration([]);
         setstatuscalibration("-");
+      } else {
+        console.log("Catch");
       }
     } catch (error) {
       console.error(error);
     }
   };
 
-  //1
   const requestholdingtime = async () => {
     try {
       console.log("Done");
@@ -319,69 +420,123 @@ function Verify() {
       console.error(error);
     }
   };
-  // getDataapprove;
-  //6
+
+  //? 6 smart-fpc-scada-realtime-center
+  const [isfeatch_mcdata, setisfeatch_mcdata] = useState(false);
   const fetchStatusMachine = async () => {
+    setselectdatafromship_mcData("");
+    setisfeatch_mcdata(true);
     const inputString = mcCode; // ตรวจสอบให้แน่ใจว่า mcCode ถูกกำหนดค่าไว้อย่างถูกต้อง
     const requestData = {
       mc_code: inputString,
     };
     console.log(requestData.mc_code);
-
+    const params = { mc_code: inputString };
+    const url = `http://10.17.66.242:7010/api/ewk/smart-fpc-scada-realtime-center/`;
     try {
-      const response = await axios.get(
-        `http://10.17.66.242:7010/api/ewk/smart-fpc-scada-realtime-center/?mc_code=${inputString}`
-        // { requestData }
-      );
+      const response = await GetAPI(params, url);
 
       console.log(response.data.data);
       const data = response.data.data;
       // console.log(data.actv[0].judgment_record);
 
-      const allNullTableNames = Object.keys(data).every((key) => {
-        const tableName = data[key].table_name;
-        return tableName === null;
-      });
+      if (response.status === "OK") {
+        const allNullTableNames = Object.keys(data).every((key) => {
+          const tableName = data[key].table_name;
+          return tableName === null;
+        });
 
-      if (response.data.judgment_machine === "PASS") {
-        setstatusMachine(true); // No Data
+        if (response.data.judgment_machine === "PASS") {
+          setstatusMachine(true); // No Data
+        } else {
+          setstatusMachine(false); // Active
+        }
+
+        // Extract data
+        const actvData = data.actv;
+        const almData = data.alm;
+        const setData = data.set;
+        const statusData = data.status;
+
+        // Set machine data
+        setMachineActv(actvData);
+        setMachineAlm(almData);
+        setMachineSet(setData);
+        setMachineStatus(statusData);
+
+        // Generate columns for Data Grid
+        const columnsActvData = actvData
+          ? generateColumns(actvData, "Actv")
+          : "";
+        const columnsAlmData = almData ? generateColumns(almData, "Alm") : "";
+        const columnsSetData = setData ? generateColumns(setData, "Set") : "";
+        const columnsStatusData = statusData
+          ? generateColumns(statusData, "Status")
+          : "";
+
+        // Set columns for UI components
+        setcolumnsactvData(columnsActvData);
+        setcolumnsAlmData(columnsAlmData);
+        setcolumnsSetData(columnsSetData);
+        setcolumnsStatusData(columnsStatusData);
+
+        // Badge data
+        const datas = generateBadgeData(actvData, almData, setData, statusData);
+        console.log(datas);
+        setbadgemachine(datas);
+      } else if (response.status === "ERROR") {
+        const allNullTableNames = Object.keys(data).every((key) => {
+          const tableName = data[key].table_name;
+          return tableName === null;
+        });
+
+        if (response.data.judgment_machine === "PASS") {
+          setstatusMachine(true); // No Data
+        } else {
+          setstatusMachine(false); // Active
+        }
+
+        // Extract data
+        const actvData = data.actv;
+        const almData = data.alm;
+        const setData = data.set;
+        const statusData = data.status;
+
+        // Set machine data
+        setMachineActv(actvData);
+        setMachineAlm(almData);
+        setMachineSet(setData);
+        setMachineStatus(statusData);
+
+        // Generate columns for Data Grid
+        const columnsActvData = actvData
+          ? generateColumns(actvData, "Actv")
+          : "";
+        const columnsAlmData = almData ? generateColumns(almData, "Alm") : "";
+        const columnsSetData = setData ? generateColumns(setData, "Set") : "";
+        const columnsStatusData = statusData
+          ? generateColumns(statusData, "Status")
+          : "";
+
+        // Set columns for UI components
+        setcolumnsactvData(columnsActvData);
+        setcolumnsAlmData(columnsAlmData);
+        setcolumnsSetData(columnsSetData);
+        setcolumnsStatusData(columnsStatusData);
+
+        // Badge data
+        const datas = generateBadgeData(actvData, almData, setData, statusData);
+        console.log(datas);
+        setbadgemachine(datas);
       } else {
-        setstatusMachine(false); // Active
+        console.log("Catch");
+        setstatusMachine("No Data");
       }
-
-      // Extract data
-      const actvData = data.actv;
-      const almData = data.alm;
-      const setData = data.set;
-      const statusData = data.status;
-
-      // Set machine data
-      setMachineActv(actvData);
-      setMachineAlm(almData);
-      setMachineSet(setData);
-      setMachineStatus(statusData);
-
-      // Generate columns for Data Grid
-      const columnsActvData = actvData ? generateColumns(actvData, "Actv") : "";
-      const columnsAlmData = almData ? generateColumns(almData, "Alm") : "";
-      const columnsSetData = setData ? generateColumns(setData, "Set") : "";
-      const columnsStatusData = statusData
-        ? generateColumns(statusData, "Status")
-        : "";
-
-      // Set columns for UI components
-      setcolumnsactvData(columnsActvData);
-      setcolumnsAlmData(columnsAlmData);
-      setcolumnsSetData(columnsSetData);
-      setcolumnsStatusData(columnsStatusData);
-
-      // Badge data
-      const datas = generateBadgeData(actvData, almData, setData, statusData);
-      console.log(datas);
-      setbadgemachine(datas);
     } catch (error) {
       console.error("API Error:", error.message);
       setstatusMachine("No Data");
+    } finally {
+      setisfeatch_mcdata(false);
     }
   };
 
@@ -404,6 +559,15 @@ function Verify() {
           field: header,
           headerName: header,
           width: 150, // กำหนดความกว้างของคอลัมน์ตามต้องการ
+          // renderCell: (params) => {
+          //   if (header === "judgment_record") {
+          //     // ทำการ render cell ในลักษณะที่ต้องการ
+          //     return params.value;
+          //   } else {
+          //     // ทำการ render cell อื่น ๆ ตามปกติ
+          //     return params.value;
+          //   }
+          // },
         }));
     }
     if (name === "Alm") {
@@ -478,6 +642,7 @@ function Verify() {
     }
     return datas;
   }
+  //? 6 smart-fpc-scada-realtime-center
 
   // ยกเลิกใช้
   const getDataVerifyTableFromExpress = async (
@@ -604,30 +769,35 @@ function Verify() {
                     // className="animate__animated animate__fadeIn"
                     className="mt-8"
                   >
-                    <BadgeComponent_Machine_PM
-                      label="Machine PM"
-                      status={statuspm}
-                      statuspm={statuspm}
-                      onClick={() => {
-                        setselectdatafromchip("Machine PM");
-                      }}
-                      selectdatafromchip={selectdatafromchip}
-                    />
-                    <BadgeComponent_Machine_Cal
-                      label={"Machine Cal"}
-                      status={statuscalibration}
-                      onClick={() => {
-                        setselectdatafromchip("Machine Cal");
-                      }}
-                    />
-                    <BadgeComponent_Process_Condition
-                      label={"Process Condition"}
+                    {pm && pm.length > 0 && (
+                      <BadgeComponent_Machine_PM
+                        data={pm}
+                        // statuspm={statuspm}
+                        onClick={() => {
+                          setselectdatafromchip("Machine PM");
+                        }}
+                        selectdatafromchip={selectdatafromchip}
+                      />
+                    )}
+
+                    {calibration && calibration.length > 0 && (
+                      <BadgeComponent_Machine_Cal
+                        // status={statuscalibration}
+                        data={calibration}
+                        onClick={() => {
+                          setselectdatafromchip("Machine Cal");
+                        }}
+                        selectdatafromchip={selectdatafromchip}
+                      />
+                    )}
+
+                    {/* <BadgeComponent_Process_Condition
                       statusedoc_emcs_detail={statusedoc_emcs_detail}
                       onClick={() => {
                         setselectdatafromchip("Process Condition");
                         //   setselectdatafromchipmachinedata("");
                       }}
-                    />
+                    /> */}
 
                     {groupfaidata_verify && groupfaidata_verify.length ? (
                       <>
@@ -678,14 +848,44 @@ function Verify() {
                         />
                       </>
                     ) : null}
-                    <BadgeComponentsTooling
+                    {/* <BadgeComponentsTooling
                       status={StatustoolingData}
                       datas={toolingData}
                     />
                     <BadgeComponentsMatheriale
                       status={StatusMaterialeData}
                       datas={MaterialeData}
-                    />
+                    /> */}
+                    {toolingData && toolingData.length ? (
+                      <>
+                        <BadgeTooling
+                          data={toolingData}
+                          onClick={() => setselectdatafromchip("Tooling")}
+                        />
+                      </>
+                    ) : (
+                      <></>
+                    )}
+                    {emcsData && emcsData.length ? (
+                      <>
+                        <BadgeEMCS
+                          data={emcsData}
+                          onClick={() => setselectdatafromchip("EMCS")}
+                        />
+                      </>
+                    ) : (
+                      <></>
+                    )}
+                    {operatorData && operatorData.length ? (
+                      <>
+                        <BadgeOperation
+                          data={operatorData}
+                          onClick={() => setselectdatafromchip("Operation")}
+                        />
+                      </>
+                    ) : (
+                      <></>
+                    )}
                   </Stack>
                 )}
             </div>
@@ -694,9 +894,9 @@ function Verify() {
               {selectdatafromchip === "Machine Cal" && (
                 <MachineCal data={calibration} />
               )}
-              {selectdatafromchip === "Process Condition" && (
+              {/* {selectdatafromchip === "Process Condition" && (
                 <ProcessCondition data={edoc_emcs_detail} />
-              )}
+              )} */}
               {selectdatafromchip === "Auto Verify Select" && (
                 <>
                   {groupfaidata_verify.map((item, index) => (
@@ -721,32 +921,48 @@ function Verify() {
               )}
               {selectdatafromchip === "Machine Data" && (
                 <>
-                  <div>
-                    {badgemachine.map((item, index) => (
-                      <BadgeComponent_Machine_data_sub
-                        key={index}
-                        status={item.status}
-                        label={item.name}
-                        onClick={() => setselectdatafromship_mcData(item.name)}
-                        selectvalue={selectdatafromship_mcData}
-                      />
-                    ))}
-                  </div>
-
-                  <div>
-                    <MachineData
-                      selectdatafromship_mcData={selectdatafromship_mcData}
-                      datamachineActv={datamachineActv}
-                      datamachineAlm={datamachineAlm}
-                      datamachineSet={datamachineSet}
-                      datamachineStatus={datamachineStatus}
-                      columnsactvData={columnsactvData}
-                      columnsAlmData={columnsAlmData}
-                      columnsSetData={columnsSetData}
-                      columnsStatusData={columnsStatusData}
-                    />
-                  </div>
+                  {isfeatch_mcdata ? (
+                    <Loading />
+                  ) : (
+                    <>
+                      <div>
+                        {badgemachine.map((item, index) => (
+                          <BadgeComponent_Machine_data_sub
+                            key={index}
+                            status={item.status}
+                            label={item.name}
+                            onClick={() =>
+                              setselectdatafromship_mcData(item.name)
+                            }
+                            selectvalue={selectdatafromship_mcData}
+                          />
+                        ))}
+                      </div>
+                      <div>
+                        <MachineData
+                          selectdatafromship_mcData={selectdatafromship_mcData}
+                          datamachineActv={datamachineActv}
+                          datamachineAlm={datamachineAlm}
+                          datamachineSet={datamachineSet}
+                          datamachineStatus={datamachineStatus}
+                          columnsactvData={columnsactvData}
+                          columnsAlmData={columnsAlmData}
+                          columnsSetData={columnsSetData}
+                          columnsStatusData={columnsStatusData}
+                        />
+                      </div>
+                    </>
+                  )}
                 </>
+              )}
+              {selectdatafromchip === "Tooling" && (
+                <BadgeDataTooling data={toolingData} />
+              )}
+              {selectdatafromchip === "EMCS" && (
+                <BadgeDataEMCSselect data={emcsData} />
+              )}
+              {selectdatafromchip === "Operation" && (
+                <BadgeDataOperationselect data={operatorData} />
               )}
               {selectdatafromchip === "LQ Approve" && "LQ Approve"}
               {selectdatafromchip === "GR R" && "GR R"}

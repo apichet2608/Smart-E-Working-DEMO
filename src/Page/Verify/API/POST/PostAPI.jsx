@@ -1,16 +1,14 @@
 import axios from "axios";
-
-const getDatalotsearch = async (lot, is_roll) => {
-  const params = { lot, is_roll };
-
+const PostAPI = async (data, url) => {
+  // เปลี่ยนพารามิเตอร์ url เป็น string
   let config = {
-    method: "get",
+    method: "post",
     maxBodyLength: Infinity,
-    url: `http://10.17.66.242:7010/api/ewk/smart-fpc-lot/`,
+    url: url, // เปลี่ยนการกำหนด url เป็นตัวแปร url
     headers: {
       "Content-Type": "application/json",
     },
-    params, // ใช้ shorthand syntax ใน ES6
+    data: data,
   };
 
   try {
@@ -38,4 +36,12 @@ const getDatalotsearch = async (lot, is_roll) => {
   }
 };
 
-export default getDatalotsearch; // Export ฟังก์ชันให้สามารถใ
+export default PostAPI; // Export ฟังก์ชันให้สามารถใ
+
+// if (response_data.status === "OK") {
+
+// } else if (response_data.status === "ERROR") {
+
+// } else {
+
+// }

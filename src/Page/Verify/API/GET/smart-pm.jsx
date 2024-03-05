@@ -17,7 +17,11 @@ const getDataPM = async (mc_code) => {
     const response = await axios.request(config);
     if (response.data.status === "OK") {
       console.log(response);
-      return response.data; // คืนค่าข้อมูลกลับไป
+      return {
+        status: "OK",
+        data: response.data,
+        message: response.data.message,
+      };
     } else {
       return null;
     }

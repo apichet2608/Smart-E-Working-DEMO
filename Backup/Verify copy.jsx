@@ -5,56 +5,51 @@ import Swal from "sweetalert2";
 //API
 // import { smart_fpc_eworking } from "../API/POST/smart_fpc_eworking";
 //1
-import getDatalotsearch from "../API/GET/smart-fpc-lot.jsx";
+import getDatalotsearch from "../src/Page/Verify/API/GET/smart-fpc-lot.jsx";
 //2
-import getDataPM from "../API/GET/smart-pm.jsx";
+import getDataPM from "../src/Page/Verify/API/GET/smart-pm.jsx";
 //3
-import getDataCal from "../API/GET/smart-cal-monthly-detail.jsx";
+import getDataCal from "../src/Page/Verify/API/GET/smart-cal-monthly-detail.jsx";
 //4
-import getDataemcs from "../API/GET/smart-emcs.jsx";
+import getDataemcs from "../src/Page/Verify/API/GET/smart-emcs.jsx";
 //5
-import getDataVerify from "../API/GET/smart-verdify-report.jsx";
+import getDataVerify from "../src/Page/Verify/API/GET/smart-verdify-report.jsx";
 //6
 // import getDataMachine from "../API/GET/smart_fpc_eworking_sacada";
 //7
-import getDataholdingtime from "../API/GET/smart-holding-time.jsx";
-import getDataapprove from "../API/GET/smart-lq-approve.jsx";
-import CheckTooling from "../API/GET/CheckTooling.jsx";
-import CheckMateriale from "../API/GET/CheckMateriale.jsx";
+import getDataholdingtime from "../src/Page/Verify/API/GET/smart-holding-time.jsx";
+import getDataapprove from "../src/Page/Verify/API/GET/smart-lq-approve.jsx";
 
 import Stack from "@mui/material/Stack";
-import BadgeComponent_Machine_PM from "../Components/BadgeComponent/BadgeComponent_Machine_PM.jsx";
-import BadgeComponent_Machine_Cal from "../Components/BadgeComponent/BadgeComponent_Machine_Cal.jsx";
-import BadgeComponent_Process_Condition from "../Components/BadgeComponent/BadgeComponent_Process_Condition.jsx";
-import BadgeComponent_dataVerify from "../Components/BadgeComponent/BadgeComponent_dataVerify.jsx";
-import BadgeComponent_Machine_data from "../Components/BadgeComponent/BadgeComponent_Machine_data.jsx";
-import BadgeComponent_Machine_data_sub from "../Components/BadgeComponent/BadgeComponent_Machine_data_sub.jsx";
-import NoDataBadgeWithChip from "../Components/BadgeComponent/NoDataBadgeWithChip.jsx";
-import MachinePM from "../Components/BadgeSelect/DefaultChip/MachinePM/MachinePM.jsx";
-import MachineCal from "../Components/BadgeSelect/DefaultChip/MachineCal/MachineCal.jsx";
-import ProcessCondition from "../Components/BadgeSelect/DefaultChip/ProcessCondition/ProcessCondition.jsx";
-import AutoVerify from "../Components/BadgeSelect/DefaultChip/AutoVerify/AutoVerify.jsx";
-import MachineData from "../Components/BadgeSelect/MachineChip/MachineData/MachineData.jsx";
+import BadgeComponent_Machine_PM from "../Components/BadgeComponent/BadgeComponent_Machine_PM";
+import BadgeComponent_Machine_Cal from "../Components/BadgeComponent/BadgeComponent_Machine_Cal";
+import BadgeComponent_Process_Condition from "../Components/BadgeComponent/BadgeComponent_Process_Condition";
+import BadgeComponent_dataVerify from "../Components/BadgeComponent/BadgeComponent_dataVerify";
+import BadgeComponent_Machine_data from "../Components/BadgeComponent/BadgeComponent_Machine_data";
+import BadgeComponent_Machine_data_sub from "../Components/BadgeComponent/BadgeComponent_Machine_data_sub";
+import NoDataBadgeWithChip from "../Components/BadgeComponent/NoDataBadgeWithChip";
+import MachinePM from "../src/Page/Verify/Components/BadgeSelect/DefaultChip/MachinePM/MachinePM.jsx";
+import MachineCal from "../src/Page/Verify/Components/BadgeSelect/DefaultChip/MachineCal/MachineCal.jsx";
+import ProcessCondition from "../src/Page/Verify/Components/BadgeSelect/DefaultChip/ProcessCondition/ProcessCondition.jsx";
+import AutoVerify from "../src/Page/Verify/Components/BadgeSelect/DefaultChip/AutoVerify/AutoVerify.jsx";
+import MachineData from "../src/Page/Verify/Components/BadgeSelect/MachineChip/MachineData/MachineData.jsx";
 import Chip from "@mui/material/Chip";
 import Badge from "@mui/material/Badge";
 import Typography from "@mui/material/Typography";
-import Loading from "../../../Components/common/loading/Loading-08/loading.jsx";
-import BadgeComponenstApprove from "../Components/BadgeComponent/BadgeComponenstApprove.jsx";
-import BadgeComponenstGR_R from "../Components/BadgeComponent/BadgeComponenstGR_R.jsx";
-import Op_id_input from "../Components/Op_id_input/Op_id_input.jsx";
+import Loading from "../src/Components/common/loading/Loading-08/loading.jsx";
+import BadgeComponenstApprove from "../src/Page/Verify/Components/BadgeComponent/BadgeComponenstApprove.jsx";
+import BadgeComponenstGR_R from "../src/Page/Verify/Components/BadgeComponent/BadgeComponenstGR_R.jsx";
+import Op_id_input from "../src/Page/Verify/Components/Op_id_input/Op_id_input.jsx";
 import ManageSearchIcon from "@mui/icons-material/ManageSearch";
-import TextFieldInputComponents from "../Components/TextInput/TextInput.jsx";
-import BadgeComponentsTooling from "../Components/BadgeComponent/BadgeComponentsTooling.jsx";
-import BadgeComponentsMatheriale from "../Components/BadgeComponent/BadgeComponentsMatheriale.jsx";
-import Timer from "../Components/Count_Time/Count_Time.jsx";
+import TextFieldInputComponents from "../src/Page/Verify/Components/TextInput/TextInput.jsx";
 function Verify() {
   //user input
   // const [mcCode, setMcCode] = useState("R2-17-13");
   // const [lot, setLot] = useState("904013599");
   // const [mcCode, setMcCode] = useState("R2-03-22");
   // const [lot, setLot] = useState("904025535");
-  const [mcCode, setMcCode] = useState("R2-17-13");
-  const [lot, setLot] = useState("804011237");
+  const [mcCode, setMcCode] = useState("R2-07-11_A");
+  const [lot, setLot] = useState("240237269");
   const [IsLoading, setIsLoading] = useState(false);
 
   const [
@@ -74,7 +69,7 @@ function Verify() {
 
   //! ##Machine Cal##
   //? STATUS
-  const [statuscalibration, setstatuscalibration] = useState("");
+  const [statuscalibration, setstatuscalibration] = useState(false);
   //? DATA
   const [calibration, setcalibration] = useState([]);
 
@@ -108,13 +103,6 @@ function Verify() {
 
   const [dataapprove, setdataapprove] = useState();
   const [datagr_r, setdatagr_r] = useState();
-
-  const [toolingData, settoolingData] = useState([]);
-  const [StatustoolingData, setStatustoolingData] = useState("");
-
-  const [MaterialeData, setMaterialeData] = useState([]);
-  const [StatusMaterialeData, setStatusMaterialeData] = useState("");
-
   const handlesearch = async () => {
     setIsLoading(true);
     await requestApiLotSearch();
@@ -138,8 +126,6 @@ function Verify() {
         const line = dataCardmc_lot_search[0].line || "null";
         const proc_grp_name = dataCardmc_lot_search[0].proc_grp_name;
 
-        const scan_job_id = lot + `_` + proc_grp_name + `_` + mcCode;
-        console.log(scan_job_id);
         console.log(proc_id);
         console.log(lot_prd_name);
         console.log(lot_prd_name_split);
@@ -168,51 +154,6 @@ function Verify() {
           console.log(response2.data.fai_verify_report);
           const fai_verify_report = response2.data.fai_verify_report;
           setgroupfaidata_verify(fai_verify_report);
-        }
-
-        const responseTooling = await CheckTooling(proc_grp_name, scan_job_id);
-        console.log(responseTooling);
-        if (responseTooling && responseTooling.data.length !== 0) {
-          console.log("OK");
-          const modifiedData = responseTooling.data.map((item) => {
-            // ตรวจสอบว่า item มี key scan_job_id อยู่แล้วหรือไม่
-            if (item.hasOwnProperty("scan_job_id")) {
-              // หากมีอยู่แล้ว, ไม่ต้องเพิ่มหรือแก้ไข scan_job_id
-              return item;
-            } else {
-              // หากไม่มี, เพิ่ม scan_job_id ตามที่ต้องการ
-              return {
-                ...item, // คัดลอกข้อมูลเดิม
-                scan_job_id: scan_job_id, // เพิ่ม key และ value ตามต้องการ
-                qr_code_input: "", // เพิ่ม key และ value ตามต้องการ
-                verify_status: "", // เพิ่ม key และ value ตามต้องการ
-                // anotherKey: "anotherValue", // ตัวอย่างการเพิ่ม key และ value อื่นๆ
-              };
-            }
-          });
-
-          // กำหนดข้อมูลที่ถูกแก้ไขแล้วให้กับตัวแปร state (settoolingData)
-          settoolingData(modifiedData);
-          setStatustoolingData(responseTooling.toolingStatus);
-        } else {
-          console.log("NO");
-          settoolingData(responseTooling.data);
-          setStatustoolingData(responseTooling.toolingStatus);
-        }
-
-        const responseMateriale = await CheckMateriale(
-          proc_grp_name,
-          scan_job_id
-        );
-        console.log(responseMateriale);
-        if (responseMateriale && responseMateriale.data.length !== 0) {
-          console.log("OK");
-          setMaterialeData(responseMateriale.data);
-          setStatusMaterialeData(responseMateriale.materialeStatus);
-        } else {
-          console.log("NO");
-          setMaterialeData(responseMateriale.data);
-          setStatusMaterialeData(responseMateriale.materialeStatus);
         }
       }
     };
@@ -254,13 +195,12 @@ function Verify() {
     try {
       console.log("Done");
       const response_data = await getDataCal(mcCode);
-      console.log(response_data);
-      if (response_data && response_data.data.length > 0) {
+      if (response_data && response_data.data) {
         // Check if response_data and response_data.data are not null or undefined
         console.log(response_data.data);
         setcalibration(response_data.data);
 
-        const calibrationisAllLocked = response_data.data.every((item) => {
+        const calibrationisAllLocked = [response_data.data].every((item) => {
           const statusFilter = item.status_filter?.toLowerCase();
           console.log(statusFilter);
           return (
@@ -270,15 +210,13 @@ function Verify() {
           ); //ตรงเงื่อนไข return true
         });
         console.log(calibrationisAllLocked);
-        if (calibrationisAllLocked) {
-          setstatuscalibration("In Active"); //lock
+        if (!calibrationisAllLocked) {
+          setstatuscalibration(true); //active
         } else {
-          setstatuscalibration("Active"); //active
+          setstatuscalibration(false); //lock
         }
       } else {
         console.log("Response or response data is null or undefined");
-        setcalibration([]);
-        setstatuscalibration("-");
       }
     } catch (error) {
       console.error(error);
@@ -454,6 +392,22 @@ function Verify() {
     }
   }
 
+  // function generateBadgeData(actvData, almData, setData, statusData) {
+  //   let datas = [];
+  //   if (actvData.length > 0) {
+  //     datas.push({ name: "actv", status: true });
+  //   }
+  //   if (almData.length > 0) {
+  //     datas.push({ name: "alm", status: true });
+  //   }
+  //   if (setData.length > 0) {
+  //     datas.push({ name: "set", status: true });
+  //   }
+  //   if (statusData.length > 0) {
+  //     datas.push({ name: "status", status: true });
+  //   }
+  //   return datas;
+  // }
   function generateBadgeData(actvData, almData, setData, statusData) {
     let datas = [];
     if (actvData && actvData.length > 0) {
@@ -534,10 +488,7 @@ function Verify() {
             values={lot}
             onChanges={(e) => setLot(e.target.value)}
           />
-          <div className="w-full">
-            {/* <Op_id_input /> */}
-            <Timer />
-          </div>
+          <Op_id_input />
         </div>
         <div>
           <button
@@ -553,7 +504,7 @@ function Verify() {
           </>
         ) : (
           <>
-            <div className="container mx-auto pt-4 ">
+            <div className="container mx-auto pt-4">
               {dataCardmc_lot_search && dataCardmc_lot_search.length > 0 ? (
                 <div className="flex gap-2 justify-start">
                   {dataCardmc_lot_search.map((item) => (
@@ -590,15 +541,11 @@ function Verify() {
                   ))}
                 </div>
               ) : null}
-            </div>
-            <div className="container mx-auto pt-4 ">
               {dataResponseFromLotMachineSearch &&
                 dataResponseFromLotMachineSearch.length > 0 && (
                   <Stack
                     direction="row"
                     spacing={2}
-                    useFlexGap
-                    flexWrap="wrap"
                     // className="animate__animated animate__fadeIn"
                     className="mt-8"
                   >
@@ -652,14 +599,7 @@ function Verify() {
                     <BadgeComponent_Machine_data
                       statusMachine={statusMachine}
                       label={"Machine Data"}
-                      // onClick={
-                      //   (() => fetchStatusMachine(),
-                      //   setselectdatafromchip("Machine Data"))
-                      // }
-                      onClick={() => {
-                        fetchStatusMachine();
-                        setselectdatafromchip("Machine Data");
-                      }}
+                      onClick={() => setselectdatafromchip("Machine Data")}
                     />
 
                     {dataapprove ? (
@@ -680,14 +620,6 @@ function Verify() {
                         />
                       </>
                     ) : null}
-                    <BadgeComponentsTooling
-                      status={StatustoolingData}
-                      datas={toolingData}
-                    />
-                    <BadgeComponentsMatheriale
-                      status={StatusMaterialeData}
-                      datas={MaterialeData}
-                    />
                   </Stack>
                 )}
             </div>
