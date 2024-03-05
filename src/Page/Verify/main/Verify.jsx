@@ -57,6 +57,7 @@ import BadgeDataEMCSselect from "../Components/BadgeComponent/EMCS/BadgeEMCSsele
 
 import BadgeOperation from "../Components/BadgeComponent/Operation/BadgeOperation.jsx";
 import BadgeDataOperationselect from "../Components/BadgeComponent/Operation/BadgeOperationSelect.jsx";
+import TimerV2 from "../Components/Timer/Timer.jsx";
 function Verify() {
   //user input
   // const [mcCode, setMcCode] = useState("R2-17-13");
@@ -690,7 +691,7 @@ function Verify() {
         <div className="flex justify-between">
           <div>Working Verify</div>
         </div>
-        <div className="flex gap-1 w-full">
+        <div className="flex gap-1  justify-between w-full">
           <TextFieldInputComponents
             placeholders={"mc code R2-17-14"}
             values={mcCode}
@@ -701,10 +702,10 @@ function Verify() {
             values={lot}
             onChanges={(e) => setLot(e.target.value)}
           />
-          <div className="w-full">
-            {/* <Op_id_input /> */}
-            <Timer />
-          </div>
+          {/* <div className="w-full"> */}
+          {/* <Op_id_input /> */}
+          <TimerV2 />
+          {/* </div> */}
         </div>
         <div>
           <button

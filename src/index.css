@@ -15,7 +15,7 @@
 }
 
 body {
-  /* background-image: url("../public/Pic/1126863.jpg");
+  /* background-image: url("https://w0.peakpx.com/wallpaper/228/206/HD-wallpaper-abstract-colorful-color-burst-iphone.jpg");
   background-size: cover;
   background-position: center; */
   font-weight: 400;
@@ -50,7 +50,7 @@ input {
 
 .Input_text {
   height: 40px;
-  width: 250px;
+  width: 100%;
 }
 
 .Button_Search {

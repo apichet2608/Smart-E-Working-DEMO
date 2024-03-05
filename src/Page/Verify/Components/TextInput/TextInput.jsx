@@ -9,7 +9,8 @@ function TextInput(props) {
         placeholder={placeholders}
         value={values}
         onChange={onChanges}
-        className="Paper_Contents Input_text"
+        className="Paper_Contents Input_text "
+        // style={{ width: "100%" }}
       />
     </>
   );

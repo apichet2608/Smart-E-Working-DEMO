@@ -73,18 +73,46 @@ const Timer = () => {
     setTimerOn(false);
   };
 
+  // Utility function to convert seconds into hh:mm:ss format
+  const formatTime = (totalSeconds) => {
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    // Pad each time component to ensure it has two digits
+    const paddedHours = String(hours).padStart(2, "0");
+    const paddedMinutes = String(minutes).padStart(2, "0");
+    const paddedSeconds = String(seconds).padStart(2, "0");
+
+    return `${paddedHours}:${paddedMinutes}:${paddedSeconds}`;
+  };
+
   return (
-    <div className="pt-10 flex gap-2">
-      <div>Elapsed time: {time} seconds</div>
-      <button onClick={handleStart} className="bg-blue-200 p-4 rounded-xl">
-        Start
-      </button>
-      <button onClick={handleStop} className="bg-blue-200 p-4 rounded-xl">
-        Stop
-      </button>
-      <button onClick={handleReset} className="bg-blue-200 p-4 rounded-xl">
-        Reset
-      </button>
+    <div className="gap-2 bg-red-400 p-2 Paper_Contents w-64">
+      <div>Elapsed time: {formatTime(time)}</div>
+      {/* ลบคำว่า 'seconds' เนื่องจากเราแสดงผลในรูปแบบ hh:mm:ss แล้ว */}
+      <div className="flex justify-between gap-2">
+        {" "}
+        {/* เพิ่ม className สำหรับ flex layout และ gap */}
+        <button
+          onClick={handleStart}
+          className="bg-blue-200 p-2 rounded-xl w-full"
+        >
+          Start
+        </button>
+        <button
+          onClick={handleStop}
+          className="bg-blue-200 p-2 rounded-xl w-full"
+        >
+          Stop
+        </button>
+        <button
+          onClick={handleReset}
+          className="bg-blue-200 p-2 rounded-xl w-full"
+        >
+          Reset
+        </button>
+      </div>
     </div>
   );
 };

@@ -7,7 +7,7 @@ function No1() {
   return (
     <div className="container mx-auto md:bg-red-500 lg:bg-blue-500">
       <Components1 />
-      {/* <ChecKScreenSize /> */}
+      <ChecKScreenSize />
       {/* {"TIME"} */}
       <Timer />
     </div>
