@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
-
+import PlayCircleIcon from "@mui/icons-material/PlayCircle";
+import StopCircleIcon from "@mui/icons-material/StopCircle";
+import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 const Timer = () => {
   // State to keep track of time elapsed and whether the timer is on.
   const [time, setTime] = useState(0);
@@ -88,29 +90,31 @@ const Timer = () => {
   };
 
   return (
-    <div className="gap-2 bg-red-400 p-2 Paper_Contents w-64">
-      <div>Elapsed time: {formatTime(time)}</div>
+    <div className="gap-2 bg-red-400 p-2 Paper_Contents w-full">
       {/* ลบคำว่า 'seconds' เนื่องจากเราแสดงผลในรูปแบบ hh:mm:ss แล้ว */}
-      <div className="flex justify-between gap-2">
+      <div className="flex justify-between gap-2 w-full">
         {" "}
         {/* เพิ่ม className สำหรับ flex layout และ gap */}
         <button
           onClick={handleStart}
-          className="bg-blue-200 p-2 rounded-xl w-full"
+          className="bg-green-200 p-0.5 rounded-xl w-fit"
         >
-          Start
+          <PlayCircleIcon />
         </button>
+        <div className="w-full text-nowrap m-auto">
+          Run Time : {formatTime(time)}
+        </div>
         <button
           onClick={handleStop}
-          className="bg-blue-200 p-2 rounded-xl w-full"
+          className="bg-red-200 p-0.5 rounded-xl w-fit"
         >
-          Stop
+          <StopCircleIcon />
         </button>
         <button
           onClick={handleReset}
-          className="bg-blue-200 p-2 rounded-xl w-full"
+          className="bg-orange-200 p-2 rounded-xl w-fit"
         >
-          Reset
+          <RotateLeftIcon />
         </button>
       </div>
     </div>

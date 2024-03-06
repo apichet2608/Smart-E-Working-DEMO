@@ -267,7 +267,7 @@ function Verify() {
 
     try {
       const response = await axios.get(
-        `http://10.17.66.242:7010/api/ewk/smart-fpc-scada-realtime-center/?mc_code=${inputString}`
+        `http://10.17.66.242:7011/api/ewk/smart-fpc-scada-realtime-center/?mc_code=${inputString}`
         // { requestData }
       );
 

@@ -58,14 +58,16 @@ import BadgeDataEMCSselect from "../Components/BadgeComponent/EMCS/BadgeEMCSsele
 import BadgeOperation from "../Components/BadgeComponent/Operation/BadgeOperation.jsx";
 import BadgeDataOperationselect from "../Components/BadgeComponent/Operation/BadgeOperationSelect.jsx";
 import TimerV2 from "../Components/Timer/Timer.jsx";
+
+import ErrorBadge from "../Components/BadgeComponent/ErrorBadge/ErrorBadge.jsx";
 function Verify() {
   //user input
   // const [mcCode, setMcCode] = useState("R2-17-13");
   // const [lot, setLot] = useState("904013599");
   // const [mcCode, setMcCode] = useState("R2-03-22");
   // const [lot, setLot] = useState("904025535");
-  const [mcCode, setMcCode] = useState("R2-07-11");
-  const [lot, setLot] = useState("904025152");
+  const [mcCode, setMcCode] = useState("R2-17-13_A");
+  const [lot, setLot] = useState("904011004");
   const [IsLoading, setIsLoading] = useState(false);
 
   const [
@@ -82,7 +84,7 @@ function Verify() {
   // const [statuspm, setstatuspm] = useState("");
   //? DATA
   const [pm, setpm] = useState([]);
-
+  const [statuspm_api, setstatuspm_api] = useState("");
   //! ##Machine Cal##
   //? STATUS
   const [statuscalibration, setstatuscalibration] = useState("");
@@ -227,8 +229,11 @@ function Verify() {
       console.log(extractedData);
       const data = {
         proc_id: extractedData.proc_id,
+        lot: lot,
+        mc_code: mcCode,
       };
-      const url = `http://10.17.66.242:7010/api/ewk/smart-tool-type-tool/`;
+      console.log(data);
+      const url = `http://10.17.66.242:7011/api/ewk/smart-tool-type-tool/`;
       const response = await PostAPI(data, url);
       console.log(response);
       if (response.status === "OK") {
@@ -245,8 +250,10 @@ function Verify() {
       console.log(extractedData);
       const data = {
         proc_id: extractedData.proc_id,
+        lot: lot,
+        mc_code: mcCode,
       };
-      const url = `http://10.17.66.242:7010/api/ewk/smart-tool-type-emcs/`;
+      const url = `http://10.17.66.242:7011/api/ewk/smart-tool-type-emcs/`;
       const response = await PostAPI(data, url);
       console.log(response);
       if (response.status === "OK") {
@@ -264,8 +271,10 @@ function Verify() {
       console.log(extractedData);
       const data = {
         proc_id: extractedData.proc_id,
+        lot: lot,
+        mc_code: mcCode,
       };
-      const url = `http://10.17.66.242:7010/api/ewk/smart-tool-type-operator/`;
+      const url = `http://10.17.66.242:7011/api/ewk/smart-tool-type-operator/`;
       const response = await PostAPI(data, url);
       console.log(response);
       if (response.status === "OK") {
@@ -299,7 +308,7 @@ function Verify() {
     };
 
     fetchData();
-  }, [dataCardmc_lot_search, mcCode]);
+  }, [dataCardmc_lot_search]);
 
   //? 1.smart-fpc-lot
   const requestApiLotSearch = async () => {
@@ -307,17 +316,21 @@ function Verify() {
       lot: lot,
       is_roll: false,
     };
-    const url = `http://10.17.66.242:7010/api/ewk/smart-fpc-lot/`;
+    const url = `http://10.17.66.242:7011/api/ewk/smart-fpc-lot/`;
     try {
       const response_data = await GetAPI(params, url);
       if (response_data.status === "OK") {
         setdataCardmc_lot_search([response_data.data.data]);
         setdataResponseFromLotMachineSearch([response_data.data.data]);
       } else if (response_data.status === "ERROR") {
+        alert("API ERROR");
+        setIsLoading(false);
         setdataCardmc_lot_search([]);
         setdataResponseFromLotMachineSearch([]);
       } else {
         console.log("Catch");
+        alert("SERVER CATCH");
+        setIsLoading(false);
       }
     } catch (error) {
       console.error(error);
@@ -327,17 +340,20 @@ function Verify() {
   //? 2 smart-pm
   const requestApi_PM = async () => {
     const params = { mc_code: mcCode };
-    const url = `http://10.17.66.242:7010/api/ewk/smart-pm/`;
+    const url = `http://10.17.66.242:7011/api/ewk/smart-pm/`;
     try {
       const response_data = await GetAPI(params, url);
       //response.data default
 
       if (response_data.status === "OK") {
         setpm(response_data.data.data);
+        setstatuspm_api("OK");
       } else if (response_data.status === "ERROR") {
         setpm([]);
+        setstatuspm_api("ERROR");
       } else {
         console.log("Catch");
+        setstatuspm_api("Catch");
       }
     } catch (error) {
       console.error(error);
@@ -347,7 +363,7 @@ function Verify() {
   //? 3 smart-cal-monthly-detail
   const requestApi_Cal_monthly_detail = async () => {
     const params = { mc_code: mcCode };
-    const url = `http://10.17.66.242:7010/api/ewk/smart-cal-monthly-detail/`;
+    const url = `http://10.17.66.242:7011/api/ewk/smart-cal-monthly-detail/`;
     try {
       const response_data = await GetAPI(params, url);
       if (response_data.status === "OK") {
@@ -433,7 +449,7 @@ function Verify() {
     };
     console.log(requestData.mc_code);
     const params = { mc_code: inputString };
-    const url = `http://10.17.66.242:7010/api/ewk/smart-fpc-scada-realtime-center/`;
+    const url = `http://10.17.66.242:7011/api/ewk/smart-fpc-scada-realtime-center/`;
     try {
       const response = await GetAPI(params, url);
 
@@ -693,7 +709,7 @@ function Verify() {
         </div>
         <div className="flex gap-1  justify-between w-full">
           <TextFieldInputComponents
-            placeholders={"mc code R2-17-14"}
+            placeholders={"mc code"}
             values={mcCode}
             onChanges={(e) => setMcCode(e.target.value.toUpperCase())}
           />
@@ -702,11 +718,53 @@ function Verify() {
             values={lot}
             onChanges={(e) => setLot(e.target.value)}
           />
+          <TimerV2 />
+
           {/* <div className="w-full"> */}
           {/* <Op_id_input /> */}
-          <TimerV2 />
           {/* </div> */}
         </div>
+        <div className="container mx-auto pt-4 ">
+          {dataCardmc_lot_search && dataCardmc_lot_search.length > 0 ? (
+            <div className="flex gap-2 justify-start">
+              {dataCardmc_lot_search.map((item) => (
+                <div
+                  key={item.id}
+                  className="card w-96 bg-base-100 shadow-xl Paper_Contents"
+                >
+                  <h3>{item.lot_prd_name}</h3>
+                </div>
+              ))}
+              {dataCardmc_lot_search.map((item) => (
+                <div
+                  key={item.id}
+                  className="card w-96 bg-base-100 shadow-xl Paper_Contents"
+                >
+                  <p>{item.lot}</p>
+                </div>
+              ))}
+              {dataCardmc_lot_search.map((item) => (
+                <div
+                  key={item.id}
+                  className="card w-96 bg-base-100 shadow-xl Paper_Contents"
+                >
+                  <p>QTY : {item.input_qty}</p>
+                </div>
+              ))}
+              {dataCardmc_lot_search.map((item) => (
+                <div
+                  key={item.id}
+                  className="card w-96 bg-base-100 shadow-xl Paper_Contents"
+                >
+                  <p>{item.proc_grp_name}</p>
+                </div>
+              ))}
+            </div>
+          ) : null}
+        </div>
+        {/* <div>
+          <TimerV2 />
+        </div> */}
         <div>
           <button
             className="bg-slate-200 rounded-2xl text-black hover:bg-slate-400 Button_Search"
@@ -714,6 +772,16 @@ function Verify() {
           >
             <ManageSearchIcon />
           </button>
+          {!IsLoading && operatorData && operatorData.length ? (
+            <>
+              <BadgeOperation
+                data={operatorData}
+                onClick={() => setselectdatafromchip("Operation")}
+              />
+            </>
+          ) : (
+            <></>
+          )}
         </div>
         {IsLoading ? (
           <>
@@ -721,7 +789,7 @@ function Verify() {
           </>
         ) : (
           <>
-            <div className="container mx-auto pt-4 ">
+            {/* <div className="container mx-auto pt-4 ">
               {dataCardmc_lot_search && dataCardmc_lot_search.length > 0 ? (
                 <div className="flex gap-2 justify-start">
                   {dataCardmc_lot_search.map((item) => (
@@ -758,7 +826,7 @@ function Verify() {
                   ))}
                 </div>
               ) : null}
-            </div>
+            </div> */}
             <div className="container mx-auto pt-4 ">
               {dataResponseFromLotMachineSearch &&
                 dataResponseFromLotMachineSearch.length > 0 && (
@@ -770,6 +838,25 @@ function Verify() {
                     // className="animate__animated animate__fadeIn"
                     className="mt-8"
                   >
+                    {statuspm_api === "CATCH" || statuspm_api === "ERROR" ? (
+                      <>
+                        <ErrorBadge title={"Machine PM"} />
+                      </>
+                    ) : (
+                      <>
+                        {pm && pm.length > 0 && (
+                          <BadgeComponent_Machine_PM
+                            data={pm}
+                            // statuspm={statuspm}
+                            onClick={() => {
+                              setselectdatafromchip("Machine PM");
+                            }}
+                            selectdatafromchip={selectdatafromchip}
+                          />
+                          // <ErrorBadge title={"Machine PM"} />
+                        )}
+                      </>
+                    )}
                     {pm && pm.length > 0 && (
                       <BadgeComponent_Machine_PM
                         data={pm}
@@ -779,6 +866,7 @@ function Verify() {
                         }}
                         selectdatafromchip={selectdatafromchip}
                       />
+                      // <ErrorBadge title={"Machine PM"} />
                     )}
 
                     {calibration && calibration.length > 0 && (
@@ -807,6 +895,7 @@ function Verify() {
                           onClick={() => {
                             setselectdatafromchip("Auto Verify Select");
                           }}
+                          nodata={false}
                         />
                       </>
                     ) : (
@@ -815,6 +904,7 @@ function Verify() {
                         onClick={() => {
                           setselectdatafromchip("");
                         }}
+                        nodata={true}
                       />
                     )}
 
@@ -877,7 +967,7 @@ function Verify() {
                     ) : (
                       <></>
                     )}
-                    {operatorData && operatorData.length ? (
+                    {/* {operatorData && operatorData.length ? (
                       <>
                         <BadgeOperation
                           data={operatorData}
@@ -886,7 +976,7 @@ function Verify() {
                       </>
                     ) : (
                       <></>
-                    )}
+                    )} */}
                   </Stack>
                 )}
             </div>

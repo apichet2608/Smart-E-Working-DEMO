@@ -14,17 +14,39 @@ function BadgeToolingSelect({ data }) {
   const [selectchip, setselectchip] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
   const [fullWidth, setFullWidth] = React.useState(true);
-  const [datacChip, setDataChip] = React.useState([]);
+  const [datacChip, setDataChip] = React.useState({
+    p_tools_code: "",
+    p_tools_rev: "",
+  });
 
   const onClickChipselect = (tool_haed, tool_detile) => {
     setOpenDialog(true);
     console.log(tool_haed);
     console.log(tool_detile);
-    setDataChip(tool_detile);
+    setDataChip((prevState) => ({
+      ...prevState,
+      ...tool_detile,
+    }));
   };
 
   const handleClose = () => {
     setOpenDialog(!openDialog);
+  };
+
+  useEffect(() => {
+    console.log(datacChip);
+  }, [datacChip]);
+
+  // สร้างฟังก์ชันเพื่อแปลงค่าทั้งหมดใน datacChip เป็น lowercase
+  const convertToLowerCase = () => {
+    // const newDatacChip = {};
+    // for (const key in datacChip) {
+    //   if (Object.hasOwnProperty.call(datacChip, key)) {
+    //     newDatacChip[key] = datacChip[key].toLowerCase();
+    //   }
+    // }
+    // setDataChip(newDatacChip);
+    console.log(datacChip);
   };
 
   return (
@@ -50,25 +72,47 @@ function BadgeToolingSelect({ data }) {
         fullWidth={fullWidth}
         className="animate-fade"
       >
-        <DialogTitle>{datacChip.ttt_tools_type}</DialogTitle>
+        <DialogTitle>{datacChip.p_tools_type}</DialogTitle>
         <DialogContent>
           <div style={{ display: "grid", gap: "4px" }}>
             papop response
-            <p1 className="Paper_Contents">P_SCAN_TYPE : </p1>
-            <p1 className="Paper_Contents">P_LOT_MOS : </p1>
-            <p1 className="Paper_Contents">P_PROCESS : </p1>
-            <p1 className="Paper_Contents">P_TOOLS_TYPE : </p1>
-            <p1 className="Paper_Contents">P_MACHINE : </p1>
-            <p1 className="Paper_Contents">P_USER : </p1>
+            <p1 className="Paper_Contents">
+              P_SCAN_TYPE : {datacChip.p_scan_type}
+            </p1>
+            <p1 className="Paper_Contents">
+              P_LOT_MOS : {datacChip.p_lot_mos}
+            </p1>
+            <p1 className="Paper_Contents">
+              P_PROCESS : {datacChip.p_process}
+            </p1>
+            <p1 className="Paper_Contents">
+              P_TOOLS_TYPE : {datacChip.p_tools_type}
+            </p1>
+            <p1 className="Paper_Contents">P_MACHINE :{datacChip.p_machine}</p1>
+            <p1 className="Paper_Contents">P_USER : {datacChip.p_user}</p1>
             user input :
-            <input className="Paper_Contents" placeholder="P_TOOLS_CODE" />
-            <input className="Paper_Contents" placeholder="P_TOOLS_REV" />
+            <input
+              className="Paper_Contents"
+              placeholder="P_TOOLS_CODE"
+              value={datacChip.p_tools_code}
+              onChange={(e) =>
+                setDataChip((prevState) => ({
+                  ...prevState,
+                  p_tools_code: e.target.value.toLowerCase(),
+                }))
+              }
+            />
+            {/* <input
+              className="Paper_Contents"
+              placeholder="P_TOOLS_REV"
+              disabled
+            /> */}
           </div>
         </DialogContent>
         <DialogActions>
           <button
             className="bg-blue-50 p-4 rounded-xl hover:bg-blue-200"
-            // onClick={handleClose}
+            onClick={convertToLowerCase}
           >
             Save
           </button>

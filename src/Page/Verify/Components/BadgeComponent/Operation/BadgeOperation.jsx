@@ -14,7 +14,7 @@ function BadgeTooling({ data, onClick }) {
   const colorchip = data && data.length > 0 ? "primary" : undefined;
   return (
     <div>
-      <Chip label={"Operation"} onClick={onClick} color={colorchip} />
+      <Chip label={"Operator"} onClick={onClick} color={colorchip} />
 
       {/* {data.map((item, index) => (
         <>
