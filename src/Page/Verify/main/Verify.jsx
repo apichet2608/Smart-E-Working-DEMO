@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
-
 import GetAPI from "../API/GET/GetAPI.jsx";
 import PostAPI from "../API/POST/PostAPI.jsx";
 //API
@@ -25,8 +24,8 @@ import CheckTooling from "../API/GET/CheckTooling.jsx";
 import CheckMateriale from "../API/GET/CheckMateriale.jsx";
 
 import Stack from "@mui/material/Stack";
-import BadgeComponent_Machine_PM from "../Components/BadgeComponent/MachinePM/BadgeComponent_Machine_PM.jsx";
-import BadgeComponent_Machine_Cal from "../Components/BadgeComponent/MachineCal/BadgeComponent_Machine_Cal.jsx";
+import BadgeComponent_Machine_PM from "../Components/ChipBadge_Components/MachinePM/BadgeComponent_Machine_PM.jsx";
+import BadgeComponent_Machine_Cal from "../Components/ChipBadge_Components/MachineCal/BadgeComponent_Machine_Cal.jsx";
 import BadgeComponent_Process_Condition from "../Components/BadgeComponent/ProcessCondition/BadgeComponent_Process_Condition.jsx";
 import BadgeComponent_dataVerify from "../Components/BadgeComponent/FaiVerify/BadgeComponent_dataVerify.jsx";
 import BadgeComponent_Machine_data from "../Components/BadgeComponent/MachineData/BadgeComponent_Machine_data.jsx";
@@ -60,14 +59,15 @@ import BadgeDataOperationselect from "../Components/BadgeComponent/Operation/Bad
 import TimerV2 from "../Components/Timer/Timer.jsx";
 
 import ErrorBadge from "../Components/BadgeComponent/ErrorBadge/ErrorBadge.jsx";
+import NoDataBadge from "../Components/BadgeComponent/NoDataBadge/NoDataBadge.jsx";
 function Verify() {
   //user input
   // const [mcCode, setMcCode] = useState("R2-17-13");
   // const [lot, setLot] = useState("904013599");
   // const [mcCode, setMcCode] = useState("R2-03-22");
   // const [lot, setLot] = useState("904025535");
-  const [mcCode, setMcCode] = useState("R2-17-13_A");
-  const [lot, setLot] = useState("904011004");
+  const [mcCode, setMcCode] = useState("R2-47-11");
+  const [lot, setLot] = useState("994035354");
   const [IsLoading, setIsLoading] = useState(false);
 
   const [
@@ -83,13 +83,19 @@ function Verify() {
   //? STATUS
   // const [statuspm, setstatuspm] = useState("");
   //? DATA
-  const [pm, setpm] = useState([]);
-  const [statuspm_api, setstatuspm_api] = useState("");
+  const [pm, setpm] = useState([]); //  data
+  const [statuspm_api, setstatuspm_api] = useState(""); //  statusapi
+  const [Messagepm_api, setMessagepm_api] = useState(""); //  message
+  const [StatusDataPM, setStatusDataPM] = useState(""); //  statusdata
   //! ##Machine Cal##
   //? STATUS
-  const [statuscalibration, setstatuscalibration] = useState("");
+  // const [statuscalibration, setstatuscalibration] = useState("");
+  // const [Messagecalibration, setMessagecalibration] = useState("");
   //? DATA
-  const [calibration, setcalibration] = useState([]);
+  const [calibration, setcalibration] = useState([]); //  data
+  const [statuscalibration_API, setstatuscalibration_API] = useState(""); //  statusapi
+  const [Messagecalibration, setMessagecalibration] = useState(""); //  message
+  const [StatusDataCal, setStatusDataCal] = useState(""); //  statusdata
 
   //! ##Process Condition Cal##
   //? STATUS
@@ -99,10 +105,17 @@ function Verify() {
 
   //! #Detail Card
   const [groupfaidata_verify, setgroupfaidata_verify] = useState([]);
+  const [statusgroupfaidata_verify, setstatusgroupfaidata_verify] =
+    useState("");
+  const [Messagegroupfaidata_verify, setMessagegroupfaidata_verify] =
+    useState("");
   // when click get data
   const [dataautoverify, setdataautoverify] = useState([]);
 
+  const [MessageAPImachinedata, setMessageAPImachinedata] = useState("");
+  const [machineData, setmachineData] = useState([]);
   const [statusMachine, setstatusMachine] = useState("");
+  const [MessageMachine, setMessageMachine] = useState("");
   const [badgemachine, setbadgemachine] = useState([]);
   const [datamachineActv, setMachineActv] = useState([]);
   const [datamachineAlm, setMachineAlm] = useState([]);
@@ -147,8 +160,17 @@ function Verify() {
 
     // await requestApiemcs();
   };
+  const [EWK_ID, setEWK_ID] = useState("");
+  useEffect(() => {
+    if (dataCardmc_lot_search && dataCardmc_lot_search.length > 0) {
+      const ewk_id =
+        lot + "+" + mcCode + "+" + dataCardmc_lot_search[0].proc_id;
+      setEWK_ID(ewk_id);
+    }
+  }, [dataCardmc_lot_search]);
 
   useEffect(() => {
+    // This function will run after the first render and whenever the value of `count` changes
     const extractData = () => {
       if (dataCardmc_lot_search && dataCardmc_lot_search.length > 0) {
         const firstItem = dataCardmc_lot_search[0];
@@ -182,12 +204,34 @@ function Verify() {
     };
 
     const fetchDataForVerification = async (extractedData) => {
-      const response = await getDataVerify(
-        extractedData.mc_code,
-        extractedData.proc_grp_name
-      );
-      if (response && response.data) {
-        setgroupfaidata_verify(response.data.fai_verify_report);
+      const url = `http://10.17.66.242:7010/api/ewk/smart-verdify-report/`;
+      const data = {
+        mc_code: extractedData.mc_code,
+        proc_grp_name: extractedData.proc_grp_name,
+        ewk_id: EWK_ID,
+        ewk_item: "Fai Verify",
+      };
+      // const response = await getDataVerify(
+      //   extractedData.mc_code,
+      //   extractedData.proc_grp_name
+      // );
+      // if (response && response.data) {
+      //   setgroupfaidata_verify(response.data.fai_verify_report);
+      // }
+      const response_data = await PostAPI(data, url);
+      if (response_data.status === "OK") {
+        console.log(response_data.data.data.fai_verify_report);
+        setgroupfaidata_verify(response_data.data.data.fai_verify_report);
+        setstatusgroupfaidata_verify("OK");
+        setMessagegroupfaidata_verify(response_data.message);
+      } else if (response_data.status === "ERROR") {
+        setgroupfaidata_verify([]);
+        setstatusgroupfaidata_verify("ERROR");
+        setMessagegroupfaidata_verify(response_data.message);
+      } else {
+        setgroupfaidata_verify([]);
+        setstatusgroupfaidata_verify("CATCH");
+        setMessagegroupfaidata_verify(response_data.message);
       }
     };
 
@@ -233,7 +277,7 @@ function Verify() {
         mc_code: mcCode,
       };
       console.log(data);
-      const url = `http://10.17.66.242:7011/api/ewk/smart-tool-type-tool/`;
+      const url = `http://10.17.66.242:7010/api/ewk/smart-tool-type-tool/`;
       const response = await PostAPI(data, url);
       console.log(response);
       if (response.status === "OK") {
@@ -253,7 +297,7 @@ function Verify() {
         lot: lot,
         mc_code: mcCode,
       };
-      const url = `http://10.17.66.242:7011/api/ewk/smart-tool-type-emcs/`;
+      const url = `http://10.17.66.242:7010/api/ewk/smart-tool-type-emcs/`;
       const response = await PostAPI(data, url);
       console.log(response);
       if (response.status === "OK") {
@@ -274,7 +318,7 @@ function Verify() {
         lot: lot,
         mc_code: mcCode,
       };
-      const url = `http://10.17.66.242:7011/api/ewk/smart-tool-type-operator/`;
+      const url = `http://10.17.66.242:7010/api/ewk/smart-tool-type-operator/`;
       const response = await PostAPI(data, url);
       console.log(response);
       if (response.status === "OK") {
@@ -308,7 +352,7 @@ function Verify() {
     };
 
     fetchData();
-  }, [dataCardmc_lot_search]);
+  }, [EWK_ID]); // Only re-run the effect if `count` changes
 
   //? 1.smart-fpc-lot
   const requestApiLotSearch = async () => {
@@ -316,7 +360,7 @@ function Verify() {
       lot: lot,
       is_roll: false,
     };
-    const url = `http://10.17.66.242:7011/api/ewk/smart-fpc-lot/`;
+    const url = `http://10.17.66.242:7010/api/ewk/smart-fpc-lot/`;
     try {
       const response_data = await GetAPI(params, url);
       if (response_data.status === "OK") {
@@ -336,21 +380,23 @@ function Verify() {
       console.error(error);
     }
   };
-
+  //#region
   //? 2 smart-pm
   const requestApi_PM = async () => {
-    const params = { mc_code: mcCode };
-    const url = `http://10.17.66.242:7011/api/ewk/smart-pm/`;
+    const data = { mc_code: mcCode, ewk_id: EWK_ID };
+    const url = `http://10.17.66.242:7010/api/ewk/smart-pm/`;
     try {
-      const response_data = await GetAPI(params, url);
+      const response_data = await PostAPI(data, url);
       //response.data default
 
       if (response_data.status === "OK") {
         setpm(response_data.data.data);
         setstatuspm_api("OK");
+        setStatusDataPM(response_data.data.ewk_judge);
       } else if (response_data.status === "ERROR") {
         setpm([]);
         setstatuspm_api("ERROR");
+        setMessagepm_api(response_data.message);
       } else {
         console.log("Catch");
         setstatuspm_api("Catch");
@@ -359,51 +405,69 @@ function Verify() {
       console.error(error);
     }
   };
+  //#endregion
 
   //? 3 smart-cal-monthly-detail
+  // function checkForInactive_MachineCal(responseData) {
+  //   // ตรวจสอบว่า responseData.data.data มีค่า
+  //   if (responseData.data && responseData.data.data.length > 0) {
+  //     // วนลูปเช็คทุกข้อมูลใน responseData.data.data
+  //     for (const item of responseData.data.data) {
+  //       // แปลงข้อความเป็นพิมพ์เล็กก่อนที่จะเช็ค
+  //       const statusFilterLower = item.status_filter.toLowerCase();
+
+  //       // เช็คว่ามี key "statusFilter" และมีค่าเป็น "lock", "locks" หรือ "inactive" หรือไม่
+  //       if (
+  //         statusFilterLower === "lock" ||
+  //         statusFilterLower === "locks" ||
+  //         statusFilterLower === "inactive"
+  //       ) {
+  //         // ถ้าเป็นเงื่อนไขดังกล่าวให้ส่ง "In Active" ออกไป
+  //         return "In Active";
+  //       }
+  //     }
+  //   }
+  //   // หากไม่พบเงื่อนไขที่ต้องการให้คืนค่าเป็น null หรืออย่างอื่นตามที่คุณต้องการ
+  //   return "Active";
+  // }
+
+  //#region
   const requestApi_Cal_monthly_detail = async () => {
-    const params = { mc_code: mcCode };
-    const url = `http://10.17.66.242:7011/api/ewk/smart-cal-monthly-detail/`;
+    const data = { mc_code: mcCode, ewk_id: EWK_ID, ewk_item: "Machine Cal" };
+    const url = `http://10.17.66.242:7010/api/ewk/smart-cal-monthly-detail/`;
     try {
-      const response_data = await GetAPI(params, url);
+      const response_data = await PostAPI(data, url);
       if (response_data.status === "OK") {
         if (response_data.data && response_data.data.data.length > 0) {
           // Check if response_data and response_data.data are not null or undefined
+          // const responseData = checkForInactive_MachineCal(response_data);
+          // console.log(responseData);
           setcalibration(response_data.data.data);
-          const calibrationisAllLocked = response_data.data.data.every(
-            (item) => {
-              const statusFilter = item.status_filter?.toLowerCase(); // Convert to lowercase here
-              console.log(statusFilter);
-              return (
-                statusFilter === "lock" ||
-                statusFilter === "locks" ||
-                statusFilter === "inactive"
-              );
-            }
-          );
-
-          // กรณีที่ชุดข้อมุลมี lock||locks||inactive === false
-          if (!calibrationisAllLocked) {
-            setstatuscalibration("In Active"); //lock
-          } else {
-            setstatuscalibration("Active"); //active
-          }
+          setstatuscalibration_API("OK");
+          setMessagecalibration(response_data.message);
+          setStatusDataCal(response_data.data.ewk_judge);
         } else {
-          console.log("Response or response data is null or undefined");
           setcalibration([]);
-          setstatuscalibration("-");
+          setstatuscalibration_API("OK");
+          setMessagecalibration(response_data.message);
+          setStatusDataCal(response_data.data.ewk_judge);
         }
       } else if (response_data.status === "ERROR") {
-        console.log("Response or response data is null or undefined");
         setcalibration([]);
-        setstatuscalibration("-");
+        setstatuscalibration_API("ERROR");
+        setMessagecalibration(response_data.message);
+        setStatusDataCal(response_data.data.ewk_judge);
       } else {
-        console.log("Catch");
+        setcalibration([]);
+        setstatuscalibration_API("Catch");
+        setMessagecalibration(response_data.message);
+        setStatusDataCal(response_data.data.ewk_judge);
       }
     } catch (error) {
       console.error(error);
     }
   };
+  //#endregion
 
   const requestholdingtime = async () => {
     try {
@@ -446,29 +510,31 @@ function Verify() {
     const inputString = mcCode; // ตรวจสอบให้แน่ใจว่า mcCode ถูกกำหนดค่าไว้อย่างถูกต้อง
     const requestData = {
       mc_code: inputString,
+      ewk_id: EWK_ID,
+      ewk_item: "Machine Data",
     };
     console.log(requestData.mc_code);
-    const params = { mc_code: inputString };
-    const url = `http://10.17.66.242:7011/api/ewk/smart-fpc-scada-realtime-center/`;
+    const params = {
+      mc_code: inputString,
+      ewk_id: EWK_ID,
+      ewk_item: "Machine Data",
+    };
+    const url = `http://10.17.66.242:7010/api/ewk/smart-fpc-scada-realtime-center/`;
     try {
       const response = await GetAPI(params, url);
 
       console.log(response.data.data);
       const data = response.data.data;
+      setmachineData(data);
       // console.log(data.actv[0].judgment_record);
 
       if (response.status === "OK") {
-        const allNullTableNames = Object.keys(data).every((key) => {
-          const tableName = data[key].table_name;
-          return tableName === null;
-        });
-
         if (response.data.judgment_machine === "PASS") {
-          setstatusMachine(true); // No Data
+          setstatusMachine(true);
         } else {
-          setstatusMachine(false); // Active
+          setstatusMachine(false);
         }
-
+        setMessageMachine(response.message);
         // Extract data
         const actvData = data.actv;
         const almData = data.alm;
@@ -501,57 +567,22 @@ function Verify() {
         const datas = generateBadgeData(actvData, almData, setData, statusData);
         console.log(datas);
         setbadgemachine(datas);
+        setMessageAPImachinedata("OK");
       } else if (response.status === "ERROR") {
-        const allNullTableNames = Object.keys(data).every((key) => {
-          const tableName = data[key].table_name;
-          return tableName === null;
-        });
-
-        if (response.data.judgment_machine === "PASS") {
-          setstatusMachine(true); // No Data
-        } else {
-          setstatusMachine(false); // Active
-        }
-
-        // Extract data
-        const actvData = data.actv;
-        const almData = data.alm;
-        const setData = data.set;
-        const statusData = data.status;
-
-        // Set machine data
-        setMachineActv(actvData);
-        setMachineAlm(almData);
-        setMachineSet(setData);
-        setMachineStatus(statusData);
-
-        // Generate columns for Data Grid
-        const columnsActvData = actvData
-          ? generateColumns(actvData, "Actv")
-          : "";
-        const columnsAlmData = almData ? generateColumns(almData, "Alm") : "";
-        const columnsSetData = setData ? generateColumns(setData, "Set") : "";
-        const columnsStatusData = statusData
-          ? generateColumns(statusData, "Status")
-          : "";
-
-        // Set columns for UI components
-        setcolumnsactvData(columnsActvData);
-        setcolumnsAlmData(columnsAlmData);
-        setcolumnsSetData(columnsSetData);
-        setcolumnsStatusData(columnsStatusData);
-
-        // Badge data
-        const datas = generateBadgeData(actvData, almData, setData, statusData);
-        console.log(datas);
-        setbadgemachine(datas);
+        setstatusMachine(false);
+        setMessageMachine(response.message);
+        setbadgemachine([]);
+        setMessageAPImachinedata("ERROR");
       } else {
         console.log("Catch");
-        setstatusMachine("No Data");
+        setstatusMachine(false);
+        setMessageMachine(response.message);
+        setbadgemachine([]);
+        setMessageAPImachinedata("Catch");
       }
     } catch (error) {
       console.error("API Error:", error.message);
-      setstatusMachine("No Data");
+      setstatusMachine(false);
     } finally {
       setisfeatch_mcdata(false);
     }
@@ -705,7 +736,7 @@ function Verify() {
       {/* {dataapprove.dld_machine} */}
       <div className="container mx-auto my-1 w-full">
         <div className="flex justify-between">
-          <div>Working Verify</div>
+          <p className=" text-nowarp">Working Verify</p>
         </div>
         <div className="flex gap-1  justify-between w-full">
           <TextFieldInputComponents
@@ -719,7 +750,6 @@ function Verify() {
             onChanges={(e) => setLot(e.target.value)}
           />
           <TimerV2 />
-
           {/* <div className="w-full"> */}
           {/* <Op_id_input /> */}
           {/* </div> */}
@@ -828,6 +858,7 @@ function Verify() {
               ) : null}
             </div> */}
             <div className="container mx-auto pt-4 ">
+              {/* {statuscalibration_API} */}
               {dataResponseFromLotMachineSearch &&
                 dataResponseFromLotMachineSearch.length > 0 && (
                   <Stack
@@ -840,24 +871,34 @@ function Verify() {
                   >
                     {statuspm_api === "CATCH" || statuspm_api === "ERROR" ? (
                       <>
-                        <ErrorBadge title={"Machine PM"} />
+                        <ErrorBadge
+                          title={"Machine PM"}
+                          message={Messagepm_api}
+                        />
                       </>
                     ) : (
                       <>
-                        {pm && pm.length > 0 && (
+                        {pm && pm.length > 0 ? (
                           <BadgeComponent_Machine_PM
                             data={pm}
-                            // statuspm={statuspm}
+                            StatusData={StatusDataPM}
                             onClick={() => {
                               setselectdatafromchip("Machine PM");
                             }}
                             selectdatafromchip={selectdatafromchip}
                           />
+                        ) : (
                           // <ErrorBadge title={"Machine PM"} />
+                          <>
+                            <NoDataBadge
+                              title={"Machine PM"}
+                              message={Messagepm_api}
+                            />
+                          </>
                         )}
                       </>
                     )}
-                    {pm && pm.length > 0 && (
+                    {/* {pm && pm.length > 0 && (
                       <BadgeComponent_Machine_PM
                         data={pm}
                         // statuspm={statuspm}
@@ -867,17 +908,36 @@ function Verify() {
                         selectdatafromchip={selectdatafromchip}
                       />
                       // <ErrorBadge title={"Machine PM"} />
-                    )}
-
-                    {calibration && calibration.length > 0 && (
-                      <BadgeComponent_Machine_Cal
-                        // status={statuscalibration}
-                        data={calibration}
-                        onClick={() => {
-                          setselectdatafromchip("Machine Cal");
-                        }}
-                        selectdatafromchip={selectdatafromchip}
-                      />
+                    )} */}
+                    {statuscalibration_API === "CATCH" ||
+                    statuscalibration_API === "ERROR" ? (
+                      <>
+                        <ErrorBadge
+                          title={"Machine Cal"}
+                          message={Messagecalibration}
+                        />
+                      </>
+                    ) : (
+                      <>
+                        {calibration && calibration.length > 0 ? (
+                          <BadgeComponent_Machine_Cal
+                            data={calibration}
+                            StatusData={StatusDataCal}
+                            onClick={() => {
+                              setselectdatafromchip("Machine Cal");
+                            }}
+                            selectdatafromchip={selectdatafromchip}
+                          />
+                        ) : (
+                          // <ErrorBadge title={"Machine PM"} />
+                          <>
+                            <NoDataBadge
+                              title={"Machine Cal"}
+                              message={Messagecalibration}
+                            />
+                          </>
+                        )}
+                      </>
                     )}
 
                     {/* <BadgeComponent_Process_Condition
@@ -888,7 +948,39 @@ function Verify() {
                       }}
                     /> */}
 
-                    {groupfaidata_verify && groupfaidata_verify.length ? (
+                    {statusgroupfaidata_verify === "CATCH" ||
+                    statusgroupfaidata_verify === "ERROR" ? (
+                      <>
+                        <ErrorBadge
+                          title={"Fai Verify"}
+                          message={Messagegroupfaidata_verify}
+                        />
+                      </>
+                    ) : (
+                      <>
+                        {groupfaidata_verify &&
+                        groupfaidata_verify.length > 0 ? (
+                          <BadgeComponentsFai_Verify
+                            groupfaidata_verify={groupfaidata_verify}
+                            onClick={() => {
+                              setselectdatafromchip("Auto Verify Select");
+                            }}
+                            selectdatafromchip={selectdatafromchip}
+                            Message={Messagegroupfaidata_verify}
+                          />
+                        ) : (
+                          // <ErrorBadge title={"Machine PM"} />
+                          <>
+                            <NoDataBadge
+                              title={"Fai Verify"}
+                              message={Messagegroupfaidata_verify}
+                            />
+                          </>
+                        )}
+                      </>
+                    )}
+
+                    {/* {groupfaidata_verify && groupfaidata_verify.length ? (
                       <>
                         <BadgeComponentsFai_Verify
                           groupfaidata_verify={groupfaidata_verify}
@@ -906,20 +998,42 @@ function Verify() {
                         }}
                         nodata={true}
                       />
+                    )} */}
+                    {MessageAPImachinedata === "CATCH" ||
+                    MessageAPImachinedata === "ERROR" ? (
+                      <>
+                        <ErrorBadge
+                          title={"Machine Data"}
+                          message={MessageMachine}
+                        />
+                      </>
+                    ) : (
+                      <>
+                        {machineData && machineData.length > 0 ? (
+                          <BadgeComponent_Machine_data
+                            machineData={machineData}
+                            statusMachine={statusMachine}
+                            label={"Machine Data"}
+                            // onClick={
+                            //   (() => fetchStatusMachine(),
+                            //   setselectdatafromchip("Machine Data"))
+                            // }
+                            onClick={() => {
+                              fetchStatusMachine();
+                              setselectdatafromchip("Machine Data");
+                            }}
+                          />
+                        ) : (
+                          // <ErrorBadge title={"Machine PM"} />
+                          <>
+                            <NoDataBadge
+                              title={"Machine Data"}
+                              message={MessageMachine}
+                            />
+                          </>
+                        )}
+                      </>
                     )}
-
-                    <BadgeComponent_Machine_data
-                      statusMachine={statusMachine}
-                      label={"Machine Data"}
-                      // onClick={
-                      //   (() => fetchStatusMachine(),
-                      //   setselectdatafromchip("Machine Data"))
-                      // }
-                      onClick={() => {
-                        fetchStatusMachine();
-                        setselectdatafromchip("Machine Data");
-                      }}
-                    />
 
                     {dataapprove ? (
                       <>
@@ -967,6 +1081,8 @@ function Verify() {
                     ) : (
                       <></>
                     )}
+                    <Chip label={"Manual Input"} />
+
                     {/* {operatorData && operatorData.length ? (
                       <>
                         <BadgeOperation
@@ -1047,13 +1163,13 @@ function Verify() {
                 </>
               )}
               {selectdatafromchip === "Tooling" && (
-                <BadgeDataTooling data={toolingData} />
+                <BadgeDataTooling data={toolingData} EWK_ID={EWK_ID} />
               )}
               {selectdatafromchip === "EMCS" && (
-                <BadgeDataEMCSselect data={emcsData} />
+                <BadgeDataEMCSselect data={emcsData} EWK_ID={EWK_ID} />
               )}
               {selectdatafromchip === "Operation" && (
-                <BadgeDataOperationselect data={operatorData} />
+                <BadgeDataOperationselect data={operatorData} EWK_ID={EWK_ID} />
               )}
               {selectdatafromchip === "LQ Approve" && "LQ Approve"}
               {selectdatafromchip === "GR R" && "GR R"}

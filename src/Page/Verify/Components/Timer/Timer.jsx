@@ -90,23 +90,43 @@ const Timer = () => {
   };
 
   return (
-    <div className="gap-2 bg-red-400 p-2 Paper_Contents w-full">
+    <div className="gap-2 bg-red-400 p-2 Paper_Contents w-fit mb-2">
       {/* ลบคำว่า 'seconds' เนื่องจากเราแสดงผลในรูปแบบ hh:mm:ss แล้ว */}
-      <div className="flex justify-between gap-2 w-full">
-        {" "}
-        {/* เพิ่ม className สำหรับ flex layout และ gap */}
-        <button
+      {/* <div className="flex justify-between gap-2 w-full">{" "} */}
+      {/* เพิ่ม className สำหรับ flex layout และ gap */}
+      {/* <button
           onClick={handleStart}
           className="bg-green-200 p-0.5 rounded-xl w-fit"
         >
           <PlayCircleIcon />
-        </button>
-        <div className="w-full text-nowrap m-auto">
-          Run Time : {formatTime(time)}
-        </div>
-        <button
+        </button> */}
+      <div className="w-full text-nowrap m-auto">
+        Run Time : {formatTime(time)}
+      </div>
+      {/* <button
           onClick={handleStop}
           className="bg-red-200 p-0.5 rounded-xl w-fit"
+        >
+          <StopCircleIcon />
+        </button> */}
+      {/* <button
+          onClick={handleReset}
+          className="bg-orange-200 p-2 rounded-xl w-fit"
+        >
+          <RotateLeftIcon />
+        </button> */}
+      {/* </div> */}
+      <div className="flex justify-between gap-2 w-full">
+        {" "}
+        <button
+          onClick={handleStart}
+          className="bg-green-200 p-0.5 rounded-xl w-full"
+        >
+          <PlayCircleIcon />
+        </button>
+        <button
+          onClick={handleStop}
+          className="bg-red-200 p-0.5 rounded-xl w-full"
         >
           <StopCircleIcon />
         </button>

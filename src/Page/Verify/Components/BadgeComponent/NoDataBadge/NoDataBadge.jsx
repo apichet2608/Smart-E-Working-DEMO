@@ -3,7 +3,7 @@ import Badge from "@mui/material/Badge";
 import Chip from "@mui/material/Chip";
 import Typography from "@mui/material/Typography";
 
-function ErrorBadge({ title, message }) {
+function NoDataBadge({ title, message }) {
   return (
     <div>
       {/* {title} */}
@@ -17,18 +17,18 @@ function ErrorBadge({ title, message }) {
               fontFamily: "Poppins, sans-serif",
               fontWeight: 500,
               marginBottom: "14px",
-              backgroundColor: "red",
+              backgroundColor: "#757575",
             }}
             // color={"error"}
           >
-            {message}
+            {"-"}
           </Typography>
         }
         sx={{ marginRight: 2 }}
       >
         <Chip
           label={title}
-          color={"error"}
+          color={undefined}
           sx={{
             maxWidth: "100%",
             fontFamily: "Poppins, sans-serif",
@@ -40,4 +40,4 @@ function ErrorBadge({ title, message }) {
   );
 }
 
-export default ErrorBadge;
+export default NoDataBadge;

@@ -10,6 +10,9 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import EditNoteIcon from "@mui/icons-material/EditNote";
+import PostAPI from "../../../API/POST/PostAPI";
+import Loading from "../../../../../Components/common/loading/Loading-08/loading";
+
 function BadgeToolingSelect({ data }) {
   const [selectchip, setselectchip] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
@@ -38,7 +41,8 @@ function BadgeToolingSelect({ data }) {
   }, [datacChip]);
 
   // สร้างฟังก์ชันเพื่อแปลงค่าทั้งหมดใน datacChip เป็น lowercase
-  const convertToLowerCase = () => {
+  const [isloadingprocess, setisloadingprocess] = useState(false);
+  const convertToLowerCase = async () => {
     // const newDatacChip = {};
     // for (const key in datacChip) {
     //   if (Object.hasOwnProperty.call(datacChip, key)) {
@@ -47,6 +51,27 @@ function BadgeToolingSelect({ data }) {
     // }
     // setDataChip(newDatacChip);
     console.log(datacChip);
+    setisloadingprocess(true);
+    try {
+      const body = datacChip;
+      const url = `http://10.17.66.242:7010/api/ewk/smart-call-fpc-tooling-pm-schedule-v2/`;
+      const response_data = await PostAPI(body, url);
+
+      if (response_data.status === "OK") {
+        console.log(response_data);
+        alert("OK");
+      } else if (response_data.status === "ERROR") {
+        console.log(response_data);
+        alert("ERROR");
+      } else {
+        console.log(response_data);
+        alert("Server Catch");
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setisloadingprocess(false);
+    }
   };
 
   return (
@@ -73,56 +98,66 @@ function BadgeToolingSelect({ data }) {
         className="animate-fade"
       >
         <DialogTitle>{datacChip.p_tools_type}</DialogTitle>
-        <DialogContent>
-          <div style={{ display: "grid", gap: "4px" }}>
-            papop response
-            <p1 className="Paper_Contents">
-              P_SCAN_TYPE : {datacChip.p_scan_type}
-            </p1>
-            <p1 className="Paper_Contents">
-              P_LOT_MOS : {datacChip.p_lot_mos}
-            </p1>
-            <p1 className="Paper_Contents">
-              P_PROCESS : {datacChip.p_process}
-            </p1>
-            <p1 className="Paper_Contents">
-              P_TOOLS_TYPE : {datacChip.p_tools_type}
-            </p1>
-            <p1 className="Paper_Contents">P_MACHINE :{datacChip.p_machine}</p1>
-            <p1 className="Paper_Contents">P_USER : {datacChip.p_user}</p1>
-            user input :
-            <input
-              className="Paper_Contents"
-              placeholder="P_TOOLS_CODE"
-              value={datacChip.p_tools_code}
-              onChange={(e) =>
-                setDataChip((prevState) => ({
-                  ...prevState,
-                  p_tools_code: e.target.value.toLowerCase(),
-                }))
-              }
-            />
-            {/* <input
+        {isloadingprocess ? (
+          <DialogContent>
+            <Loading />
+          </DialogContent>
+        ) : (
+          <>
+            <DialogContent>
+              <div style={{ display: "grid", gap: "4px" }}>
+                papop response
+                <p1 className="Paper_Contents">
+                  P_SCAN_TYPE : {datacChip.p_scan_type}
+                </p1>
+                <p1 className="Paper_Contents">
+                  P_LOT_MOS : {datacChip.p_lot_mos}
+                </p1>
+                <p1 className="Paper_Contents">
+                  P_PROCESS : {datacChip.p_process}
+                </p1>
+                <p1 className="Paper_Contents">
+                  P_TOOLS_TYPE : {datacChip.p_tools_type}
+                </p1>
+                <p1 className="Paper_Contents">
+                  P_MACHINE :{datacChip.p_machine}
+                </p1>
+                <p1 className="Paper_Contents">P_USER : {datacChip.p_user}</p1>
+                user input :
+                <input
+                  className="Paper_Contents"
+                  placeholder="P_TOOLS_CODE"
+                  value={datacChip.p_tools_code}
+                  onChange={(e) =>
+                    setDataChip((prevState) => ({
+                      ...prevState,
+                      p_tools_code: e.target.value.toLowerCase(),
+                    }))
+                  }
+                />
+                {/* <input
               className="Paper_Contents"
               placeholder="P_TOOLS_REV"
               disabled
             /> */}
-          </div>
-        </DialogContent>
-        <DialogActions>
-          <button
-            className="bg-blue-50 p-4 rounded-xl hover:bg-blue-200"
-            onClick={convertToLowerCase}
-          >
-            Save
-          </button>
-          <button
-            className="bg-orange-50 p-4 rounded-xl hover:bg-orange-200"
-            onClick={handleClose}
-          >
-            Concel
-          </button>
-        </DialogActions>
+              </div>
+            </DialogContent>
+            <DialogActions>
+              <button
+                className="bg-blue-50 p-4 rounded-xl hover:bg-blue-200"
+                onClick={convertToLowerCase}
+              >
+                Save
+              </button>
+              <button
+                className="bg-orange-50 p-4 rounded-xl hover:bg-orange-200"
+                onClick={handleClose}
+              >
+                Concel
+              </button>
+            </DialogActions>
+          </>
+        )}
       </Dialog>
     </div>
   );

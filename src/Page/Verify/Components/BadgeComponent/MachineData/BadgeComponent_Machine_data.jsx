@@ -14,8 +14,8 @@ const BadgeComponent = ({ onClick, statusMachine, label }) => {
   };
 
   // Dynamically set the background color based on statusMachine
-  const backgroundColor = statusMachine ? "rgba(0, 255, 0, 1)" : "#f0f0f0";
-  const badgeContent = statusMachine ? "PASS" : "-";
+  const backgroundColor = statusMachine ? "rgba(0, 255, 0, 1)" : "red";
+  const badgeContent = statusMachine ? "PASS" : "FAIL";
 
   return (
     <Badge

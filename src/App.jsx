@@ -22,6 +22,12 @@ const theme = createTheme({
       xl: 1912, // breakpoint xl
     },
   },
+  // palette: {
+  //   primary: {
+  //     main: "#87CEFA",
+  //     sub1: "#fff",
+  //   },
+  // },
 });
 
 function App() {

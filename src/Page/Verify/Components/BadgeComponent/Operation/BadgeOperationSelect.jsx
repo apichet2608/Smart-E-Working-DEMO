@@ -10,25 +10,100 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import EditNoteIcon from "@mui/icons-material/EditNote";
-function BadgeToolingSelect({ data }) {
+import PostAPI from "../../../API/POST/PostAPI";
+import Loading from "../../../../../Components/common/loading/Loading-08/loading";
+import { ToastContainer, toast } from "react-toastify";
+import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
+import Info from "./Components/info";
+function BadgeToolingSelect({ data, EWK_ID }) {
   const [selectchip, setselectchip] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
   const [fullWidth, setFullWidth] = React.useState(true);
-  const [datacChip, setDataChip] = React.useState([]);
+  const [datacChip, setDataChip] = React.useState({
+    p_tools_code: "",
+    p_tools_rev: "",
+  });
 
   const onClickChipselect = (tool_haed, tool_detile) => {
     setOpenDialog(true);
     console.log(tool_haed);
     console.log(tool_detile);
-    setDataChip(tool_detile);
+    setDataChip((prevState) => ({
+      ...prevState,
+      ...tool_detile,
+    }));
   };
 
   const handleClose = () => {
     setOpenDialog(!openDialog);
   };
 
+  useEffect(() => {
+    console.log(datacChip);
+  }, [datacChip]);
+
+  // สร้างฟังก์ชันเพื่อแปลงค่าทั้งหมดใน datacChip เป็น lowercase
+  const [isloadingprocess, setisloadingprocess] = useState(false);
+  const [MessageResponse, setMessageResponse] = useState("");
+  const convertToLowerCase = async () => {
+    setisloadingprocess(true);
+    // const newDatacChip = {};
+    // for (const key in datacChip) {
+    //   if (Object.hasOwnProperty.call(datacChip, key)) {
+    //     newDatacChip[key] = datacChip[key].toLowerCase();
+    //   }
+    // }
+    // setDataChip(newDatacChip);
+    console.log(datacChip);
+
+    const renamedDatacChip = {
+      p_scan_type: datacChip["p_scan_type"],
+      p_lot_roll: datacChip["p_lot_mos"], // Rename p_lot_mos to p_lot_roll
+      p_proc_id: datacChip["p_process"], // Rename p_process to p_proc_id
+      p_machine_flg: "Y", // Add p_machine_flg with value "Y"
+      p_tools_type: datacChip["p_tools_type"],
+      p_tools_code: datacChip["p_tools_code"],
+      p_tools_rev: datacChip["p_tools_rev"],
+      p_tools_type_name: datacChip["p_tools_type_name"],
+      p_machine: datacChip["p_machine"],
+      p_user: datacChip["p_user"],
+      ewk_id: EWK_ID,
+      ewk_item: datacChip["p_tools_type_name"],
+    };
+    // const response = await toast.promise(fetch("A_URL"), {
+    //   pending: "Promise is pending",
+    //   success: "Promise resolved 👌",
+    //   error: "Promise rejected 🤯",
+    // });
+    // console.log(response);
+    try {
+      const body = renamedDatacChip;
+      const url = `http://10.17.66.242:7010/api/ewk/smart-call-fpc-tooling-code-by-product/`;
+      const response_data = await PostAPI(body, url);
+
+      if (response_data.status === "OK") {
+        console.log(response_data);
+        // alert("OK");
+        setMessageResponse(response_data.message);
+      } else if (response_data.status === "ERROR") {
+        console.log(response_data);
+        // alert("ERROR");
+        setMessageResponse(response_data.message);
+      } else {
+        console.log(response_data);
+        setMessageResponse(response_data.message);
+        // alert("Server Catch");
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setisloadingprocess(false);
+    }
+  };
+
   return (
     <div>
+      {selectchip}
       {data.map((item, index) => (
         <>
           <Chip
@@ -45,28 +120,71 @@ function BadgeToolingSelect({ data }) {
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
-        maxWidth="xl"
-        fullWidth={fullWidth}
-        className="animate-fade"
+        // maxWidth="xl"
+        // fullWidth={fullWidth}
+        fullScreen
+        // className="animate__animated animate__slideInUp"
       >
-        <DialogTitle>{datacChip.ttt_tools_type}</DialogTitle>
-        <DialogContent>
-          <div style={{ display: "grid", gap: "4px" }}>wait</div>
-        </DialogContent>
-        <DialogActions>
-          <button
-            className="bg-blue-50 p-4 rounded-xl hover:bg-blue-200"
-            // onClick={handleClose}
-          >
-            Save
-          </button>
-          <button
-            className="bg-orange-50 p-4 rounded-xl hover:bg-orange-200"
-            onClick={handleClose}
-          >
-            Concel
-          </button>
-        </DialogActions>
+        <DialogTitle>
+          <div className=" flex gap-2">
+            <p>OPERATOR : {EWK_ID}</p>
+            <div
+              className={`bg-yellow-400 p-0.5 rounded-2xl px-6 ${
+                MessageResponse === `P` ? `bg-green-500` : ``
+              }`}
+            >
+              {MessageResponse}
+            </div>
+          </div>
+        </DialogTitle>
+        {isloadingprocess ? (
+          <DialogContent>
+            <div className="p-4">
+              <Loading />
+            </div>
+          </DialogContent>
+        ) : (
+          <>
+            <DialogContent>
+              <div style={{ display: "grid", gap: "10px" }}>
+                <Info datacChip={datacChip} />
+                <div className="w-full flex gap-2 Paper_Contents">
+                  <p className="w-36 text-nowrap m-auto">P_TOOLS_TYPE :</p>
+                  <div className="Paper_Contents w-full flex gap-4">
+                    <>
+                      <QrCodeScannerIcon />
+                    </>
+                    <input
+                      className="w-full"
+                      placeholder="OPERATOR"
+                      value={datacChip.p_tools_code}
+                      onChange={(e) =>
+                        setDataChip((prevState) => ({
+                          ...prevState,
+                          p_tools_code: e.target.value.toLowerCase(),
+                        }))
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+            </DialogContent>
+            <DialogActions>
+              <button
+                className="bg-blue-50 p-4 rounded-xl hover:bg-blue-200"
+                onClick={convertToLowerCase}
+              >
+                Check
+              </button>
+              <button
+                className="bg-orange-50 p-4 rounded-xl hover:bg-orange-200"
+                onClick={handleClose}
+              >
+                Concel
+              </button>
+            </DialogActions>
+          </>
+        )}
       </Dialog>
     </div>
   );

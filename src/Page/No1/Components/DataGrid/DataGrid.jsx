@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { Paper } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -77,68 +77,47 @@ function CustomNoRowsOverlay() {
   );
 }
 
-function TableCheck({ Datas, isDarkMode }) {
+function DataGridComponents({ Datas }) {
+  const [rowSelectionModel, setRowSelectionModel] = React.useState([]);
+  const [dataTable, setdataTable] = React.useState([]);
+  const [dataTableSelect, setdataTableSelect] = React.useState([]);
+
+  useEffect(() => {
+    if (Datas && Datas.length > 0) {
+      setdataTable(Datas);
+    } else {
+      setdataTable([]);
+    }
+  }, [Datas]);
+
   const columns = [
-    // { field: "id", headerName: "ID", width: 150 },
-    {
-      field: "mc_code",
-      headerName: "Machine",
-      width: 130,
-    },
-    {
-      field: "stats_mc",
-      headerName: "Status",
-      width: 110,
-      renderCell: (params) => {
-        // เพิ่มเงื่อนไขสำหรับการ render cell ของ header "status"
-        let colorbg =
-          params.value.toLowerCase() === "lock / inactive" ? "red" : "green";
-        return (
-          <div style={{ backgroundColor: colorbg }}>
-            {params.value.toUpperCase()}
-          </div>
-        );
-      },
-    },
-    {
-      field: "mc_desc",
-      headerName: "Machine Description",
-      width: 200,
-    },
-    // {
-    //   field: "due_date",
-    //   headerName: "Due Date",
-    //   width: 200,
-    // },
-    // {
-    //   field: "plan_date",
-    //   headerName: "Plan Date",
-    //   width: 200,
-    // },
-    // {
-    //   field: "actual_date",
-    //   headerName: "Actual Date",
-    //   width: 200,
-    // },
-    {
-      field: "last_date",
-      headerName: "Last Date",
-      width: 140,
-    },
-    {
-      field: "next_date",
-      headerName: "Next Date",
-      width: 140,
-    },
+    { field: "id", headerName: "ID", width: 300 },
+    { field: "name", headerName: "Name", width: 300 },
+    { field: "email", headerName: "E-Mail", width: 300 },
   ];
 
+  const RowSelectData = (value) => {
+    const foundData = dataTable.filter((item) => value.includes(item.id));
+    console.log(foundData);
+    setRowSelectionModel(value);
+    setdataTableSelect(foundData);
+  };
+
   return (
-    <div style={{ height: 600, width: "100%" }} className="Paper_Contents">
+    <div style={{ height: 600, width: "100%" }}>
       <DataGrid
-        rows={Datas}
+        //Check Box Select
+        checkboxSelection
+        onRowSelectionModelChange={(newRowSelectionModel) => {
+          RowSelectData(newRowSelectionModel);
+        }}
+        rowSelectionModel={rowSelectionModel}
+        //Check Box Select
+
+        rows={dataTable}
         columns={columns}
         pageSize={5}
-        disableRowSelectionOnClick
+        // disableRowSelectionOnClick
         getRowHeight={() => "auto"}
         slots={{
           toolbar: GridToolbar,
@@ -171,11 +150,11 @@ function TableCheck({ Datas, isDarkMode }) {
             justifyContent: "center",
             alignItems: "center",
           },
-          backgroundColor: isDarkMode ? "#fff" : "#fff",
+          backgroundColor: "#fff",
         }}
       />
     </div>
   );
 }
 
-export default TableCheck;
+export default DataGridComponents;
