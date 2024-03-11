@@ -6,6 +6,8 @@ import TextInputComponents from "../Components/TextInput/TextInput";
 
 //MUI ICON
 import ManageSearchIcon from "@mui/icons-material/ManageSearch";
+import AbcIcon from "@mui/icons-material/Abc";
+// import AbcIcon from "@mui/icons-material/Abc";
 
 function verify() {
   const [mcCode, setMcCode] = useState("R2-32-24");
@@ -22,7 +24,7 @@ function verify() {
       lot: lot,
       is_roll: false,
     };
-    const url = `http://10.17.66.242:7011/api/ewk/smart-fpc-lot/`;
+    const url = `http://10.17.66.242:7010/api/ewk/smart-fpc-lot/`;
     try {
       const response_data = await GetAPI(params, url);
       if (response_data.status === "OK") {
@@ -64,6 +66,54 @@ function verify() {
             <ManageSearchIcon />
           </button>
         </div>
+      </div>
+      <div className="container mx-auto pt-4 ">
+        {datainfimation && datainfimation.length > 0 ? (
+          <div className="lg:flex lg:gap-2 lg:justify-start md:grid md:grid-cols-2 md:gap-2">
+            {datainfimation.map((item) => (
+              <div
+                key={item.id}
+                className=" w-full bg-base-100 shadow-xl Paper_Contents flex gap-2"
+              >
+                <div>
+                  <p className="font-bold text-nowrap">{item.lot_prd_name}</p>
+                  <p className="text-nowrap">Product Name</p>
+                </div>
+                <div>
+                  {/* <AbcIcon /> */}
+                  <></>
+                </div>
+              </div>
+            ))}
+            {datainfimation.map((item) => (
+              <div
+                key={item.id}
+                className="card w-full bg-base-100 shadow-xl Paper_Contents p-0.5"
+              >
+                <p className=" font-bold text-nowrap">{item.lot}</p>
+                <p className="text-nowrap">Lot</p>
+              </div>
+            ))}
+            {datainfimation.map((item) => (
+              <div
+                key={item.id}
+                className="card w-full bg-base-100 shadow-xl Paper_Contents"
+              >
+                <p className=" font-bold text-nowrap">{item.input_qty}</p>
+                <p className="text-nowrap">QTY</p>
+              </div>
+            ))}
+            {datainfimation.map((item) => (
+              <div
+                key={item.id}
+                className="card w-full bg-base-100 shadow-xl Paper_Contents"
+              >
+                <p className=" font-bold text-nowrap">{item.proc_grp_name}</p>
+                <p className="text-nowrap">Product Group Name</p>
+              </div>
+            ))}
+          </div>
+        ) : null}
       </div>
     </>
   );

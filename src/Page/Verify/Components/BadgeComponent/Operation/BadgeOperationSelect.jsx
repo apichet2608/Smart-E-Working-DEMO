@@ -78,7 +78,7 @@ function BadgeToolingSelect({ data, EWK_ID }) {
     // console.log(response);
     try {
       const body = renamedDatacChip;
-      const url = `http://10.17.66.242:7011/api/ewk/smart-call-fpc-tooling-code-by-product/`;
+      const url = `http://10.17.66.242:7010/api/ewk/smart-call-fpc-tooling-code-by-product/`;
       const response_data = await PostAPI(body, url);
 
       if (response_data.status === "OK") {
