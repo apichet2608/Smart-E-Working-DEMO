@@ -18,11 +18,9 @@ const STATUS_TYPES = {
 
 const BadgeComponent = ({ onClick, data, StatusData, selectdatafromchip }) => {
   const theme = createTheme({
-    palette: {
-      primary: {
-        main: "#87CEFA",
-      },
-    },
+    // primary: {
+    //   main: "#87CEFA",
+    // },
   });
   // Function to determine badge color based on the status
   const getBadgeColor = (status) => {
