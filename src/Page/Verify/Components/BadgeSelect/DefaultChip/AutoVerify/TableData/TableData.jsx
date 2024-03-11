@@ -88,7 +88,7 @@ function TableCheck({ Datas, isDarkMode }) {
     {
       field: "jwpv_param_title",
       headerName: "Parameter Title",
-      width: 350,
+      width: 250,
     },
 
     {
@@ -109,7 +109,8 @@ function TableCheck({ Datas, isDarkMode }) {
     {
       field: "jwpv_param_tvalue",
       headerName: "Report",
-      width: 150,
+      // width: 150,
+      flex: 1,
       renderCell: (params) => {
         let backgroundColor = ""; // สีพื้นหลังเริ่มต้นเป็นสีว่าง
         if (

@@ -60,14 +60,17 @@ import TimerV2 from "../Components/Timer/Timer.jsx";
 
 import ErrorBadge from "../Components/BadgeComponent/ErrorBadge/ErrorBadge.jsx";
 import NoDataBadge from "../Components/BadgeComponent/NoDataBadge/NoDataBadge.jsx";
+
+import BadgeHoldingtime from "../Components/ChipBadge_Components/HoldingTime/HoldingTime.jsx";
+import HoldingTimeTable from "../Components/BadgeSelect/DefaultChip/HoldingTime/HoldingTime.jsx";
 function Verify() {
   //user input
   // const [mcCode, setMcCode] = useState("R2-17-13");
   // const [lot, setLot] = useState("904013599");
   // const [mcCode, setMcCode] = useState("R2-03-22");
   // const [lot, setLot] = useState("904025535");
-  const [mcCode, setMcCode] = useState("R2-47-11");
-  const [lot, setLot] = useState("994035354");
+  const [mcCode, setMcCode] = useState("R2-32-24");
+  const [lot, setLot] = useState("804011954");
   const [IsLoading, setIsLoading] = useState(false);
 
   const [
@@ -204,7 +207,7 @@ function Verify() {
     };
 
     const fetchDataForVerification = async (extractedData) => {
-      const url = `http://10.17.66.242:7010/api/ewk/smart-verdify-report/`;
+      const url = `http://10.17.66.242:7011/api/ewk/smart-verdify-report/`;
       const data = {
         mc_code: extractedData.mc_code,
         proc_grp_name: extractedData.proc_grp_name,
@@ -277,7 +280,7 @@ function Verify() {
         mc_code: mcCode,
       };
       console.log(data);
-      const url = `http://10.17.66.242:7010/api/ewk/smart-tool-type-tool/`;
+      const url = `http://10.17.66.242:7011/api/ewk/smart-tool-type-tool/`;
       const response = await PostAPI(data, url);
       console.log(response);
       if (response.status === "OK") {
@@ -297,7 +300,7 @@ function Verify() {
         lot: lot,
         mc_code: mcCode,
       };
-      const url = `http://10.17.66.242:7010/api/ewk/smart-tool-type-emcs/`;
+      const url = `http://10.17.66.242:7011/api/ewk/smart-tool-type-emcs/`;
       const response = await PostAPI(data, url);
       console.log(response);
       if (response.status === "OK") {
@@ -318,7 +321,7 @@ function Verify() {
         lot: lot,
         mc_code: mcCode,
       };
-      const url = `http://10.17.66.242:7010/api/ewk/smart-tool-type-operator/`;
+      const url = `http://10.17.66.242:7011/api/ewk/smart-tool-type-operator/`;
       const response = await PostAPI(data, url);
       console.log(response);
       if (response.status === "OK") {
@@ -340,7 +343,7 @@ function Verify() {
         // await fetchDataForEDoc(extractedData); //! 4.smart-emcs
         await fetchDataForVerification(extractedData); //! 5.smart-verdify-report
         await requestholdingtime(); //! 6.smart-holding-time
-        await requestApprove(); //! 7. smart-lq-approve
+        await requestApprove(extractedData); //! 7. smart-lq-approve
         await fetchStatusMachine(); //! 8.smart-fpc-scada-realtime-center
         // await checkToolingData(extractedData);
         // await checkMaterialeData(extractedData);
@@ -360,7 +363,7 @@ function Verify() {
       lot: lot,
       is_roll: false,
     };
-    const url = `http://10.17.66.242:7010/api/ewk/smart-fpc-lot/`;
+    const url = `http://10.17.66.242:7011/api/ewk/smart-fpc-lot/`;
     try {
       const response_data = await GetAPI(params, url);
       if (response_data.status === "OK") {
@@ -384,7 +387,7 @@ function Verify() {
   //? 2 smart-pm
   const requestApi_PM = async () => {
     const data = { mc_code: mcCode, ewk_id: EWK_ID };
-    const url = `http://10.17.66.242:7010/api/ewk/smart-pm/`;
+    const url = `http://10.17.66.242:7011/api/ewk/smart-pm/`;
     try {
       const response_data = await PostAPI(data, url);
       //response.data default
@@ -434,7 +437,7 @@ function Verify() {
   //#region
   const requestApi_Cal_monthly_detail = async () => {
     const data = { mc_code: mcCode, ewk_id: EWK_ID, ewk_item: "Machine Cal" };
-    const url = `http://10.17.66.242:7010/api/ewk/smart-cal-monthly-detail/`;
+    const url = `http://10.17.66.242:7011/api/ewk/smart-cal-monthly-detail/`;
     try {
       const response_data = await PostAPI(data, url);
       if (response_data.status === "OK") {
@@ -469,34 +472,72 @@ function Verify() {
   };
   //#endregion
 
+  const [holdingTimeData, setHoldingTimeData] = useState([]);
+  const [holdingTimeStatus, setHoldingTimeStatus] = useState([]);
+  const [holdingTimeApiStatus, setHoldingTimeApiStatus] = useState([]);
+  const [holdingTimeMessage, setHoldingTimeMessage] = useState([]);
+
   const requestholdingtime = async () => {
+    const data = { lot: lot, ewk_id: EWK_ID, ewk_item: "holding time" };
+    const url = `http://10.17.66.242:7011/api/ewk/smart-holding-time/`;
     try {
       console.log("Done");
-      const response_data = await getDataholdingtime(lot);
-      //response.data default
+      const response_data = await PostAPI(data, url);
       console.log(response_data.data);
+      if (response_data.status === "OK") {
+        setHoldingTimeData(response_data.data.data);
+        setHoldingTimeApiStatus(response_data.status);
+        setHoldingTimeMessage(response_data.message);
+      } else if (response_data.status === "ERROR") {
+        setHoldingTimeData([]);
+        setHoldingTimeApiStatus(response_data.status);
+        setHoldingTimeMessage(response_data.message);
+      } else {
+        setHoldingTimeData([]);
+        setHoldingTimeApiStatus(response_data.status);
+        setHoldingTimeMessage(response_data.message);
+      }
+      //response.data default
     } catch (error) {
       console.error(error);
     }
   };
 
-  const requestApprove = async () => {
+  const requestApprove = async (extractedData) => {
+    // try {
+    //   console.log("Done");
+    //   const response_data = await getDataapprove(lot, mcCode, mcCode);
+    //   //response.data default
+    //   console.log(response_data.data);
+
+    //   if (Object.keys(response_data.data.machine_upd).length === 0) {
+    //     setdataapprove(null);
+    //   } else {
+    //     setdataapprove(response_data.data.machine_upd);
+    //   }
+    //   if (Object.keys(response_data.data.status).length === 0) {
+    //     setdatagr_r(null);
+    //   } else {
+    //     setdatagr_r(response_data.data.status);
+    //   }
+    // } catch (error) {
+    //   console.error(error);
+    // }
+    const data = {
+      // lot: lot,
+      mc_code: mcCode,
+      dld_product: extractedData.lot_prd_name,
+      dld_machine: mcCode,
+      ewk_id: EWK_ID,
+      ewk_item: "holding time",
+    };
+    const url = `http://10.17.66.242:7011/api/ewk/smart-lq-approve/`;
     try {
       console.log("Done");
-      const response_data = await getDataapprove(lot, mcCode, mcCode);
-      //response.data default
+      const response_data = await PostAPI(data, url);
       console.log(response_data.data);
 
-      if (Object.keys(response_data.data.machine_upd).length === 0) {
-        setdataapprove(null);
-      } else {
-        setdataapprove(response_data.data.machine_upd);
-      }
-      if (Object.keys(response_data.data.status).length === 0) {
-        setdatagr_r(null);
-      } else {
-        setdatagr_r(response_data.data.status);
-      }
+      //response.data default
     } catch (error) {
       console.error(error);
     }
@@ -519,7 +560,7 @@ function Verify() {
       ewk_id: EWK_ID,
       ewk_item: "Machine Data",
     };
-    const url = `http://10.17.66.242:7010/api/ewk/smart-fpc-scada-realtime-center/`;
+    const url = `http://10.17.66.242:7011/api/ewk/smart-fpc-scada-realtime-center/`;
     try {
       const response = await GetAPI(params, url);
 
@@ -1035,6 +1076,39 @@ function Verify() {
                       </>
                     )}
 
+                    {holdingTimeApiStatus === "CATCH" ||
+                    holdingTimeApiStatus === "ERROR" ? (
+                      <>
+                        <ErrorBadge
+                          title={"Holding Time"}
+                          message={holdingTimeMessage}
+                        />
+                      </>
+                    ) : (
+                      <>
+                        {holdingTimeData && holdingTimeData.length > 0 ? (
+                          <>
+                            <BadgeHoldingtime
+                              // data={holdingTimeData}
+                              status={holdingTimeStatus}
+                              message={holdingTimeMessage}
+                              onClick={() => {
+                                setselectdatafromchip("Holding Time");
+                              }}
+                            />
+                          </>
+                        ) : (
+                          // <ErrorBadge title={"Machine PM"} />
+                          <>
+                            <NoDataBadge
+                              title={"Holding Time"}
+                              message={holdingTimeMessage}
+                            />
+                          </>
+                        )}
+                      </>
+                    )}
+
                     {dataapprove ? (
                       <>
                         <BadgeComponenstApprove
@@ -1170,6 +1244,9 @@ function Verify() {
               )}
               {selectdatafromchip === "Operation" && (
                 <BadgeDataOperationselect data={operatorData} EWK_ID={EWK_ID} />
+              )}
+              {selectdatafromchip === "Holding Time" && (
+                <HoldingTimeTable data={holdingTimeData} />
               )}
               {selectdatafromchip === "LQ Approve" && "LQ Approve"}
               {selectdatafromchip === "GR R" && "GR R"}

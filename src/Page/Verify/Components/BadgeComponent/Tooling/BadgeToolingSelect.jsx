@@ -54,7 +54,7 @@ function BadgeToolingSelect({ data }) {
     setisloadingprocess(true);
     try {
       const body = datacChip;
-      const url = `http://10.17.66.242:7010/api/ewk/smart-call-fpc-tooling-pm-schedule-v2/`;
+      const url = `http://10.17.66.242:7011/api/ewk/smart-call-fpc-tooling-pm-schedule-v2/`;
       const response_data = await PostAPI(body, url);
 
       if (response_data.status === "OK") {

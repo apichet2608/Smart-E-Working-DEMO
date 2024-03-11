@@ -6,7 +6,7 @@ const getDataCal = async (mc_code) => {
   let config = {
     method: "get",
     maxBodyLength: Infinity,
-    url: `http://10.17.66.242:7010/api/ewk/smart-cal-monthly-detail/`,
+    url: `http://10.17.66.242:7011/api/ewk/smart-cal-monthly-detail/`,
     headers: {
       "Content-Type": "application/json",
     },

@@ -19,9 +19,11 @@ function BadgeComponenstApprove(props) {
               fontWeight: 500,
               marginBottom: "14px",
               backgroundColor:
-                data.status === "Qualify"
-                  ? "rgba(0, 255, 0, 1)"
-                  : ["Plan", "Wait NPI", "Wait MGR"].includes(data.status)
+                data.status === "Qualify" //p
+                  ? "rgba(0, 255, 0, 1)" //p
+                  : //other f
+
+                  ["Plan", "Wait NPI", "Wait MGR"].includes(data.status)
                   ? "#ECEE81"
                   : ["No Qualify"].includes(data.status)
                   ? "red"
