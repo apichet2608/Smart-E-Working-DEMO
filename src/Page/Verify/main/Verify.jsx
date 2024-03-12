@@ -63,14 +63,15 @@ import NoDataBadge from "../Components/BadgeComponent/NoDataBadge/NoDataBadge.js
 
 import BadgeHoldingtime from "../Components/ChipBadge_Components/HoldingTime/HoldingTime.jsx";
 import HoldingTimeTable from "../Components/BadgeSelect/DefaultChip/HoldingTime/HoldingTime.jsx";
+import LQApprove from "../Components/ChipBadge_Components/LQApprove/LQApprove.jsx";
 function Verify() {
   //user input
   // const [mcCode, setMcCode] = useState("R2-17-13");
   // const [lot, setLot] = useState("904013599");
   // const [mcCode, setMcCode] = useState("R2-03-22");
   // const [lot, setLot] = useState("904025535");
-  const [mcCode, setMcCode] = useState("R2-32-24");
-  const [lot, setLot] = useState("804011954");
+  const [mcCode, setMcCode] = useState("R2-17-11_A");
+  const [lot, setLot] = useState("994035351");
   const [IsLoading, setIsLoading] = useState(false);
 
   const [
@@ -503,6 +504,11 @@ function Verify() {
     }
   };
 
+  const [LQApproveData, setLQApproveData] = useState([]);
+  const [LQApproveStatus, setLQApproveStatus] = useState([]);
+  const [LQApproveApiStatus, setLQApproveApiStatus] = useState([]);
+  const [LQApproveMessage, setLQApproveMessage] = useState([]);
+
   const requestApprove = async (extractedData) => {
     // try {
     //   console.log("Done");
@@ -536,7 +542,19 @@ function Verify() {
       console.log("Done");
       const response_data = await PostAPI(data, url);
       console.log(response_data.data);
-
+      if (response_data.status === "OK") {
+        setLQApproveData(response_data.data.data);
+        setLQApproveApiStatus(response_data.status);
+        setLQApproveMessage(response_data.message);
+      } else if (response_data.status === "ERROR") {
+        setLQApproveData([]);
+        setLQApproveApiStatus(response_data.status);
+        setLQApproveMessage(response_data.message);
+      } else {
+        setLQApproveData([]);
+        setLQApproveApiStatus(response_data.status);
+        setLQApproveMessage(response_data.message);
+      }
       //response.data default
     } catch (error) {
       console.error(error);
@@ -544,6 +562,7 @@ function Verify() {
   };
 
   //? 6 smart-fpc-scada-realtime-center
+  //Wait HARD API
   const [isfeatch_mcdata, setisfeatch_mcdata] = useState(false);
   const fetchStatusMachine = async () => {
     setselectdatafromship_mcData("");
@@ -564,8 +583,9 @@ function Verify() {
     try {
       const response = await GetAPI(params, url);
 
+      console.log(response.data);
       console.log(response.data.data);
-      const data = response.data.data;
+      const data = response.data.data.data;
       setmachineData(data);
       // console.log(data.actv[0].judgment_record);
 
@@ -795,39 +815,46 @@ function Verify() {
           {/* <Op_id_input /> */}
           {/* </div> */}
         </div>
-        <div className="container mx-auto pt-4 ">
+        <div className="container mx-auto pt-0.5 ">
           {dataCardmc_lot_search && dataCardmc_lot_search.length > 0 ? (
-            <div className="flex gap-2 justify-start">
+            <div className="lg:flex lg:gap-2 lg:justify-start md:grid md:grid-cols-2 md:gap-2">
               {dataCardmc_lot_search.map((item) => (
                 <div
                   key={item.id}
-                  className="card w-96 bg-base-100 shadow-xl Paper_Contents"
+                  className=" w-full bg-base-100 shadow-xl Paper_Contents flex gap-2"
                 >
-                  <h3>{item.lot_prd_name}</h3>
+                  <div>
+                    <p className="font-bold text-nowrap">{item.lot_prd_name}</p>
+                    <p className="text-nowrap">Product Name</p>
+                  </div>
+                  <div className="">{/* <Inventory2Icon /> */}</div>
                 </div>
               ))}
               {dataCardmc_lot_search.map((item) => (
                 <div
                   key={item.id}
-                  className="card w-96 bg-base-100 shadow-xl Paper_Contents"
+                  className="card w-full bg-base-100 shadow-xl Paper_Contents p-0.5"
                 >
-                  <p>{item.lot}</p>
+                  <p className=" font-bold text-nowrap">{item.lot}</p>
+                  <p className="text-nowrap">Lot</p>
                 </div>
               ))}
               {dataCardmc_lot_search.map((item) => (
                 <div
                   key={item.id}
-                  className="card w-96 bg-base-100 shadow-xl Paper_Contents"
+                  className="card w-full bg-base-100 shadow-xl Paper_Contents"
                 >
-                  <p>QTY : {item.input_qty}</p>
+                  <p className=" font-bold text-nowrap">{item.input_qty}</p>
+                  <p className="text-nowrap">QTY</p>
                 </div>
               ))}
               {dataCardmc_lot_search.map((item) => (
                 <div
                   key={item.id}
-                  className="card w-96 bg-base-100 shadow-xl Paper_Contents"
+                  className="card w-full bg-base-100 shadow-xl Paper_Contents"
                 >
-                  <p>{item.proc_grp_name}</p>
+                  <p className=" font-bold text-nowrap">{item.proc_grp_name}</p>
+                  <p className="text-nowrap">Product Group Name</p>
                 </div>
               ))}
             </div>
@@ -844,12 +871,12 @@ function Verify() {
             <ManageSearchIcon />
           </button>
           {!IsLoading && operatorData && operatorData.length ? (
-            <>
+            <div className="pt-0.5">
               <BadgeOperation
                 data={operatorData}
                 onClick={() => setselectdatafromchip("Operation")}
               />
-            </>
+            </div>
           ) : (
             <></>
           )}
@@ -1108,8 +1135,39 @@ function Verify() {
                         )}
                       </>
                     )}
-
-                    {dataapprove ? (
+                    {LQApproveApiStatus === "CATCH" ||
+                    LQApproveApiStatus === "ERROR" ? (
+                      <>
+                        <ErrorBadge
+                          title={"LQ Approve"}
+                          message={LQApproveMessage}
+                        />
+                      </>
+                    ) : (
+                      <>
+                        {LQApproveData && LQApproveData.length > 0 ? (
+                          <>
+                            <LQApprove
+                              // data={holdingTimeData}
+                              status={LQApproveStatus}
+                              message={LQApproveMessage}
+                              onClick={() => {
+                                setselectdatafromchip("LQ Approve");
+                              }}
+                            />
+                          </>
+                        ) : (
+                          // <ErrorBadge title={"Machine PM"} />
+                          <>
+                            <NoDataBadge
+                              title={"LQ Approve"}
+                              message={LQApproveMessage}
+                            />
+                          </>
+                        )}
+                      </>
+                    )}
+                    {/* {dataapprove ? (
                       <>
                         <BadgeComponenstApprove
                           label={"LQ Approve"}
@@ -1117,7 +1175,7 @@ function Verify() {
                           onClick={() => setselectdatafromchip("LQ Approve")}
                         />
                       </>
-                    ) : null}
+                    ) : null} */}
                     {datagr_r ? (
                       <>
                         <BadgeComponenstGR_R

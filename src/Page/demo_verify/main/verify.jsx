@@ -6,7 +6,7 @@ import TextInputComponents from "../Components/TextInput/TextInput";
 
 //MUI ICON
 import ManageSearchIcon from "@mui/icons-material/ManageSearch";
-import AbcIcon from "@mui/icons-material/Abc";
+import Inventory2Icon from "@mui/icons-material/Inventory2";
 // import AbcIcon from "@mui/icons-material/Abc";
 
 function verify() {
@@ -79,9 +79,8 @@ function verify() {
                   <p className="font-bold text-nowrap">{item.lot_prd_name}</p>
                   <p className="text-nowrap">Product Name</p>
                 </div>
-                <div>
-                  {/* <AbcIcon /> */}
-                  <></>
+                <div className="">
+                  <Inventory2Icon />
                 </div>
               </div>
             ))}

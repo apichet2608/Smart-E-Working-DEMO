@@ -1,6 +1,5 @@
 import React from "react";
 import InfoIcon from "@mui/icons-material/Info";
-
 function info({ datacChip }) {
   return (
     <div style={{ display: "grid", gap: "4px" }} className="Paper_Contents">
@@ -27,11 +26,11 @@ function info({ datacChip }) {
         </p>
       </div>
       <div className="flex gap-2">
-        <p className="w-36 text-nowrap m-auto">P_MACHINE :</p>
+        <p className="w-36 text-nowrap m-auto">MACHINE NO :</p>
         <p className="Paper_Contents_info w-full">{datacChip.p_machine}</p>
       </div>
       <div className="flex gap-2">
-        <p className="w-36 text-nowrap m-auto">P_USER :</p>
+        <p className="w-36 text-nowrap m-auto">PROCESS GROUP :</p>
         <p className="Paper_Contents_info w-full">{datacChip.p_user}</p>
       </div>
     </div>

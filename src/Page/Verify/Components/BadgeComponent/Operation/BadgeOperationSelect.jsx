@@ -45,8 +45,65 @@ function BadgeToolingSelect({ data, EWK_ID }) {
   // สร้างฟังก์ชันเพื่อแปลงค่าทั้งหมดใน datacChip เป็น lowercase
   const [isloadingprocess, setisloadingprocess] = useState(false);
   const [MessageResponse, setMessageResponse] = useState("");
+  // const convertToLowerCase = async () => {
+  //   setisloadingprocess(true);
+  //   // const newDatacChip = {};
+  //   // for (const key in datacChip) {
+  //   //   if (Object.hasOwnProperty.call(datacChip, key)) {
+  //   //     newDatacChip[key] = datacChip[key].toLowerCase();
+  //   //   }
+  //   // }
+  //   // setDataChip(newDatacChip);
+  //   console.log(datacChip);
+
+  //   const renamedDatacChip = {
+  //     p_scan_type: datacChip["p_scan_type"],
+  //     p_lot_roll: datacChip["p_lot_mos"], // Rename p_lot_mos to p_lot_roll
+  //     p_proc_id: datacChip["p_process"], // Rename p_process to p_proc_id
+  //     p_machine_flg: "Y", // Add p_machine_flg with value "Y"
+  //     p_tools_type: datacChip["p_tools_type"],
+  //     p_tools_code: datacChip["p_tools_code"],
+  //     p_tools_rev: datacChip["p_tools_rev"],
+  //     p_tools_type_name: datacChip["p_tools_type_name"],
+  //     p_machine: datacChip["p_machine"],
+  //     p_user: datacChip["p_user"],
+  //     ewk_id: EWK_ID,
+  //     ewk_item: datacChip["p_tools_type_name"],
+  //   };
+  //   // const response = await toast.promise(fetch("A_URL"), {
+  //   //   pending: "Promise is pending",
+  //   //   success: "Promise resolved 👌",
+  //   //   error: "Promise rejected 🤯",
+  //   // });
+  //   // console.log(response);
+  //   try {
+  //     const body = renamedDatacChip;
+  //     const url = `http://10.17.66.242:7010/api/ewk/smart-call-fpc-tooling-code-by-product/`;
+  //     const response_data = await PostAPI(body, url);
+
+  //     if (response_data.status === "OK") {
+  //       console.log(response_data);
+  //       // alert("OK");
+  //       setMessageResponse(response_data.message);
+  //     } else if (response_data.status === "ERROR") {
+  //       console.log(response_data);
+  //       // alert("ERROR");
+  //       setMessageResponse(response_data.message);
+  //     } else {
+  //       console.log(response_data);
+  //       setMessageResponse(response_data.message);
+  //       // alert("Server Catch");
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   } finally {
+  //     setisloadingprocess(false);
+  //   }
+  // };
   const convertToLowerCase = async () => {
     setisloadingprocess(true);
+    setisloadingprocess(false);
+
     // const newDatacChip = {};
     // for (const key in datacChip) {
     //   if (Object.hasOwnProperty.call(datacChip, key)) {
@@ -54,22 +111,28 @@ function BadgeToolingSelect({ data, EWK_ID }) {
     //   }
     // }
     // setDataChip(newDatacChip);
-    console.log(datacChip);
 
     const renamedDatacChip = {
       p_scan_type: datacChip["p_scan_type"],
-      p_lot_roll: datacChip["p_lot_mos"], // Rename p_lot_mos to p_lot_roll
-      p_proc_id: datacChip["p_process"], // Rename p_process to p_proc_id
-      p_machine_flg: "Y", // Add p_machine_flg with value "Y"
+      p_lot_mos: datacChip["p_lot_mos"], // Rename p_lot_mos to p_lot_roll
+      p_process: datacChip["p_process"], // Rename p_process to p_proc_id
+      // p_machine_flg: "Y", // Add p_machine_flg with value "Y"
       p_tools_type: datacChip["p_tools_type"],
       p_tools_code: datacChip["p_tools_code"],
-      p_tools_rev: datacChip["p_tools_rev"],
-      p_tools_type_name: datacChip["p_tools_type_name"],
+      // p_tools_rev: datacChip["p_tools_rev"],
+      // p_tools_type_name: datacChip["p_tools_type_name"],
       p_machine: datacChip["p_machine"],
       p_user: datacChip["p_user"],
+      p_station: datacChip["p_machine"],
       ewk_id: EWK_ID,
       ewk_item: datacChip["p_tools_type_name"],
+      ewk_item_detail: datacChip["p_tools_type_name"],
+      p_tool_rev: "",
     };
+    console.log(datacChip);
+
+    console.log(renamedDatacChip);
+
     // const response = await toast.promise(fetch("A_URL"), {
     //   pending: "Promise is pending",
     //   success: "Promise resolved 👌",
@@ -78,7 +141,7 @@ function BadgeToolingSelect({ data, EWK_ID }) {
     // console.log(response);
     try {
       const body = renamedDatacChip;
-      const url = `http://10.17.66.242:7010/api/ewk/smart-call-fpc-tooling-code-by-product/`;
+      const url = `http://10.17.66.242:7010/api/ewk/smart-call-fpc-eworking-set-tooling-code/`;
       const response_data = await PostAPI(body, url);
 
       if (response_data.status === "OK") {
@@ -100,7 +163,6 @@ function BadgeToolingSelect({ data, EWK_ID }) {
       setisloadingprocess(false);
     }
   };
-
   return (
     <div>
       {selectchip}
@@ -149,7 +211,7 @@ function BadgeToolingSelect({ data, EWK_ID }) {
               <div style={{ display: "grid", gap: "10px" }}>
                 <Info datacChip={datacChip} />
                 <div className="w-full flex gap-2 Paper_Contents">
-                  <p className="w-36 text-nowrap m-auto">P_TOOLS_TYPE :</p>
+                  <p className="w-36 text-nowrap m-auto">OPERATOR :</p>
                   <div className="Paper_Contents w-full flex gap-4">
                     <>
                       <QrCodeScannerIcon />
