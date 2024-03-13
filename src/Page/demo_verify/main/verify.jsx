@@ -6,19 +6,18 @@ import PostAPI from "../API/POST/PostAPI";
 import TextInputComponents from "../Components/TextInput/TextInput";
 import CardInfo from "../Components/CardInfo/CardInfo";
 import LoadingAPI from "../../../Components/common/loading/Loading-08/loading";
-import MachinePM from "../Components/MachinePM/MachinePM";
-import ChipError from "../Components/Chip_Error/ErrorBadge";
-import ChipNotFoundData from "../Components/Chip_Nodata/NoDataBadge";
+import MachineComponents from "../Components/MachinePM/MachinePMComponents";
+import MachineCalComponents from "../Components/MachineCal/MachineCalComponents";
 //MUI ICON
 import ManageSearchIcon from "@mui/icons-material/ManageSearch";
-import Inventory2Icon from "@mui/icons-material/Inventory2";
-import { ToastContainer } from "react-toastify";
-// import AbcIcon from "@mui/icons-material/Abc";
+
+// Alert
 import {
   showSuccessToast,
   showWarningToast,
   showErrorToast,
 } from "../Components/Toast/Toast";
+import { ToastContainer } from "react-toastify";
 
 function verify() {
   const [mcCode, setMcCode] = useState("R2-32-24");
@@ -33,6 +32,12 @@ function verify() {
   const [statuspm_api, setstatuspm_api] = useState(""); //  statusapi
   const [Messagepm_api, setMessagepm_api] = useState(""); //  message
   const [StatusDataPM, setStatusDataPM] = useState(""); //  statusdata
+
+  //! DATA Machine Cal /api/ewk/smart-cal-monthly-detail/
+  const [calibration, setcalibration] = useState([]); //  data
+  const [statuscalibration_API, setstatuscalibration_API] = useState(""); //  statusapi
+  const [Messagecalibration, setMessagecalibration] = useState(""); //  message
+  const [StatusDataCal, setStatusDataCal] = useState(""); //  statusdata
 
   const [EWK_ID, setEWK_ID] = useState("");
   const [selectdatafromchip, setselectdatafromchip] = useState("");
@@ -79,9 +84,9 @@ function verify() {
     const fetchData = async () => {
       const extractedData = extractData();
       console.log(extractedData);
-      if (extractedData !== "") {
+      if (datainfimation && datainfimation.length > 0 && extractedData !== "") {
         await requestApi_PM(); //! 2.smart-pm
-        // await requestApi_Cal_monthly_detail(); //! 3.smart-cal-monthly-detail
+        await requestApi_Cal_monthly_detail(); //! 3.smart-cal-monthly-detail
         // // await fetchDataForEDoc(extractedData); //! 4.smart-emcs
         // await fetchDataForVerification(extractedData); //! 5.smart-verdify-report
         // await requestholdingtime(); //! 6.smart-holding-time
@@ -94,7 +99,7 @@ function verify() {
         // await featchoperatorData(extractedData); //! 11 smart-tool-type-operator
         setIsLoading(false);
       } else {
-        alert("iheretoo");
+        // alert("iheretoo");
       }
     };
     fetchData();
@@ -164,6 +169,45 @@ function verify() {
     }
   };
 
+  const requestApi_Cal_monthly_detail = async () => {
+    const data = { mc_code: mcCode, ewk_id: EWK_ID, ewk_item: "Machine Cal" };
+    const url = `http://10.17.66.242:7011/api/ewk/smart-cal-monthly-detail/`;
+    try {
+      const response_data = await PostAPI(data, url);
+      if (response_data.status === "OK") {
+        if (response_data.data && response_data.data.data.length > 0) {
+          // Check if response_data and response_data.data are not null or undefined
+          // const responseData = checkForInactive_MachineCal(response_data);
+          // console.log(responseData);
+          setcalibration(response_data.data.data);
+          setstatuscalibration_API("OK");
+          setMessagecalibration(response_data.message);
+          setStatusDataCal(response_data.data.ewk_judge);
+          showSuccessToast("Machine Cal");
+        } else {
+          setcalibration([]);
+          setstatuscalibration_API("OK");
+          setMessagecalibration(response_data.message);
+          setStatusDataCal(response_data.data.ewk_judge);
+          showSuccessToast("Machine Cal");
+        }
+      } else if (response_data.status === "ERROR") {
+        setcalibration([]);
+        setstatuscalibration_API("ERROR");
+        setMessagecalibration(response_data.message);
+        setStatusDataCal(response_data.data.ewk_judge);
+        showSuccessToast("Machine Cal");
+      } else {
+        setcalibration([]);
+        setstatuscalibration_API("Catch");
+        setMessagecalibration(response_data.message);
+        setStatusDataCal(response_data.data.ewk_judge);
+        showSuccessToast("Machine Cal");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <>
       {/* {dataapprove.dld_machine} */}
@@ -201,39 +245,30 @@ function verify() {
           </div>
           {!IsLoading && datainfimation && datainfimation.length > 0 && (
             <div className="container mx-auto pt-4 ">
-              <div className="flex gap-2">
-                <p>Machine PM</p>
-                {/* <MachinePM /> */}
-                {statuspm_api === "CATCH" || statuspm_api === "ERROR" ? (
-                  <>
-                    <ChipError title={"Machine PM"} message={Messagepm_api} />
-                  </>
-                ) : (
-                  <>
-                    {pm && pm.length > 0 ? (
-                      <MachinePM
-                        message={Messagepm_api}
-                        data={pm}
-                        StatusData={StatusDataPM}
-                        onClick={() => {
-                          setselectdatafromchip("Machine PM");
-                        }}
-                        // selectdatafromchip={selectdatafromchip}
-                      />
-                    ) : (
-                      // <ErrorBadge title={"Machine PM"} />
-                      <>
-                        <ChipNotFoundData
-                          title={"Machine PM"}
-                          message={Messagepm_api}
-                        />
-                      </>
-                    )}
-                  </>
-                )}
-                {selectdatafromchip}
-              </div>
+              {/* <div className="flex gap-2"> */}
+              <MachineComponents
+                title={"Machine PM"}
+                statuspm_api={statuspm_api}
+                Messagepm_api={Messagepm_api}
+                datapm={pm}
+                StatusDataPM={StatusDataPM}
+                onClick={() => {
+                  setselectdatafromchip("Machine PM");
+                }}
+                selectdatafromchip={selectdatafromchip}
+              />
+              <MachineCalComponents
+                onClick={() => {
+                  setselectdatafromchip("Machine Cal");
+                }}
+                selectdatafromchip={selectdatafromchip}
+                title={"Machine Cal"}
+                statuscalibration_API={statuscalibration_API}
+                Messagecalibration={Messagecalibration}
+                datacalibration={calibration}
+              />
             </div>
+            // </div>
           )}
         </>
       )}
