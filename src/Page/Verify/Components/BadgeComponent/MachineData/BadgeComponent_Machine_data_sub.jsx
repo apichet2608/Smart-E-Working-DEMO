@@ -26,7 +26,7 @@ const BadgeComponent = ({ status, label, onClick, selectvalue }) => {
             borderRadius: "10px",
             padding: "2px",
             fontSize: "12px",
-            fontFamily: "Poppins, sans-serif",
+            fontFamily: "Inter Variable, sans-serif",
             fontWeight: 500,
           }}
         >
@@ -42,7 +42,7 @@ const BadgeComponent = ({ status, label, onClick, selectvalue }) => {
         variant="outlined"
         sx={{
           maxWidth: "100%",
-          fontFamily: "Poppins, sans-serif",
+          fontFamily: "Inter Variable, sans-serif",
           fontWeight: 500,
           backgroundColor: selectvalue === label ? "#a2d2ff" : "initial",
         }}

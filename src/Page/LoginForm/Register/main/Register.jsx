@@ -111,7 +111,7 @@ const RegisterPage = () => {
           <Typography
             component="h1"
             variant="h5"
-            sx={{ fontFamily: "Poppins, sans-serif" }}
+            sx={{ fontFamily: "Inter Variable, sans-serif" }}
           >
             Create your account
           </Typography>

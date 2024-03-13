@@ -1,6 +1,13 @@
 /** @type {import('tailwindcss').Config} */
+
+const { nextui } = require("@nextui-org/react");
 export default {
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
+  ],
+
   theme: {
     extend: {
       animation: {
@@ -73,12 +80,14 @@ export default {
     fontFamily: {
       //format example
       // customFont: ['"Custom Font"', "sans-serif"],
+      InterVariable: ['"Inter Variable"', "sans-serif"],
       Poppins: ['"Poppins"', "sans-serif"],
       PressStart2P: ['"Press Start 2P"', "sans-serif"],
     },
   },
   // plugins: [],
-  plugins: [require("daisyui")],
+  darkMode: "class",
+  plugins: [nextui()],
   // daisyui: {
   //   themes: ["light"], // false: only light + dark | true: all themes | array: specific themes like this ["light", "dark", "cupcake"]
   //   // darkTheme: "dark", // name of one of the included themes for dark mode

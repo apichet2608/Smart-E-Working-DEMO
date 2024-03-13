@@ -105,13 +105,13 @@ const ForgotPasswordPage = () => {
           <Typography
             component="h1"
             variant="h5"
-            sx={{ fontFamily: "Poppins, sans-serif" }}
+            sx={{ fontFamily: "Inter Variable, sans-serif" }}
           >
             Reset your password
           </Typography>
           <Typography
             variant="body2"
-            sx={{ mt: 2, fontFamily: "Poppins, sans-serif" }}
+            sx={{ mt: 2, fontFamily: "Inter Variable, sans-serif" }}
           >
             Enter your email address
             {/* and we will send you a link to reset your */}

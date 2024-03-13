@@ -7,7 +7,7 @@ const BadgeComponent = ({ onClick, statusMachine, label }) => {
   // Define styles outside of the return statement for clarity and performance
   const typographyStyles = {
     borderRadius: "10px",
-    fontFamily: "Poppins, sans-serif",
+    fontFamily: "Inter Variable, sans-serif",
     fontWeight: 500,
     padding: "3px",
     marginBottom: "14px",
@@ -38,7 +38,7 @@ const BadgeComponent = ({ onClick, statusMachine, label }) => {
         color={statusMachine ? "primary" : undefined}
         sx={{
           maxWidth: "100%",
-          fontFamily: "Poppins, sans-serif",
+          fontFamily: "Inter Variable, sans-serif",
           fontWeight: 500,
         }}
       />

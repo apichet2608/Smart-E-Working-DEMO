@@ -68,7 +68,7 @@ const LoginPage = () => {
           <Typography
             component="h1"
             variant="h5"
-            sx={{ fontFamily: "Poppins, sans-serif" }}
+            sx={{ fontFamily: "Inter Variable, sans-serif" }}
           >
             Sign in to your account
           </Typography>

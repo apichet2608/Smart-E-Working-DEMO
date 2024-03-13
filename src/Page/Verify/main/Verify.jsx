@@ -64,6 +64,8 @@ import NoDataBadge from "../Components/BadgeComponent/NoDataBadge/NoDataBadge.js
 import BadgeHoldingtime from "../Components/ChipBadge_Components/HoldingTime/HoldingTime.jsx";
 import HoldingTimeTable from "../Components/BadgeSelect/DefaultChip/HoldingTime/HoldingTime.jsx";
 import LQApprove from "../Components/ChipBadge_Components/LQApprove/LQApprove.jsx";
+import LQApproveComponents from "../Components/BadgeSelect/DefaultChip/LQApprove/LQApprove.jsx";
+
 function Verify() {
   //user input
   // const [mcCode, setMcCode] = useState("R2-17-13");
@@ -208,12 +210,12 @@ function Verify() {
     };
 
     const fetchDataForVerification = async (extractedData) => {
-      const url = `http://10.17.66.242:7010/api/ewk/smart-verdify-report/`;
+      const url = `http://10.17.66.242:7011/api/ewk/smart-verdify-report/`;
       const data = {
         mc_code: extractedData.mc_code,
         proc_grp_name: extractedData.proc_grp_name,
         ewk_id: EWK_ID,
-        ewk_item: "Fai Verify",
+        ewk_item: "FAI Auto Verify",
       };
       // const response = await getDataVerify(
       //   extractedData.mc_code,
@@ -281,7 +283,7 @@ function Verify() {
         mc_code: mcCode,
       };
       console.log(data);
-      const url = `http://10.17.66.242:7010/api/ewk/smart-tool-type-tool/`;
+      const url = `http://10.17.66.242:7011/api/ewk/smart-tool-type-tool/`;
       const response = await PostAPI(data, url);
       console.log(response);
       if (response.status === "OK") {
@@ -301,7 +303,7 @@ function Verify() {
         lot: lot,
         mc_code: mcCode,
       };
-      const url = `http://10.17.66.242:7010/api/ewk/smart-tool-type-emcs/`;
+      const url = `http://10.17.66.242:7011/api/ewk/smart-tool-type-emcs/`;
       const response = await PostAPI(data, url);
       console.log(response);
       if (response.status === "OK") {
@@ -322,7 +324,7 @@ function Verify() {
         lot: lot,
         mc_code: mcCode,
       };
-      const url = `http://10.17.66.242:7010/api/ewk/smart-tool-type-operator/`;
+      const url = `http://10.17.66.242:7011/api/ewk/smart-tool-type-operator/`;
       const response = await PostAPI(data, url);
       console.log(response);
       if (response.status === "OK") {
@@ -364,7 +366,7 @@ function Verify() {
       lot: lot,
       is_roll: false,
     };
-    const url = `http://10.17.66.242:7010/api/ewk/smart-fpc-lot/`;
+    const url = `http://10.17.66.242:7011/api/ewk/smart-fpc-lot/`;
     try {
       const response_data = await GetAPI(params, url);
       if (response_data.status === "OK") {
@@ -388,7 +390,7 @@ function Verify() {
   //? 2 smart-pm
   const requestApi_PM = async () => {
     const data = { mc_code: mcCode, ewk_id: EWK_ID };
-    const url = `http://10.17.66.242:7010/api/ewk/smart-pm/`;
+    const url = `http://10.17.66.242:7011/api/ewk/smart-pm/`;
     try {
       const response_data = await PostAPI(data, url);
       //response.data default
@@ -438,7 +440,7 @@ function Verify() {
   //#region
   const requestApi_Cal_monthly_detail = async () => {
     const data = { mc_code: mcCode, ewk_id: EWK_ID, ewk_item: "Machine Cal" };
-    const url = `http://10.17.66.242:7010/api/ewk/smart-cal-monthly-detail/`;
+    const url = `http://10.17.66.242:7011/api/ewk/smart-cal-monthly-detail/`;
     try {
       const response_data = await PostAPI(data, url);
       if (response_data.status === "OK") {
@@ -480,7 +482,7 @@ function Verify() {
 
   const requestholdingtime = async () => {
     const data = { lot: lot, ewk_id: EWK_ID, ewk_item: "holding time" };
-    const url = `http://10.17.66.242:7010/api/ewk/smart-holding-time/`;
+    const url = `http://10.17.66.242:7011/api/ewk/smart-holding-time/`;
     try {
       console.log("Done");
       const response_data = await PostAPI(data, url);
@@ -535,14 +537,17 @@ function Verify() {
       dld_product: extractedData.lot_prd_name,
       dld_machine: mcCode,
       ewk_id: EWK_ID,
-      ewk_item: "holding time",
+      ewk_item: "LQ Approve",
+      ewk_grr_id: EWK_ID,
+      ewk_grr_item: "GR&R",
     };
-    const url = `http://10.17.66.242:7010/api/ewk/smart-lq-approve/`;
+    const url = `http://10.17.66.242:7011/api/ewk/smart-lq-approve/`;
     try {
       console.log("Done");
       const response_data = await PostAPI(data, url);
       console.log(response_data.data);
       if (response_data.status === "OK") {
+        console.log(response_data.data.data);
         setLQApproveData(response_data.data.data);
         setLQApproveApiStatus(response_data.status);
         setLQApproveMessage(response_data.message);
@@ -579,14 +584,15 @@ function Verify() {
       ewk_id: EWK_ID,
       ewk_item: "Machine Data",
     };
-    const url = `http://10.17.66.242:7010/api/ewk/smart-fpc-scada-realtime-center/`;
+    const url = `http://10.17.66.242:7011/api/ewk/smart-fpc-scada-realtime-center/`;
     try {
       const response = await GetAPI(params, url);
 
       console.log(response.data);
       console.log(response.data.data);
-      const data = response.data.data.data;
-      setmachineData(data);
+      const datamc = response.data.data.data;
+      const data = response.data.data;
+      setmachineData(datamc);
       // console.log(data.actv[0].judgment_record);
 
       if (response.status === "OK") {
@@ -754,43 +760,43 @@ function Verify() {
   //? 6 smart-fpc-scada-realtime-center
 
   // ยกเลิกใช้
-  const getDataVerifyTableFromExpress = async (
-    jwpv_job_type,
-    jwpv_mc_code,
-    proc_grp_name
-  ) => {
-    const params = {
-      jwpv_job_type: jwpv_job_type,
-      jwpv_mc_code: jwpv_mc_code,
-      proc_grp_name: proc_grp_name,
-    };
+  // const getDataVerifyTableFromExpress = async (
+  //   jwpv_job_type,
+  //   jwpv_mc_code,
+  //   proc_grp_name
+  // ) => {
+  //   const params = {
+  //     jwpv_job_type: jwpv_job_type,
+  //     jwpv_mc_code: jwpv_mc_code,
+  //     proc_grp_name: proc_grp_name,
+  //   };
 
-    let config = {
-      method: "get",
-      maxBodyLength: Infinity,
-      url: `${import.meta.env.VITE_IP_API}${
-        import.meta.env.VITE_smart_jv_parameter_calling
-      }/getdataVerify`,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      params: params, // เพิ่ม params เข้าไปใน config
-    };
+  //   let config = {
+  //     method: "get",
+  //     maxBodyLength: Infinity,
+  //     url: `${import.meta.env.VITE_IP_API}${
+  //       import.meta.env.VITE_smart_jv_parameter_calling
+  //     }/getdataVerify`,
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     params: params, // เพิ่ม params เข้าไปใน config
+  //   };
 
-    try {
-      const response = await axios.request(config); // ใช้ config ที่กำหนดไว้
+  //   try {
+  //     const response = await axios.request(config); // ใช้ config ที่กำหนดไว้
 
-      if (response.status === 200) {
-        console.log(response);
-        console.log(response.data);
-        setdataautoverify(response.data);
-        setselectdatafromchip("Auto Verify");
-      }
-      // setdataautoverify(response.data);
-    } catch (error) {
-      console.error("API Error:", error.message);
-    }
-  };
+  //     if (response.status === 200) {
+  //       console.log(response);
+  //       console.log(response.data);
+  //       setdataautoverify(response.data);
+  //       setselectdatafromchip("Auto Verify");
+  //     }
+  //     // setdataautoverify(response.data);
+  //   } catch (error) {
+  //     console.error("API Error:", error.message);
+  //   }
+  // };
 
   return (
     <div className="gap-6 grid">
@@ -1007,7 +1013,6 @@ function Verify() {
                         )}
                       </>
                     )}
-
                     {/* <BadgeComponent_Process_Condition
                       statusedoc_emcs_detail={statusedoc_emcs_detail}
                       onClick={() => {
@@ -1015,7 +1020,6 @@ function Verify() {
                         //   setselectdatafromchipmachinedata("");
                       }}
                     /> */}
-
                     {statusgroupfaidata_verify === "CATCH" ||
                     statusgroupfaidata_verify === "ERROR" ? (
                       <>
@@ -1047,7 +1051,6 @@ function Verify() {
                         )}
                       </>
                     )}
-
                     {/* {groupfaidata_verify && groupfaidata_verify.length ? (
                       <>
                         <BadgeComponentsFai_Verify
@@ -1102,7 +1105,7 @@ function Verify() {
                         )}
                       </>
                     )}
-
+                    {/* {selectdatafromchip} */}
                     {holdingTimeApiStatus === "CATCH" ||
                     holdingTimeApiStatus === "ERROR" ? (
                       <>
@@ -1147,14 +1150,23 @@ function Verify() {
                       <>
                         {LQApproveData && LQApproveData.length > 0 ? (
                           <>
-                            <LQApprove
-                              // data={holdingTimeData}
-                              status={LQApproveStatus}
-                              message={LQApproveMessage}
-                              onClick={() => {
-                                setselectdatafromchip("LQ Approve");
-                              }}
-                            />
+                            {LQApproveData.map((item, index) => {
+                              return (
+                                <React.Fragment key={index}>
+                                  {/* Your JSX code here */}
+                                  <LQApprove
+                                    // data={holdingTimeData}
+                                    title={item.title.toUpperCase()}
+                                    status={item.ewk_judge}
+                                    data={item.data}
+                                    // message={LQApproveMessage}
+                                    onClick={() => {
+                                      setselectdatafromchip(item.title);
+                                    }}
+                                  />
+                                </React.Fragment>
+                              );
+                            })}
                           </>
                         ) : (
                           // <ErrorBadge title={"Machine PM"} />
@@ -1176,7 +1188,7 @@ function Verify() {
                         />
                       </>
                     ) : null} */}
-                    {datagr_r ? (
+                    {/* {datagr_r ? (
                       <>
                         <BadgeComponenstGR_R
                           label={""}
@@ -1184,7 +1196,7 @@ function Verify() {
                           onClick={() => setselectdatafromchip("GR R")}
                         />
                       </>
-                    ) : null}
+                    ) : null} */}
                     {/* <BadgeComponentsTooling
                       status={StatustoolingData}
                       datas={toolingData}
@@ -1214,7 +1226,6 @@ function Verify() {
                       <></>
                     )}
                     <Chip label={"Manual Input"} />
-
                     {/* {operatorData && operatorData.length ? (
                       <>
                         <BadgeOperation
@@ -1306,7 +1317,39 @@ function Verify() {
               {selectdatafromchip === "Holding Time" && (
                 <HoldingTimeTable data={holdingTimeData} />
               )}
-              {selectdatafromchip === "LQ Approve" && "LQ Approve"}
+              {selectdatafromchip === "lq approve" && (
+                <>
+                  {LQApproveData.map((item, index) => {
+                    if (item.title === "lq approve") {
+                      return (
+                        <React.Fragment key={index}>
+                          <LQApproveComponents data={item.data} />
+                        </React.Fragment>
+                      );
+                    }
+                    return null; // Skip rendering if status doesn't match
+                  })}
+                </>
+              )}
+              {selectdatafromchip === "gr&r" && (
+                <>
+                  {LQApproveData.map((item, index) => {
+                    if (item.title === "gr&r") {
+                      return (
+                        <React.Fragment key={index}>
+                          <LQApproveComponents data={item.data} />
+                        </React.Fragment>
+                      );
+                    }
+                    return null; // Skip rendering if status doesn't match
+                  })}
+                </>
+              )}
+
+              {/* {selectdatafromchip === "gr&r" && (
+                // <LQApproveComponents data={LQApproveData} />
+                <>gr&r</>
+              )} */}
               {selectdatafromchip === "GR R" && "GR R"}
             </div>
           </>

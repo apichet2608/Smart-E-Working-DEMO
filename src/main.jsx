@@ -17,16 +17,22 @@ import "@fontsource/press-start-2p";
 import { BrowserRouter as Router } from "react-router-dom";
 import { AuthProvider } from "./Contexts/AuthContext/AuthContext.jsx"; // Adjust the import path as necessary
 import "animate.css";
+// Supports weights 100-900
+import "@fontsource-variable/inter";
+import { NextUIProvider } from "@nextui-org/react";
+import "react-toastify/dist/ReactToastify.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <ThemeProvider>
-    <AuthProvider>
-      <CheckMode />
-      <React.StrictMode>
-        <Router>
-          <App />
-        </Router>
-      </React.StrictMode>
-    </AuthProvider>
-  </ThemeProvider>
+  <NextUIProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <CheckMode />
+        <React.StrictMode>
+          <Router>
+            <App />
+          </Router>
+        </React.StrictMode>
+      </AuthProvider>
+    </ThemeProvider>
+  </NextUIProvider>
 );

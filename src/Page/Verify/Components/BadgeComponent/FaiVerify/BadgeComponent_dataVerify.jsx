@@ -32,7 +32,7 @@ const BadgeComponent = ({ statusautoverify, itemlabel, onClick }) => {
           sx={{
             borderRadius: "10px",
             padding: "3px",
-            fontFamily: "Poppins, sans-serif",
+            fontFamily: "Inter Variable, sans-serif",
             fontWeight: 500,
             marginBottom: "14px",
             backgroundColor: getStatusColor(statusautoverify),
@@ -49,7 +49,7 @@ const BadgeComponent = ({ statusautoverify, itemlabel, onClick }) => {
         color={statusautoverify === "PASS" ? "primary" : undefined}
         sx={{
           maxWidth: "100%",
-          fontFamily: "Poppins, sans-serif",
+          fontFamily: "Inter Variable, sans-serif",
           fontWeight: 500,
         }}
       />

@@ -15,6 +15,7 @@ import Loading from "../../../../../Components/common/loading/Loading-08/loading
 import { ToastContainer, toast } from "react-toastify";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
 import Info from "./Components/info";
+import TableData from "./Components/TableData/TableData";
 function BadgeToolingSelect({ data, EWK_ID }) {
   const [selectchip, setselectchip] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
@@ -45,6 +46,13 @@ function BadgeToolingSelect({ data, EWK_ID }) {
   // สร้างฟังก์ชันเพื่อแปลงค่าทั้งหมดใน datacChip เป็น lowercase
   const [isloadingprocess, setisloadingprocess] = useState(false);
   const [MessageResponse, setMessageResponse] = useState("");
+
+  const [ResponseMessage, setResponseMessage] = useState([]);
+
+  useEffect(() => {
+    console.log(ResponseMessage);
+  }, [ResponseMessage]);
+
   // const convertToLowerCase = async () => {
   //   setisloadingprocess(true);
   //   // const newDatacChip = {};
@@ -78,7 +86,7 @@ function BadgeToolingSelect({ data, EWK_ID }) {
   //   // console.log(response);
   //   try {
   //     const body = renamedDatacChip;
-  //     const url = `http://10.17.66.242:7010/api/ewk/smart-call-fpc-tooling-code-by-product/`;
+  //     const url = `http://10.17.66.242:7011/api/ewk/smart-call-fpc-tooling-code-by-product/`;
   //     const response_data = await PostAPI(body, url);
 
   //     if (response_data.status === "OK") {
@@ -141,20 +149,41 @@ function BadgeToolingSelect({ data, EWK_ID }) {
     // console.log(response);
     try {
       const body = renamedDatacChip;
-      const url = `http://10.17.66.242:7010/api/ewk/smart-call-fpc-eworking-set-tooling-code/`;
+      const url = `http://10.17.66.242:7011/api/ewk/smart-call-fpc-eworking-set-tooling-code/`;
       const response_data = await PostAPI(body, url);
 
       if (response_data.status === "OK") {
         console.log(response_data);
         // alert("OK");
         setMessageResponse(response_data.message);
+        const newMessage = {
+          id: ResponseMessage.length + 1,
+          op_id: datacChip["p_tools_code"],
+          status: response_data.status,
+          message: response_data.message,
+        };
+        setResponseMessage((prevMessages) => [...prevMessages, newMessage]);
       } else if (response_data.status === "ERROR") {
         console.log(response_data);
         // alert("ERROR");
         setMessageResponse(response_data.message);
+        const newMessage = {
+          id: ResponseMessage.length + 1,
+          op_id: datacChip["p_tools_code"],
+          status: response_data.status,
+          message: response_data.message,
+        };
+        setResponseMessage((prevMessages) => [...prevMessages, newMessage]);
       } else {
         console.log(response_data);
         setMessageResponse(response_data.message);
+        const newMessage = {
+          id: ResponseMessage.length + 1,
+          op_id: datacChip["p_tools_code"],
+          status: response_data.status,
+          message: response_data.message,
+        };
+        setResponseMessage((prevMessages) => [...prevMessages, newMessage]);
         // alert("Server Catch");
       }
     } catch (error) {
@@ -229,6 +258,7 @@ function BadgeToolingSelect({ data, EWK_ID }) {
                     />
                   </div>
                 </div>
+                <TableData Datas={ResponseMessage} />
               </div>
             </DialogContent>
             <DialogActions>

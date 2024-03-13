@@ -25,20 +25,24 @@ const BadgeComponentsFai_Verify = ({
             sx={{
               padding: "3px",
               borderRadius: "10px",
-              fontFamily: "Poppins, sans-serif",
+              fontFamily: "Inter Variable, sans-serif",
               fontWeight: 500,
+              backgroundColor:
+                !hasEmptyDataArray && hasData ? "#32de84" : "#fd5c63", // Corrected syntax
+              marginBottom: "14px",
             }}
           >
-            {!hasEmptyDataArray && hasData ? "Check" : "Fail"}
+            {!hasEmptyDataArray && hasData ? "P" : "F"}
           </Typography>
         }
-        color={!hasEmptyDataArray && hasData ? "success" : "error"} // Use Material-UI's color prop for the badge
+        // color={!hasEmptyDataArray && hasData ? "#32de84" : "#fd5c63"} // Use Material-UI's color prop for the badge
       >
         <Chip
           onClick={onClick}
-          label="Fai Verify"
+          label="FAI Auto Verify"
           sx={{
-            fontFamily: "Poppins, sans-serif",
+            maxWidth: "100%",
+            fontFamily: "Inter Variable, sans-serif",
             fontWeight: 500,
           }}
           color={hasData ? "primary" : undefined}

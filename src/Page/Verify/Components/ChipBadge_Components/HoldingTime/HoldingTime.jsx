@@ -14,7 +14,7 @@ function HoldingTime({ status, message, onClick }) {
               backgroundColor: "#32de84",
               borderRadius: "10px",
               padding: "3px",
-              fontFamily: "Poppins, sans-serif",
+              fontFamily: "Inter Variable, sans-serif",
               fontWeight: 500,
               width: "100%",
               marginBottom: "14px",
@@ -32,7 +32,7 @@ function HoldingTime({ status, message, onClick }) {
           color={"primary"}
           sx={{
             maxWidth: "100%",
-            fontFamily: "Poppins, sans-serif",
+            fontFamily: "Inter Variable, sans-serif",
             fontWeight: 500,
           }}
         />

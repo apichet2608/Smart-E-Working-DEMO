@@ -38,38 +38,38 @@ const BadgeComponent = ({ onClick, data, StatusData, selectdatafromchip }) => {
   const statusbadge = StatusData;
 
   return (
-    <ThemeProvider theme={theme}>
-      <Badge
-        badgeContent={
-          <Typography
-            variant="caption"
-            sx={{
-              backgroundColor: bgcolorbadge,
-              borderRadius: "10px",
-              padding: "3px",
-              fontFamily: "Poppins, sans-serif",
-              fontWeight: 500,
-              width: "100%",
-              marginBottom: "14px",
-            }}
-          >
-            {statusbadge}
-          </Typography>
-        }
-        sx={{ marginRight: 2 }}
-      >
-        <Chip
-          label="Machine Cal"
-          onClick={onClick}
-          color={"primary"}
+    // <ThemeProvider theme={theme}>
+    <Badge
+      badgeContent={
+        <Typography
+          variant="caption"
           sx={{
-            maxWidth: "100%",
-            fontFamily: "Poppins, sans-serif",
+            backgroundColor: bgcolorbadge,
+            borderRadius: "10px",
+            padding: "3px",
+            fontFamily: "Inter Variable, sans-serif",
             fontWeight: 500,
+            width: "100%",
+            marginBottom: "14px",
           }}
-        />
-      </Badge>
-    </ThemeProvider>
+        >
+          {statusbadge}
+        </Typography>
+      }
+      sx={{ marginRight: 2 }}
+    >
+      <Chip
+        label="Machine Cal"
+        onClick={onClick}
+        color={"primary"}
+        sx={{
+          maxWidth: "100%",
+          fontFamily: "Inter Variable, sans-serif",
+          fontWeight: 500,
+        }}
+      />
+    </Badge>
+    // </ThemeProvider>
   );
 };
 

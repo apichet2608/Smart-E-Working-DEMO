@@ -15,7 +15,7 @@ const BadgeComponentsFai_Verify = ({ onClick, groupfaidata_verify }) => {
           sx={{
             padding: "3px",
             borderRadius: "10px",
-            fontFamily: "Poppins, sans-serif",
+            fontFamily: "Inter Variable, sans-serif",
             fontWeight: 500,
           }}
         >
@@ -28,7 +28,7 @@ const BadgeComponentsFai_Verify = ({ onClick, groupfaidata_verify }) => {
         onClick={onClick}
         label="Fai Verify"
         sx={{
-          fontFamily: "Poppins, sans-serif",
+          fontFamily: "Inter Variable, sans-serif",
           fontWeight: 500,
         }}
         color={hasData ? "primary" : undefined}

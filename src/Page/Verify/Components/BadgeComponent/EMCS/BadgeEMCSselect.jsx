@@ -78,7 +78,7 @@ function BadgeToolingSelect({ data, EWK_ID }) {
   //   // console.log(response);
   //   try {
   //     const body = renamedDatacChip;
-  //     const url = `http://10.17.66.242:7010/api/ewk/smart-call-fpc-tooling-code-by-product/`;
+  //     const url = `http://10.17.66.242:7011/api/ewk/smart-call-fpc-tooling-code-by-product/`;
   //     const response_data = await PostAPI(body, url);
 
   //     if (response_data.status === "OK") {
@@ -141,29 +141,29 @@ function BadgeToolingSelect({ data, EWK_ID }) {
     //   error: "Promise rejected 🤯",
     // });
     // console.log(response);
-    // try {
-    //   const body = renamedDatacChip;
-    //   const url = `http://10.17.66.242:7010/api/ewk/smart-call-fpc-eworking-set-tooling-code/`;
-    //   const response_data = await PostAPI(body, url);
+    try {
+      const body = renamedDatacChip;
+      const url = `http://10.17.66.242:7011/api/ewk/smart-call-fpc-eworking-set-tooling-code/`;
+      const response_data = await PostAPI(body, url);
 
-    //   if (response_data.status === "OK") {
-    //     console.log(response_data);
-    //     // alert("OK");
-    //     setMessageResponse(response_data.message);
-    //   } else if (response_data.status === "ERROR") {
-    //     console.log(response_data);
-    //     // alert("ERROR");
-    //     setMessageResponse(response_data.message);
-    //   } else {
-    //     console.log(response_data);
-    //     setMessageResponse(response_data.message);
-    //     // alert("Server Catch");
-    //   }
-    // } catch (error) {
-    //   console.error(error);
-    // } finally {
-    //   setisloadingprocess(false);
-    // }
+      if (response_data.status === "OK") {
+        console.log(response_data);
+        // alert("OK");
+        setMessageResponse(response_data.message);
+      } else if (response_data.status === "ERROR") {
+        console.log(response_data);
+        // alert("ERROR");
+        setMessageResponse(response_data.message);
+      } else {
+        console.log(response_data);
+        setMessageResponse(response_data.message);
+        // alert("Server Catch");
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setisloadingprocess(false);
+    }
   };
   return (
     <div>
@@ -225,7 +225,7 @@ function BadgeToolingSelect({ data, EWK_ID }) {
                       onChange={(e) =>
                         setDataChip((prevState) => ({
                           ...prevState,
-                          p_tools_code: e.target.value.toLowerCase(),
+                          p_tools_code: e.target.value,
                         }))
                       }
                     />

@@ -6,7 +6,7 @@ const getDataapprove = async (dld_product, dld_machine, mc_code) => {
   let config = {
     method: "get",
     maxBodyLength: Infinity,
-    url: `http://10.17.66.242:7010/api/ewk/smart-lq-approve/`,
+    url: `http://10.17.66.242:7011/api/ewk/smart-lq-approve/`,
     headers: {
       "Content-Type": "application/json",
     },

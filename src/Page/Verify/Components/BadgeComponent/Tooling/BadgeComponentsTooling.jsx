@@ -53,7 +53,7 @@ function BadgeComponentsTooling({ status, datas }) {
         color={status === "PASS" ? "primary" : undefined}
         sx={{
           maxWidth: "100%",
-          fontFamily: "Poppins, sans-serif", // Setting fontFamily to "Poppins
+          fontFamily: "Inter Variable, sans-serif", // Setting fontFamily to "Poppins
           fontWeight: 500,
         }}
         icon={<AdsClickIcon />}

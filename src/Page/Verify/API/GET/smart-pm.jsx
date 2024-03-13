@@ -6,7 +6,7 @@ const getDataPM = async (mc_code) => {
   let config = {
     method: "get",
     maxBodyLength: Infinity,
-    url: `http://10.17.66.242:7010/api/ewk/smart-pm/`,
+    url: `http://10.17.66.242:7011/api/ewk/smart-pm/`,
     headers: {
       "Content-Type": "application/json",
     },

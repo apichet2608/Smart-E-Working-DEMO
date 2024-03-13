@@ -3,7 +3,7 @@ import Badge from "@mui/material/Badge";
 import Chip from "@mui/material/Chip";
 import Typography from "@mui/material/Typography";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-
+import Tooltip from "@mui/material/Tooltip";
 // Define constants for colors and status types for better maintainability
 const COLORS = {
   f: "#fd5c63",
@@ -16,7 +16,13 @@ const STATUS_TYPES = {
   active: ["P"],
 };
 
-const BadgeComponent = ({ onClick, data, StatusData, selectdatafromchip }) => {
+const BadgeComponent = ({
+  onClick,
+  data,
+  StatusData,
+  selectdatafromchip,
+  message,
+}) => {
   const theme = createTheme({
     // primary: {
     //   main: "#87CEFA",
@@ -37,36 +43,38 @@ const BadgeComponent = ({ onClick, data, StatusData, selectdatafromchip }) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Badge
-        badgeContent={
-          <Typography
-            variant="caption"
+      <Tooltip title={message}>
+        <Badge
+          badgeContent={
+            <Typography
+              variant="caption"
+              sx={{
+                backgroundColor: bgcolorbadge,
+                borderRadius: "10px",
+                padding: "3px",
+                fontFamily: "Inter Variable, sans-serif",
+                fontWeight: 500,
+                width: "100%",
+                marginBottom: "14px",
+              }}
+            >
+              {statusbadge}
+            </Typography>
+          }
+          sx={{ marginRight: 2 }}
+        >
+          <Chip
+            label="Machine PM"
+            onClick={onClick}
+            color={"primary"}
             sx={{
-              backgroundColor: bgcolorbadge,
-              borderRadius: "10px",
-              padding: "3px",
+              maxWidth: "100%",
               fontFamily: "Inter Variable, sans-serif",
               fontWeight: 500,
-              width: "100%",
-              marginBottom: "14px",
             }}
-          >
-            {statusbadge}
-          </Typography>
-        }
-        sx={{ marginRight: 2 }}
-      >
-        <Chip
-          label="Machine PM"
-          onClick={onClick}
-          color={"primary"}
-          sx={{
-            maxWidth: "100%",
-            fontFamily: "Inter Variable, sans-serif",
-            fontWeight: 500,
-          }}
-        />
-      </Badge>
+          />
+        </Badge>
+      </Tooltip>
     </ThemeProvider>
   );
 };

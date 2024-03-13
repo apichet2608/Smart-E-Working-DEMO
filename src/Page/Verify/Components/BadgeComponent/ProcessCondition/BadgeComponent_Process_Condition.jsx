@@ -23,7 +23,7 @@ const BadgeComponent = ({ statusedoc_emcs_detail, onClick }) => {
             backgroundColor: backgroundColor,
             borderRadius: "10px",
             padding: "3px",
-            fontFamily: "Poppins, sans-serif",
+            fontFamily: "Inter Variable, sans-serif",
             fontWeight: 500,
             marginBottom: "14px",
           }}
@@ -39,7 +39,7 @@ const BadgeComponent = ({ statusedoc_emcs_detail, onClick }) => {
         color={statusedoc_emcs_detail !== "-" ? "primary" : undefined}
         sx={{
           maxWidth: "100%",
-          fontFamily: "Poppins, sans-serif",
+          fontFamily: "Inter Variable, sans-serif",
           fontWeight: 500,
         }}
       />
