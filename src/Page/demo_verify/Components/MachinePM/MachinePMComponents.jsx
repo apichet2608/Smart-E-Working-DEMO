@@ -16,7 +16,7 @@ function MachineComponents({
     title === selectdatafromchip ? "bg-green-200" : "bg-red-200";
   return (
     <div className="flex gap-3">
-      <p className={`${bgcolorSelect}`}>Machine PM</p>
+      {/* <p className={`${bgcolorSelect}`}>Machine PM</p> */}
       {statuspm_api === "CATCH" || statuspm_api === "ERROR" ? (
         <>
           <ChipError title={"Machine PM"} message={Messagepm_api} />

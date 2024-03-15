@@ -10,6 +10,7 @@ function MachineCalComponents({
   statuscalibration_API,
   Messagecalibration,
   datacalibration,
+  StatusDataCal,
 }) {
   const bgcolorSelect =
     title === selectdatafromchip ? "bg-green-200" : "bg-red-200";
@@ -17,7 +18,7 @@ function MachineCalComponents({
   return (
     <div className="flex gap-3">
       {/* MachineCalComponents */}
-      <p className={`${bgcolorSelect}`}>Machine CAL</p>
+      {/* <p className={`${bgcolorSelect}`}>Machine CAL</p> */}
       {statuscalibration_API === "CATCH" ||
       statuscalibration_API === "ERROR" ? (
         <>
@@ -28,7 +29,7 @@ function MachineCalComponents({
           {datacalibration && datacalibration.length > 0 ? (
             <MachineCal
               data={datacalibration}
-              // StatusData={StatusDataCal}
+              StatusData={StatusDataCal}
               onClick={onClick}
               selectdatafromchip={selectdatafromchip}
             />
