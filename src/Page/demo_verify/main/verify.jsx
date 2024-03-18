@@ -150,7 +150,9 @@ function verify() {
       lot: lot,
       is_roll: false,
     };
-    const url = `http://10.17.66.242:7010/api/ewk/smart-fpc-lot/`;
+    const url = `${
+      import.meta.env.VITE_IP_API_E_WORKING
+    }/api/ewk/smart-fpc-lot/`;
     try {
       const response_data = await GetAPI(params, url);
       if (response_data.status === "OK") {
@@ -178,7 +180,7 @@ function verify() {
 
   const requestApi_PM = async () => {
     const data = { mc_code: mcCode, ewk_id: EWK_ID };
-    const url = `http://10.17.66.242:7010/api/ewk/smart-pm/`;
+    const url = `${import.meta.env.VITE_IP_API_E_WORKING}/api/ewk/smart-pm/`;
     try {
       const response_data = await PostAPI(data, url);
       //response.data default
@@ -206,7 +208,9 @@ function verify() {
 
   const requestApi_Cal_monthly_detail = async () => {
     const data = { mc_code: mcCode, ewk_id: EWK_ID, ewk_item: "Machine Cal" };
-    const url = `http://10.17.66.242:7010/api/ewk/smart-cal-monthly-detail/`;
+    const url = `${
+      import.meta.env.VITE_IP_API_E_WORKING
+    }/api/ewk/smart-cal-monthly-detail/`;
     try {
       const response_data = await PostAPI(data, url);
       if (response_data.status === "OK") {
@@ -245,7 +249,9 @@ function verify() {
   };
 
   const fetchDataForVerification = async (extractedData) => {
-    const url = `http://10.17.66.242:7010/api/ewk/smart-verdify-report/`;
+    const url = `${
+      import.meta.env.VITE_IP_API_E_WORKING
+    }/api/ewk/smart-verdify-report/`;
     const data = {
       mc_code: extractedData.mc_code,
       proc_grp_name: extractedData.proc_grp_name,
@@ -298,7 +304,9 @@ function verify() {
       ewk_id: EWK_ID,
       ewk_item: "Machine Data",
     };
-    const url = `http://10.17.66.242:7010/api/ewk/smart-fpc-scada-realtime-center/`;
+    const url = `${
+      import.meta.env.VITE_IP_API_E_WORKING
+    }/api/ewk/smart-fpc-scada-realtime-center/`;
     try {
       const response = await GetAPI(params, url);
 
