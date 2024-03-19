@@ -9,6 +9,7 @@ import LoadingAPI from "../../../Components/common/loading/Loading-08/loading";
 import MachineComponents from "../Components/MachinePM/MachinePMComponents";
 import MachineCalComponents from "../Components/MachineCal/MachineCalComponents";
 import FaiAutoverifyComponents from "../Components/FaiAutoverify/FaiAutoverifyComponents";
+import MachineData from "../Components/MachineData/MachineData";
 //MUI ICON
 import ManageSearchIcon from "@mui/icons-material/ManageSearch";
 
@@ -551,6 +552,26 @@ function verify() {
                   Messagegroupfaidata_verify={Messagegroupfaidata_verify}
                   onClick={() => {
                     setselectdatafromchip("Auto Verify Select");
+                  }}
+                />
+                <MachineData
+                  title={"Machine Data"}
+                  selectdatafromchip={selectdatafromchip}
+                  machineData={machineData}
+                  statusMachine={statusMachine}
+                  MessageMachine={MessageMachine}
+                  MachineActv={MachineActv}
+                  columnsactvData={columnsactvData}
+                  MachineAlm={MachineAlm}
+                  columnsAlmData={columnsAlmData}
+                  MachineSet={MachineSet}
+                  columnsSetData={columnsSetData}
+                  MachineStatus={MachineStatus}
+                  columnsStatusData={columnsStatusData}
+                  badgemachine={badgemachine}
+                  MessageAPImachinedata={MessageAPImachinedata}
+                  onClick={() => {
+                    setselectdatafromchip("Machine Data");
                   }}
                 />
               </div>

@@ -20,6 +20,7 @@ function BadgeToolingSelect({ data, EWK_ID }) {
   const [selectchip, setselectchip] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
   const [fullWidth, setFullWidth] = React.useState(true);
+
   const [datacChip, setDataChip] = React.useState({
     p_tools_code: "",
     p_tools_rev: "",

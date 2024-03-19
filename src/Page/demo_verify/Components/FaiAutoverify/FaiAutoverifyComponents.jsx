@@ -22,42 +22,14 @@ function FaiAutoverifyComponents(props) {
       ) : (
         <>
           {groupfaidata_verify && groupfaidata_verify.length > 0 ? (
-            // <BadgeComponentsFai_Verify
-            //   groupfaidata_verify={groupfaidata_verify}
-            //   onClick={() => {
-            //     setselectdatafromchip("Auto Verify Select");
-            //   }}
-            //   selectdatafromchip={selectdatafromchip}
-            //   Message={Messagegroupfaidata_verify}
-            // />
-            // <FaiAutoverify
-            //   groupfaidata_verify={groupfaidata_verify}
-            //   Message={Messagegroupfaidata_verify}
-            //   onClick={onClick}
-            // />
-
             <>
               <FaiAutoverify
                 groupfaidata_verify={groupfaidata_verify}
                 Message={Messagegroupfaidata_verify}
-                // onClick={onClick}
+                onClick={onClick}
               />
+
               {groupfaidata_verify.map((item, index) => (
-                // <BadgeComponent_dataVerify
-                // key={index} // Assuming `item.jwpv_job_type` + `item.jwpv_mc_code` combination is unique, you might use `${item.jwpv_job_type}-${item.jwpv_mc_code}` as a key instead of the index if preferred.
-                // statusautoverify={item.jwpv_param_tvalue}
-                // itemlabel={item.jwpv_job_type}
-                // onClick={() => {
-                //   // getDataVerifyTableFromExpress(
-                //   //   item.jwpv_job_type,
-                //   //   item.jwpv_mc_code,
-                //   //   dataCardmc_lot_search[0].proc_grp_name
-                //   // );
-                //   // setselectdatafromchip(item.jwpv_job_type);
-                //   setdataautoverify(item.data);
-                //   // setselectdatafromchip("Auto Verify");
-                // }}
-                // />
                 <BadgeComponentsFai_Verify
                   key={index} // Assuming `item.jwpv_job_type` + `item.jwpv_mc_code` combination is unique, you might use `${item.jwpv_job_type}-${item.jwpv_mc_code}` as a key instead of the index if preferred.
                   statusautoverify={item.jwpv_param_tvalue}

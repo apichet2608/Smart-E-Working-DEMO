@@ -9,7 +9,7 @@ import Newpassword from "./Page/LoginForm/ForgotPassword/main/Newpassword";
 import Verify from "./Page/Verify/main/Verify";
 import Appbar from "./Components/common/AppbarEworking/AppbarEworking";
 import { useLocation } from "react-router-dom";
-
+import Final from "./Page/Verify-FINAL/Verify_Final";
 function RouteComponents() {
   const location = useLocation();
 
@@ -36,7 +36,7 @@ function RouteComponents() {
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/forgotpassword/newpassword" element={<Newpassword />} />
         <Route path="/1" element={<No1 />} />
-        <Route path="/2" element={<No2 />} />
+        <Route path="/2" element={<Final />} />
         <Route path="/verify" element={<Verify />} />
       </Routes>
     </>
