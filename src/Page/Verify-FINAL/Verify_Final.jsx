@@ -20,8 +20,8 @@ import {
 import { ToastContainer } from "react-toastify";
 
 function Verify_Final() {
-  const [lot, setLot] = useState("240244633");
-  const [mc_code, setMc_code] = useState("R2-07-11");
+  const [lot, setLot] = useState("994035355");
+  const [mc_code, setMc_code] = useState("R2-17-11_A");
   const [isLoading, setIsLoading] = useState(false);
   const [datainfimation, setdatainfimation] = useState([]);
   const [EWK_ID, setEWK_ID] = useState("");
@@ -71,6 +71,9 @@ function Verify_Final() {
       const extractedData = extractData();
       console.log(extractedData);
       if (datainfimation && datainfimation.length > 0 && extractedData !== "") {
+        // check leader approve
+        // if pass then fetch data
+        // if not pass then show alert
         await requestApi_PM(); //! 2.smart-pm
         await requestApi_Cal_monthly_detail(); //! 3.smart-cal-monthly-detail
         // // await fetchDataForEDoc(extractedData); //! 4.smart-emcs

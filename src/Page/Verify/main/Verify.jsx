@@ -73,7 +73,7 @@ function Verify() {
   // const [mcCode, setMcCode] = useState("R2-03-22");
   // const [lot, setLot] = useState("904025535");
   const [mcCode, setMcCode] = useState("R2-17-11_A");
-  const [lot, setLot] = useState("994035351");
+  const [lot, setLot] = useState("994035355");
   const [IsLoading, setIsLoading] = useState(false);
 
   const [
@@ -210,7 +210,7 @@ function Verify() {
     };
 
     const fetchDataForVerification = async (extractedData) => {
-      const url = `http://10.17.66.242:7010/api/ewk/smart-verdify-report/`;
+      const url = `http://10.17.66.242:7011/api/ewk/smart-verdify-report/`;
       const data = {
         mc_code: extractedData.mc_code,
         proc_grp_name: extractedData.proc_grp_name,
@@ -283,7 +283,7 @@ function Verify() {
         mc_code: mcCode,
       };
       console.log(data);
-      const url = `http://10.17.66.242:7010/api/ewk/smart-tool-type-tool/`;
+      const url = `http://10.17.66.242:7011/api/ewk/smart-tool-type-tool/`;
       const response = await PostAPI(data, url);
       console.log(response);
       if (response.status === "OK") {
@@ -303,7 +303,7 @@ function Verify() {
         lot: lot,
         mc_code: mcCode,
       };
-      const url = `http://10.17.66.242:7010/api/ewk/smart-tool-type-emcs/`;
+      const url = `http://10.17.66.242:7011/api/ewk/smart-tool-type-emcs/`;
       const response = await PostAPI(data, url);
       console.log(response);
       if (response.status === "OK") {
@@ -324,7 +324,7 @@ function Verify() {
         lot: lot,
         mc_code: mcCode,
       };
-      const url = `http://10.17.66.242:7010/api/ewk/smart-tool-type-operator/`;
+      const url = `http://10.17.66.242:7011/api/ewk/smart-tool-type-operator/`;
       const response = await PostAPI(data, url);
       console.log(response);
       if (response.status === "OK") {
@@ -366,7 +366,7 @@ function Verify() {
       lot: lot,
       is_roll: false,
     };
-    const url = `http://10.17.66.242:7010/api/ewk/smart-fpc-lot/`;
+    const url = `http://10.17.66.242:7011/api/ewk/smart-fpc-lot/`;
     try {
       const response_data = await GetAPI(params, url);
       if (response_data.status === "OK") {
@@ -390,7 +390,7 @@ function Verify() {
   //? 2 smart-pm
   const requestApi_PM = async () => {
     const data = { mc_code: mcCode, ewk_id: EWK_ID };
-    const url = `http://10.17.66.242:7010/api/ewk/smart-pm/`;
+    const url = `http://10.17.66.242:7011/api/ewk/smart-pm/`;
     try {
       const response_data = await PostAPI(data, url);
       //response.data default
@@ -440,7 +440,7 @@ function Verify() {
   //#region
   const requestApi_Cal_monthly_detail = async () => {
     const data = { mc_code: mcCode, ewk_id: EWK_ID, ewk_item: "Machine Cal" };
-    const url = `http://10.17.66.242:7010/api/ewk/smart-cal-monthly-detail/`;
+    const url = `http://10.17.66.242:7011/api/ewk/smart-cal-monthly-detail/`;
     try {
       const response_data = await PostAPI(data, url);
       if (response_data.status === "OK") {
@@ -482,7 +482,7 @@ function Verify() {
 
   const requestholdingtime = async () => {
     const data = { lot: lot, ewk_id: EWK_ID, ewk_item: "holding time" };
-    const url = `http://10.17.66.242:7010/api/ewk/smart-holding-time/`;
+    const url = `http://10.17.66.242:7011/api/ewk/smart-holding-time/`;
     try {
       console.log("Done");
       const response_data = await PostAPI(data, url);
@@ -541,7 +541,7 @@ function Verify() {
       ewk_grr_id: EWK_ID,
       ewk_grr_item: "GR&R",
     };
-    const url = `http://10.17.66.242:7010/api/ewk/smart-lq-approve/`;
+    const url = `http://10.17.66.242:7011/api/ewk/smart-lq-approve/`;
     try {
       console.log("Done");
       const response_data = await PostAPI(data, url);
@@ -584,7 +584,7 @@ function Verify() {
       ewk_id: EWK_ID,
       ewk_item: "Machine Data",
     };
-    const url = `http://10.17.66.242:7010/api/ewk/smart-fpc-scada-realtime-center/`;
+    const url = `http://10.17.66.242:7011/api/ewk/smart-fpc-scada-realtime-center/`;
     try {
       const response = await GetAPI(params, url);
 
@@ -1269,6 +1269,10 @@ function Verify() {
                   <AutoVerify data={dataautoverify} />
                 </>
               )}
+              <div className="bg-blue-100 w-fit rounded-xl p-2">
+                (leader approve) : user id check all data if p-all show button
+                starttime
+              </div>
               {selectdatafromchip === "Machine Data" && (
                 <>
                   {isfeatch_mcdata ? (
