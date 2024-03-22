@@ -46,7 +46,6 @@ function Verify_Final() {
   const dispatchs = useDispatch();
 
   const state = useSelector((state) => state.lqapprovestatus);
-  console.log("state", state);
   useEffect(() => {
     if (datainfimation && datainfimation.length > 0) {
       const ewk_id = lot + "+" + mc_code + "+" + datainfimation[0].proc_id;
@@ -56,6 +55,7 @@ function Verify_Final() {
     }
   }, [datainfimation]);
 
+  const [exdata, setExdata] = useState([]);
   useEffect(() => {
     const extractData = () => {
       if (datainfimation && datainfimation.length > 0) {
@@ -76,24 +76,30 @@ function Verify_Final() {
     const fetchData = async () => {
       const extractedData = extractData();
       console.log(extractedData);
+      setExdata(extractedData);
       if (datainfimation && datainfimation.length > 0 && extractedData !== "") {
         // check leader approve
         // if pass then fetch data
         // if not pass then show alert
         await checklqapprove(EWK_ID); //! 1.smart-lq-approve
-        await requestApi_PM(); //! 2.smart-pm
-        await requestApi_Cal_monthly_detail(); //! 3.smart-cal-monthly-detail
-        // // await fetchDataForEDoc(extractedData); //! 4.smart-emcs
-        await fetchDataForVerification(extractedData); //! 5.smart-verdify-report
-        await fetchStatusMachine(); //! 8.smart-fpc-scada-realtime-center
+        // if (state.ewk_item_seq === 0) {
+        //   alert("0");
+        // } else if (state.ewk_item_seq === 1) {
+        //   alert("1");
+        // }
+        // await requestApi_PM(); //! 2.smart-pm
+        // await requestApi_Cal_monthly_detail(); //! 3.smart-cal-monthly-detail
+        // // // await fetchDataForEDoc(extractedData); //! 4.smart-emcs
+        // await fetchDataForVerification(extractedData); //! 5.smart-verdify-report
+        // await fetchStatusMachine(); //! 8.smart-fpc-scada-realtime-center
         // await requestholdingtime(); //! 6.smart-holding-time
         // await requestApprove(extractedData); //! 7. smart-lq-approve
 
         // // await checkToolingData(extractedData);
         // // await checkMaterialeData(extractedData);
-        await featchtoolData(extractedData); //! 9. smart-tool-type-tool
-        await featchemcsData(extractedData); //! 10. smart-tool-type-emcs
-        await featchoperatorData(extractedData); //! 11 smart-tool-type-operator
+        // await featchtoolData(extractedData); //! 9. smart-tool-type-tool
+        // await featchemcsData(extractedData); //! 10. smart-tool-type-emcs
+        // await featchoperatorData(extractedData); //! 11 smart-tool-type-operator
         setIsLoading(false);
       } else {
         // alert("iheretoo");
@@ -101,6 +107,27 @@ function Verify_Final() {
     };
     fetchData();
   }, [EWK_ID]);
+
+  useEffect(() => {
+    const featchdata = async (exdata) => {
+      await requestApi_PM(); //! 2.smart-pm
+      await requestApi_Cal_monthly_detail(); //! 3.smart-cal-monthly-detail
+      // // await fetchDataForEDoc(extractedData); //! 4.smart-emcs
+      await fetchDataForVerification(exdata); //! 5.smart-verdify-report
+      await fetchStatusMachine(); //! 8.smart-fpc-scada-realtime-center
+      await requestholdingtime(); //! 6.smart-holding-time
+      await requestApprove(exdata); //! 7. smart-lq-approve
+    };
+
+    if (state.ewk_item_seq === 0) {
+      // console.log("exdata", exdata);
+      featchdata(exdata);
+    } else if (state.ewk_item_seq === 1) {
+      console.log("1");
+      featchdata(exdata);
+    }
+    console.log("state", state);
+  }, [state]);
 
   const checklqapprove = async (EWK_ID) => {
     const url = `${
@@ -251,6 +278,78 @@ function Verify_Final() {
     } else {
       setmachineData([]);
       showSuccessToast("Machine Data");
+    }
+  };
+
+  const [holdingTimeData, setHoldingTimeData] = useState([]);
+  const [holdingTimeStatus, setHoldingTimeStatus] = useState([]);
+  const [holdingTimeApiStatus, setHoldingTimeApiStatus] = useState([]);
+  const [holdingTimeMessage, setHoldingTimeMessage] = useState([]);
+
+  const requestholdingtime = async () => {
+    const data = { lot: lot, ewk_id: EWK_ID, ewk_item: "holding time" };
+    const url = `http://10.17.66.242:7011/api/ewk/smart-holding-time/`;
+    try {
+      console.log("Done");
+      const response_data = await PostAPI(data, url);
+      console.log(response_data.data);
+      if (response_data.status === "OK") {
+        setHoldingTimeData(response_data.data.data);
+        setHoldingTimeApiStatus(response_data.status);
+        setHoldingTimeMessage(response_data.message);
+      } else if (response_data.status === "ERROR") {
+        setHoldingTimeData([]);
+        setHoldingTimeApiStatus(response_data.status);
+        setHoldingTimeMessage(response_data.message);
+      } else {
+        setHoldingTimeData([]);
+        setHoldingTimeApiStatus(response_data.status);
+        setHoldingTimeMessage(response_data.message);
+      }
+      //response.data default
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const [LQApproveData, setLQApproveData] = useState([]);
+  const [LQApproveStatus, setLQApproveStatus] = useState([]);
+  const [LQApproveApiStatus, setLQApproveApiStatus] = useState([]);
+  const [LQApproveMessage, setLQApproveMessage] = useState([]);
+
+  const requestApprove = async (extractedData) => {
+    const data = {
+      // lot: lot,
+      mc_code: mc_code,
+      dld_product: extractedData.lot_prd_name,
+      dld_machine: mc_code,
+      ewk_id: EWK_ID,
+      ewk_item: "LQ Approve",
+      ewk_grr_id: EWK_ID,
+      ewk_grr_item: "GR&R",
+    };
+    const url = `http://10.17.66.242:7011/api/ewk/smart-lq-approve/`;
+    try {
+      console.log("Done");
+      const response_data = await PostAPI(data, url);
+      console.log(response_data.data);
+      if (response_data.status === "OK") {
+        console.log(response_data.data.data);
+        setLQApproveData(response_data.data.data);
+        setLQApproveApiStatus(response_data.status);
+        setLQApproveMessage(response_data.message);
+      } else if (response_data.status === "ERROR") {
+        setLQApproveData([]);
+        setLQApproveApiStatus(response_data.status);
+        setLQApproveMessage(response_data.message);
+      } else {
+        setLQApproveData([]);
+        setLQApproveApiStatus(response_data.status);
+        setLQApproveMessage(response_data.message);
+      }
+      //response.data default
+    } catch (error) {
+      console.error(error);
     }
   };
 
