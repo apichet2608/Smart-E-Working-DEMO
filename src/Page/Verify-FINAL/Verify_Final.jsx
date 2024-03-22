@@ -11,6 +11,7 @@ import FaiAutoVerify from "./Components/FaiAutoVerify/FaiAutoVerify";
 import MachineData from "./Components/MachineData/MachineData";
 // import Tooling from "./Components/Tooling/BadgeTooling";
 import Operator from "./Components/Operator/Operator";
+import LearderApprove from "./Components/LearderApprove/LearderApprove";
 // Alert
 import {
   showSuccessToast,
@@ -18,6 +19,8 @@ import {
   showErrorToast,
 } from "./Components/Toast/Toast";
 import { ToastContainer } from "react-toastify";
+import { useSelector, useDispatch } from "react-redux";
+import { setstatuslq } from "../../../Redux/Action/lqapprovestatus";
 
 function Verify_Final() {
   const [lot, setLot] = useState("994035355");
@@ -40,7 +43,10 @@ function Verify_Final() {
     setIsLoading(true);
     await requestApiLotSearch();
   };
+  const dispatchs = useDispatch();
 
+  const state = useSelector((state) => state.lqapprovestatus);
+  console.log("state", state);
   useEffect(() => {
     if (datainfimation && datainfimation.length > 0) {
       const ewk_id = lot + "+" + mc_code + "+" + datainfimation[0].proc_id;
@@ -74,6 +80,7 @@ function Verify_Final() {
         // check leader approve
         // if pass then fetch data
         // if not pass then show alert
+        await checklqapprove(EWK_ID); //! 1.smart-lq-approve
         await requestApi_PM(); //! 2.smart-pm
         await requestApi_Cal_monthly_detail(); //! 3.smart-cal-monthly-detail
         // // await fetchDataForEDoc(extractedData); //! 4.smart-emcs
@@ -94,6 +101,27 @@ function Verify_Final() {
     };
     fetchData();
   }, [EWK_ID]);
+
+  const checklqapprove = async (EWK_ID) => {
+    const url = `${
+      import.meta.env.VITE_IP_API_E_WORKING
+    }/api/ewk/smart-ewk-id-status/`;
+    const data = {
+      ewk_id: EWK_ID,
+    };
+    const response_data = await PostAPI(data, url);
+    if (response_data.status === "OK") {
+      console.log(response_data);
+      dispatchs(setstatuslq(response_data.data.data));
+      showSuccessToast("Leader Approve");
+    } else if (response_data.status === "ERROR") {
+      console.log(response_data);
+      showWarningToast("Leader Approve");
+    } else {
+      console.log(response_data);
+      showErrorToast("Leader Approve");
+    }
+  };
 
   const requestApiLotSearch = async () => {
     const params = {
@@ -337,6 +365,7 @@ function Verify_Final() {
               )}
 
               {/* //! wait desight components lqapprove holdingtime tool emcs*/}
+              <LearderApprove EWK_ID={EWK_ID} />
             </div>
           </>
         )

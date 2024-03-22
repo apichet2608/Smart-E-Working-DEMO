@@ -21,18 +21,20 @@ import "animate.css";
 import "@fontsource-variable/inter";
 import { NextUIProvider } from "@nextui-org/react";
 import "react-toastify/dist/ReactToastify.css";
-
+import ReduxProvider from "../Redux/ReduxProvider.jsx";
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <NextUIProvider>
-    <ThemeProvider>
-      <AuthProvider>
-        <CheckMode />
-        <React.StrictMode>
-          <Router>
-            <App />
-          </Router>
-        </React.StrictMode>
-      </AuthProvider>
-    </ThemeProvider>
-  </NextUIProvider>
+  <ReduxProvider>
+    <NextUIProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <CheckMode />
+          <React.StrictMode>
+            <Router>
+              <App />
+            </Router>
+          </React.StrictMode>
+        </AuthProvider>
+      </ThemeProvider>
+    </NextUIProvider>
+  </ReduxProvider>
 );
