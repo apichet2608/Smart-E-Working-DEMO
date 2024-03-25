@@ -78,7 +78,13 @@ function MachineData(props) {
           )}
         </div>
       ) : (
-        <ChipNotFoundData title={title} message={message} />
+        <>
+          {response_API.status === "OK" ? (
+            <ChipNotFoundData title={title} message={message} />
+          ) : (
+            <ChipError title={title} message={message} />
+          )}
+        </>
       )}
     </>
   );

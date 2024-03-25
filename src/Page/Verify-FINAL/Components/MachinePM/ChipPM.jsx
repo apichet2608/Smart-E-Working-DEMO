@@ -10,9 +10,13 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import TableData from "./Components/TableData/TableData";
 function ChipPM(props) {
-  const { status, title, data } = props;
+  const { status, title, data, state, requestApi_PM } = props;
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
+    // alert(state.ewk_item_seq);
+    if (state.ewk_item_seq === 1) {
+      requestApi_PM();
+    }
     setOpen(true);
   };
   const handleClose = () => {

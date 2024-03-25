@@ -31,7 +31,8 @@ function Verify_Final() {
   const [checkk, setCheckk] = useState({
     smartfpclot: false,
   });
-
+  // R2-07-12;
+  // 240353452;
   const [pm, setpm] = useState({});
   const [calibration, setcalibration] = useState([]);
   const [faiAutoVerify, setFaiAutoVerify] = useState([]);
@@ -266,7 +267,7 @@ function Verify_Final() {
       ewk_id: EWK_ID,
       ewk_item: "Machine Data",
     };
-    const url = `http://10.17.66.242:7010/api/ewk/smart-fpc-scada-realtime-center/`;
+    const url = `http://10.17.66.242:7011/api/ewk/smart-fpc-scada-realtime-center/`;
     const response_data = await GetAPI(params, url);
 
     if (response_data.status === "OK") {
@@ -282,9 +283,6 @@ function Verify_Final() {
   };
 
   const [holdingTimeData, setHoldingTimeData] = useState([]);
-  const [holdingTimeStatus, setHoldingTimeStatus] = useState([]);
-  const [holdingTimeApiStatus, setHoldingTimeApiStatus] = useState([]);
-  const [holdingTimeMessage, setHoldingTimeMessage] = useState([]);
 
   const requestholdingtime = async () => {
     const data = { lot: lot, ewk_id: EWK_ID, ewk_item: "holding time" };
@@ -295,16 +293,10 @@ function Verify_Final() {
       console.log(response_data.data);
       if (response_data.status === "OK") {
         setHoldingTimeData(response_data.data.data);
-        setHoldingTimeApiStatus(response_data.status);
-        setHoldingTimeMessage(response_data.message);
       } else if (response_data.status === "ERROR") {
         setHoldingTimeData([]);
-        setHoldingTimeApiStatus(response_data.status);
-        setHoldingTimeMessage(response_data.message);
       } else {
         setHoldingTimeData([]);
-        setHoldingTimeApiStatus(response_data.status);
-        setHoldingTimeMessage(response_data.message);
       }
       //response.data default
     } catch (error) {
@@ -313,9 +305,6 @@ function Verify_Final() {
   };
 
   const [LQApproveData, setLQApproveData] = useState([]);
-  const [LQApproveStatus, setLQApproveStatus] = useState([]);
-  const [LQApproveApiStatus, setLQApproveApiStatus] = useState([]);
-  const [LQApproveMessage, setLQApproveMessage] = useState([]);
 
   const requestApprove = async (extractedData) => {
     const data = {
@@ -361,7 +350,7 @@ function Verify_Final() {
       mc_code: mc_code,
     };
     console.log(data);
-    const url = `http://10.17.66.242:7010/api/ewk/smart-tool-type-tool/`;
+    const url = `http://10.17.66.242:7011/api/ewk/smart-tool-type-tool/`;
     const response_data = await PostAPI(data, url);
     console.log(response_data);
     if (response_data.status === "OK") {
@@ -380,7 +369,7 @@ function Verify_Final() {
       lot: lot,
       mc_code: mc_code,
     };
-    const url = `http://10.17.66.242:7010/api/ewk/smart-tool-type-operator/`;
+    const url = `http://10.17.66.242:7011/api/ewk/smart-tool-type-operator/`;
     const response_data = await PostAPI(data, url);
     console.log(response_data);
     if (response_data.status === "OK") {
@@ -399,7 +388,7 @@ function Verify_Final() {
       lot: lot,
       mc_code: mc_code,
     };
-    const url = `http://10.17.66.242:7010/api/ewk/smart-tool-type-emcs/`;
+    const url = `http://10.17.66.242:7011/api/ewk/smart-tool-type-emcs/`;
     const response_data = await PostAPI(data, url);
     console.log(response_data);
     if (response_data.status === "OK") {
@@ -444,8 +433,14 @@ function Verify_Final() {
             <div className="container mx-auto pt-4 ">
               <CardInfo datainfimation={datainfimation} />
             </div>
-            <div className="container mx-auto pt-4 ">
-              {Object.keys(pm).length > 0 && <MachinePM response_API={pm} />}
+            <div className="container mx-auto pt-4">
+              {Object.keys(pm).length > 0 && (
+                <MachinePM
+                  response_API={pm}
+                  state={state}
+                  requestApi_PM={() => requestApi_PM()}
+                />
+              )}
               {Object.keys(calibration).length > 0 && (
                 <MachineCal response_API={calibration} />
               )}
@@ -458,13 +453,15 @@ function Verify_Final() {
                   response_API={machineData}
                 />
               )}
-
-              {Object.keys(operatorData).length > 0 && (
-                <Operator response_API={operatorData} EWK_ID={EWK_ID} />
+              {state === 2 && (
+                <>
+                  {Object.keys(operatorData).length > 0 && (
+                    <Operator response_API={operatorData} EWK_ID={EWK_ID} />
+                  )}
+                  {/* //! wait desight components lqapprove holdingtime tool emcs*/}
+                  <LearderApprove EWK_ID={EWK_ID} />
+                </>
               )}
-
-              {/* //! wait desight components lqapprove holdingtime tool emcs*/}
-              <LearderApprove EWK_ID={EWK_ID} />
             </div>
           </>
         )

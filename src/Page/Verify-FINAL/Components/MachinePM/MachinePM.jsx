@@ -9,7 +9,7 @@ function MachinePM(props) {
   const [statuspm, setStatuspm] = useState(""); // Added this line
   const [isLoading, setIsLoading] = useState(false); // Added this line
 
-  const { response_API } = props;
+  const { response_API, state, requestApi_PM } = props;
 
   useEffect(() => {
     if (response_API.status === "OK") {
@@ -31,7 +31,13 @@ function MachinePM(props) {
             <>
               {dataTable.length > 0 && (
                 <>
-                  <ChipPM status={statuspm} title={title} data={dataTable} />
+                  <ChipPM
+                    status={statuspm}
+                    title={title}
+                    data={dataTable}
+                    state={state}
+                    requestApi_PM={requestApi_PM}
+                  />
                 </>
               )}
             </>
