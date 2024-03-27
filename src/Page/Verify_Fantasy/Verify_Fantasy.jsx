@@ -156,7 +156,7 @@ function Verify_Fantasy() {
         >
           <Tab value="one" label="Seq One" />
           <Tab value="two" label="Seq Two" />
-          <Tab value="three" label="Seq Three" />
+          <Tab value="three" label="Work Status" />
         </Tabs>
       </div>
       <div className="container mx-auto">
@@ -178,7 +178,7 @@ function Verify_Fantasy() {
           />
         ) : null}
         {valueTab === "three" ? (
-          <Se4
+          <Se3
             lot={lot}
             mc_code={mc_code}
             EWK_ID={EWK_ID}
