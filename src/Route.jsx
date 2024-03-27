@@ -11,6 +11,7 @@ import Verify from "./Page/Verify/main/Verify";
 import Appbar from "./Components/common/AppbarEworking/AppbarEworking";
 import { useLocation } from "react-router-dom";
 import Final from "./Page/Verify-FINAL/Verify_Final";
+import Verify_Final from "./Page/Verify_Fantasy/Verify_Fantasy";
 function RouteComponents() {
   const location = useLocation();
 
@@ -39,6 +40,7 @@ function RouteComponents() {
         <Route path="/1" element={<No1 />} />
         <Route path="/2" element={<Final />} />
         <Route path="/verify" element={<Verify />} />
+        <Route path="/finalfinail" element={<Verify_Final />} />
       </Routes>
     </>
   );

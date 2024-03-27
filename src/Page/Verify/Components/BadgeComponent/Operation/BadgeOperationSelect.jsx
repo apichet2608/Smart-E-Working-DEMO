@@ -26,7 +26,7 @@ function BadgeToolingSelect({ data, EWK_ID }) {
     p_tools_rev: "",
   });
 
-  const onClickChipselect = (tool_haed, tool_detile) => {
+  const onClickChipselect = (tool_haed, tool_detile, toolresponse) => {
     setOpenDialog(true);
     console.log(tool_haed);
     console.log(tool_detile);
@@ -34,6 +34,17 @@ function BadgeToolingSelect({ data, EWK_ID }) {
       ...prevState,
       ...tool_detile,
     }));
+
+    //loop change
+    const NewMessage = toolresponse.map((item, index) => {
+      return {
+        id: index,
+        op_id: item.ewk_result,
+        status: "OK",
+        message: `Record is successful`,
+      };
+    });
+    setResponseMessage(NewMessage);
   };
 
   const handleClose = () => {
@@ -201,7 +212,11 @@ function BadgeToolingSelect({ data, EWK_ID }) {
           <Chip
             label={item.tool_haed}
             onClick={() => {
-              onClickChipselect(item.tool_haed, item.tool_detile);
+              onClickChipselect(
+                item.tool_haed,
+                item.tool_detile,
+                item.tool_detile.ewk_job_record
+              );
             }}
             icon={<EditNoteIcon />}
           />
