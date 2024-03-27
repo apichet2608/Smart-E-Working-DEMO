@@ -9,6 +9,7 @@ function No1() {
   return (
     <div className="container mx-auto">
       <Components1 handleClick={handlesampleClick} />
+      Benz Edit
     </div>
   );
 }
