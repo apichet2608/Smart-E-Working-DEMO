@@ -17,7 +17,7 @@ import TextInputComponents from "./Components/TextInput/TextInput";
 import Se1 from "./Se1/Se1";
 import Se2 from "./Se2/Se2";
 import Se3 from "./Se3/Se3";
-import Se4 from "./Se4/Se4";
+
 import CardInfo from "./Components/CardInfo/CardInfo";
 import Operator from "./Components/Operator/Operator";
 import CountTime from "./Components/Count_Time/Count_Time";
@@ -185,7 +185,6 @@ function Verify_Fantasy() {
             datainfimation={datainfimation}
           />
         ) : null}
-        <Se4 />
       </div>
       <ToastContainer />
     </div>
