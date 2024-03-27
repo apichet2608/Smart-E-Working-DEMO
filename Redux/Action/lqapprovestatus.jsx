@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const lqapprovestatus = createSlice({
   name: "lqapprovestatus", // ชื่อของ slice
-  initialState: { ewk_item_seq: 6, statusseq: "P" }, // ค่าเริ่มต้น
+  initialState: { ewk_item_seq: 0, statusseq: "P" }, // ค่าเริ่มต้น
   reducers: {
     // สร้าง action ของ slice
     setstatuslq: (state, action) => {
