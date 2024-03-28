@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { setCookie } from "../../../../src/Services/Cookie/setCookie";
 import ButtonLogout from "../ButtonLogout/ButtonLogout";
 import AvatarUser from "./Components/AvatarUser/AvatarUser";
+import { NavLink } from "react-router-dom";
+
 function AppbarEworking() {
   const { tokenValid, isVerifyTokenLoading, userData, verifyToken } = useAuth();
   console.log(userData.user);
@@ -26,7 +28,9 @@ function AppbarEworking() {
       className="flex justify-between p-2 w-full"
       // style={{ backgroundColor: "rgba(255, 255, 255, 0.05)" }}
     >
-      <div style={{ fontWeight: 800, fontSize: "24px" }}>Smart E working</div>
+      <div style={{ fontWeight: 800, fontSize: "24px" }}>
+        <NavLink to="/checkverify"> Smart E working</NavLink>
+      </div>
       <div className="flex gap-2">
         <ToggleThemeButton />
         {/* <ButtonLogout

@@ -8,7 +8,6 @@ function MachinePM(props) {
   const [message, setMessage] = useState("");
   const [dataTable, setDataTable] = useState([]);
   const [statuspm, setStatuspm] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
 
   const { response_API, state, requestApi_PM } = props;
 

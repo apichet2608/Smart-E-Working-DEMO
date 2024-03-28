@@ -1,15 +1,35 @@
 import React, { useState, useEffect } from "react";
 import Chip from "@mui/material/Chip";
 import Badge from "@mui/material/Badge";
+import NoDataBadge from "../Chip_Nodata/NoDataBadge";
 
 function ChipDailyCheck(props) {
-  const { DailyCheckData, DailyStatus } = props;
+  const { DailyCheckData, DailyStatus, message, status, featchDailyCheck } =
+    props;
 
   if (DailyCheckData.length > 0 && DailyCheckData !== null) {
     return (
       <>
-        <Badge badgeContent={DailyStatus} color="primary">
-          <Chip label="Daily Check" />
+        <Badge
+          badgeContent={DailyStatus}
+          color={status === "P" ? "success" : "error"}
+        >
+          <Chip
+            label="Daily Check"
+            sx={{
+              maxWidth: "100%",
+              fontFamily: "Inter Variable, sans-serif",
+              fontWeight: "bold",
+              bgcolor: status === "P" ? "#66BB6A" : "#FFF176",
+              "&:hover": {
+                bgcolor: status === "P" ? "#43A047" : "#FFEE58",
+              },
+              color: "#000",
+              borderColor: status === "P" ? "#33691E" : "#F57F17",
+              borderStyle: "solid",
+              borderWidth: "1px",
+            }}
+          />
         </Badge>
         <div className="flex flex-col">
           <div className="overflow-x-auto">
@@ -60,7 +80,16 @@ function ChipDailyCheck(props) {
       </>
     );
   }
-  return <div>ChipDailyCheck: No Data</div>;
+  return (
+    <div>
+      <NoDataBadge
+        title={"Daily Check"}
+        message={"-"}
+        status={status}
+        onClick={featchDailyCheck}
+      />
+    </div>
+  );
 }
 
 export default ChipDailyCheck;

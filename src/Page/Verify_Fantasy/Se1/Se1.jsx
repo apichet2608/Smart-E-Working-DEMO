@@ -12,12 +12,12 @@ import MachinePM from "../Components/MachinePM/MachinePM";
 import MachineCal from "../Components/MachineCal/MachineCal";
 import FaiAutoVerify from "../Components/FaiAutoVerify/FaiAutoVerify";
 import MachineData from "../Components/MachineData/MachineData";
-import LQApprove from "../Components/SQ1/LQApprove/LQApprove";
-import HoldingTime from "../Components/SQ1/HoldingTime/HoldingTime";
+import LQApprove from "../Components/LQApprove/LQApprove";
+import HoldingTime from "../Components/HoldingTime/HoldingTime";
 import EMCS from "../Components/EMCS/Operator";
 import LeaderApprove from "../Components/LeaderApprove/LeaderApprove";
 import DailyCheck from "../Components/DailyCheck/DailyCheck";
-import TempHumID from "../Components/SQ1/TempHumID/TempHumID";
+import TempHumID from "../Components/TempHumID/TempHumID";
 function Se1(props) {
   const dispatchs = useDispatch();
   const state = useSelector((state) => state.lqapprovestatus);
@@ -157,7 +157,8 @@ function Se1(props) {
   };
 
   const requestholdingtime = async () => {
-    const data = { lot: "994035453", ewk_id: "994035352+V2-02-82_L+2369" };
+    // const data = { lot: "994035453", ewk_id: "994035352+V2-02-82_L+2369" };
+    const data = { lot: lot, ewk_id: EWK_ID };
     const url = `http://10.17.66.242:7010/api/ewk/smart-holding-time/`;
     try {
       console.log("Done");
@@ -167,9 +168,9 @@ function Se1(props) {
         setHoldingTimeData(response_data);
         showSuccessToast("Holding Time");
       } else if (response_data.status === "ERROR") {
-        setHoldingTimeData([]);
+        setHoldingTimeData(response_data);
       } else {
-        setHoldingTimeData([]);
+        setHoldingTimeData(response_data);
       }
       //response.data default
     } catch (error) {
@@ -198,9 +199,9 @@ function Se1(props) {
         setLQApproveData(response_data);
         showSuccessToast("LQ Approve");
       } else if (response_data.status === "ERROR") {
-        setLQApproveData([]);
+        setLQApproveData(response_data);
       } else {
-        setLQApproveData([]);
+        setLQApproveData(response_data);
       }
       //response.data default
     } catch (error) {
@@ -261,15 +262,15 @@ function Se1(props) {
       setDailyCheckData(response);
       showSuccessToast("daily-record");
     } else if (response.status === "ERROR") {
-      setDailyCheckData([]);
+      setDailyCheckData(response);
     } else {
-      setDailyCheckData([]);
+      setDailyCheckData(response);
     }
   };
 
   const featchTempHumID = async () => {
     const data = {
-      ewk_id: EWK_ID,
+      ewk_id: "994035355+R2-17-11_A+2033",
     };
     console.log(data);
     const url = `http://10.17.66.242:7010/api/ewk/smart-temp-hum-data/`;
@@ -279,9 +280,9 @@ function Se1(props) {
       setTempHumIDData(response);
       showSuccessToast("temp-hum");
     } else if (response.status === "ERROR") {
-      setTempHumIDData([]);
+      setTempHumIDData(response);
     } else {
-      setTempHumIDData([]);
+      setTempHumIDData(response);
     }
   };
 
@@ -322,20 +323,26 @@ function Se1(props) {
             {Object.keys(machineData).length > 0 && (
               <MachineData
                 state={state}
-                fetchStatusMachine={fetchStatusMachine}
+                fetchStatusMachine={() => fetchStatusMachine()}
                 response_API={machineData}
               />
             )}
             <div className="mt-6"></div>
             {Object.keys(holdingTimeData).length > 0 && (
               <>
-                <HoldingTime response_API={holdingTimeData} />
+                <HoldingTime
+                  response_API={holdingTimeData}
+                  requestholdingtime={() => requestholdingtime()}
+                />
               </>
             )}
             <div className="mt-6"></div>
             {Object.keys(LQApproveData).length > 0 && (
               <>
-                <LQApprove response_API={LQApproveData} />
+                <LQApprove
+                  response_API={LQApproveData}
+                  requestApprove={() => requestApprove(datainfimation[0])}
+                />
               </>
             )}
             <div className="mt-6"></div>
@@ -354,11 +361,20 @@ function Se1(props) {
             </div> */}
             <div className="mt-6"></div>
             {Object.keys(DailyCheckData).length > 0 && (
-              <DailyCheck response_API={DailyCheckData} />
+              <DailyCheck
+                response_API={DailyCheckData}
+                // call api
+                featchDailyCheck={() => featchDailyCheck()}
+              />
             )}
             <div className="mt-6"></div>
             {Object.keys(TempHumIDData).length > 0 && (
-              <TempHumID response_API={TempHumIDData} />
+              <TempHumID
+                response_API={TempHumIDData}
+                // call api
+                featchTempHumID={() => featchTempHumID()}
+                state={state}
+              />
             )}
             {/* <LeaderApprove EWK_ID={EWK_ID} /> */}
           </div>

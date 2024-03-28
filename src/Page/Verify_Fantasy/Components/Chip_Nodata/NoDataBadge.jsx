@@ -18,6 +18,8 @@ function NoDataBadge({ title, message, status, onClick }) {
               fontWeight: 500,
               marginBottom: "14px",
               backgroundColor: "#757575",
+              // start end
+              // ml: "10px",
             }}
           >
             {message ? message : status}

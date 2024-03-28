@@ -41,14 +41,18 @@ function FaiAutoVerify(props) {
             <>
               <ChipNotFoundData
                 title={title}
-                message={message}
+                message={"-"}
                 onClick={fetchDataForVerification}
               />
             </>
           )}
         </>
       ) : (
-        <ChipError title={title} message={message} />
+        <ChipError
+          title={title}
+          message={message}
+          onClick={fetchDataForVerification}
+        />
       )}
     </>
   );
