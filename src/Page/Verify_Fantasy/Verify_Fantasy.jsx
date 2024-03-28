@@ -82,7 +82,7 @@ function Verify_Fantasy() {
     if (datainfimation && datainfimation.length > 0) {
       const ewk_id = lot + "+" + mc_code + "+" + datainfimation[0].proc_id;
       setEWK_ID(ewk_id);
-      featchoperatorData(datainfimation[0]);
+      // featchoperatorData(datainfimation[0]);
     } else {
       setEWK_ID("");
     }

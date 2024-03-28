@@ -152,9 +152,26 @@ function ChipmachineData_sub(props) {
     <>
       <Badge
         badgeContent={statusChip}
-        color={statusChip === "P" ? "primary" : "error"}
+        // color={statusChip === "P" ? "primary" : "error"}
+        color={statusChip === "P" ? "success" : "error"}
       >
-        <Chip label={titlename} onClick={handleClickOpen} />
+        <Chip
+          label={titlename.toUpperCase()}
+          onClick={handleClickOpen}
+          sx={{
+            maxWidth: "100%",
+            fontFamily: "Inter Variable, sans-serif",
+            fontWeight: "bold",
+            bgcolor: statusChip === "P" ? "#66BB6A" : "#FFF176",
+            "&:hover": {
+              bgcolor: statusChip === "P" ? "#43A047" : "#FFEE58",
+            },
+            color: "#000",
+            borderColor: statusChip === "P" ? "#33691E" : "#F57F17",
+            borderStyle: "solid",
+            borderWidth: "1px",
+          }}
+        />
       </Badge>
       <Dialog
         fullScreen={true}

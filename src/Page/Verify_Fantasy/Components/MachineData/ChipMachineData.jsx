@@ -14,10 +14,27 @@ function ChipMachineData(props) {
   return (
     <div>
       <Badge
-        badgeContent={statusChipMain === "PASS" ? "P" : "F"}
-        color="primary"
+        badgeContent={statusChipMain === "P" ? "P" : "F"}
+        // color="primary"
+        color={statusChipMain === "P" ? "success" : "error"}
       >
-        <Chip label={title} onClick={handleClicked} />
+        <Chip
+          label={title}
+          onClick={handleClicked}
+          sx={{
+            maxWidth: "100%",
+            fontFamily: "Inter Variable, sans-serif",
+            fontWeight: "bold",
+            bgcolor: statusChipMain === "P" ? "#66BB6A" : "#FFF176",
+            "&:hover": {
+              bgcolor: statusChipMain === "P" ? "#43A047" : "#FFEE58",
+            },
+            color: "#000",
+            borderColor: statusChipMain === "P" ? "#33691E" : "#F57F17",
+            borderStyle: "solid",
+            borderWidth: "1px",
+          }}
+        />
       </Badge>
     </div>
   );

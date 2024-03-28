@@ -7,8 +7,8 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
 import TableData from "./Components/TableData/TableData";
+
 function ChipPM(props) {
   const { status, title, data, state, requestApi_PM } = props;
   const [open, setOpen] = React.useState(false);
@@ -25,8 +25,25 @@ function ChipPM(props) {
 
   return (
     <div>
-      <Badge badgeContent={status} color="primary">
-        <Chip label={title} onClick={handleClickOpen} />
+      <Badge
+        badgeContent={<p>{status}</p>}
+        color={status === "P" ? "success" : "error"}
+      >
+        <Chip
+          label={title}
+          onClick={handleClickOpen}
+          sx={{
+            bgcolor: status === "P" ? "#66BB6A" : "#FFF176",
+            "&:hover": {
+              bgcolor: status === "P" ? "#43A047" : "#FFEE58",
+            },
+            color: "#000",
+            fontWeight: "bold",
+            borderColor: status === "P" ? "#33691E" : "#F57F17",
+            borderStyle: "solid",
+            borderWidth: "1px",
+          }}
+        />
       </Badge>
 
       <Dialog

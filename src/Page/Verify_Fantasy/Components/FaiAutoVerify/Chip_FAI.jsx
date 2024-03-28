@@ -20,16 +20,18 @@ function Chip_FAI(props) {
       setHasEmptyDataArray(datacheck.some((item) => item.data.length === 0));
     }
   }, [datacheck]);
+
   const handleClicked = async () => {
     if (state.ewk_item_seq <= 1) {
       await fetchDataForVerification();
     }
   };
+
   return (
     <div>
       <Badge
         badgeContent={!hasEmptyDataArray && hasData ? "P" : "F"}
-        color="primary" // This is the color of the badge
+        color={!hasEmptyDataArray && hasData ? "success" : "error"}
       >
         <Chip
           label={title}
@@ -37,9 +39,16 @@ function Chip_FAI(props) {
             maxWidth: "100%",
             fontFamily: "Inter Variable, sans-serif",
             fontWeight: 500,
+            bgcolor: !hasEmptyDataArray && hasData ? "#66BB6A" : "#FFF176",
+            "&:hover": {
+              bgcolor: !hasEmptyDataArray && hasData ? "#43A047" : "#FFEE58",
+            },
+            color: "#000",
+            borderColor: !hasEmptyDataArray && hasData ? "#33691E" : "#F57F17",
+            borderStyle: "solid",
+            borderWidth: "1px",
           }}
           onClick={handleClicked}
-          //   color={!hasEmptyDataArray && hasData ? "primary" : "primary"}
         />
       </Badge>
     </div>

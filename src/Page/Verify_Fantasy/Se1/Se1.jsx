@@ -6,6 +6,7 @@ import {
   showErrorToast,
 } from "../Components/Toast/Toast";
 import PostAPI from "../API/POST/PostAPI";
+import CheckSeq from "../API/smart-ewk-id-status";
 import GetAPI from "../API/GET/GetAPI";
 import MachinePM from "../Components/MachinePM/MachinePM";
 import MachineCal from "../Components/MachineCal/MachineCal";
@@ -33,31 +34,32 @@ function Se1(props) {
   const [TempHumIDData, setTempHumIDData] = useState([]);
 
   useEffect(() => {
-    if (
-      state.ewk_item_seq <= 1 &&
-      EWK_ID !== "" &&
-      datainfimation &&
-      datainfimation.length > 0
-    ) {
+    if (EWK_ID !== "" && datainfimation && datainfimation.length > 0) {
       console.log("EWK", EWK_ID);
       GetAsyncAPI();
     } else {
       console.log("EWK2", EWK_ID);
-      GetAsyncAPI();
     }
   }, [EWK_ID]);
 
   const GetAsyncAPI = async () => {
+    const data = {
+      ewk_id: EWK_ID,
+    };
+    const checkSeq = await CheckSeq(data);
+    console.log(checkSeq);
+    // if (checkSeq.data.data.ewk_item_seq === 1) {
     await requestApi_PM();
     // await requestApi_Cal_monthly_detail();
     await fetchDataForVerification(datainfimation[0]);
     await fetchStatusMachine();
     await requestholdingtime();
     await requestApprove(datainfimation[0]);
-    await featchemcsData(datainfimation[0]);
-    await featchtoolData(datainfimation[0]);
+    // await featchemcsData(datainfimation[0]);
+    // await featchtoolData(datainfimation[0]);
     await featchDailyCheck();
     await featchTempHumID();
+    // }
     // lq approver and Gr&R
     // total = 7
   };
@@ -72,11 +74,11 @@ function Se1(props) {
       setpm(response_data);
       showSuccessToast("Machine PM");
     } else if (response_data.status === "ERROR") {
-      setpm([]);
+      setpm(response_data);
       showWarningToast("API ERROR Machine PM");
     } else {
       console.log("Catch");
-      setpm([]);
+      setpm(response_data);
       showErrorToast("Server Catch Machine PM");
     }
   };
@@ -118,10 +120,10 @@ function Se1(props) {
       setFaiAutoVerify(response_data);
       showSuccessToast("FAI Auto Verify");
     } else if (response_data.status === "ERROR") {
-      setFaiAutoVerify([]);
+      setFaiAutoVerify(response_data);
       showWarningToast("FAI Auto Verify");
     } else {
-      setFaiAutoVerify([]);
+      setFaiAutoVerify(response_data);
       showErrorToast("FAI Auto Verify");
     }
   };
@@ -146,10 +148,10 @@ function Se1(props) {
       setmachineData(response_data);
       showSuccessToast("Machine Data");
     } else if (response_data.status === "ERROR") {
-      setmachineData([]);
+      setmachineData(response_data);
       showSuccessToast("Machine Data");
     } else {
-      setmachineData([]);
+      setmachineData(response_data);
       showSuccessToast("Machine Data");
     }
   };
@@ -288,6 +290,7 @@ function Se1(props) {
       {EWK_ID !== "" && (
         <>
           <div className=" container mx-auto mt-4">
+            <div className="mt-6"></div>
             {Object.keys(pm).length > 0 && (
               <MachinePM
                 response_API={pm}
@@ -295,8 +298,8 @@ function Se1(props) {
                 requestApi_PM={() => requestApi_PM()}
               />
             )}
-            <div className="mt-6"></div>
-            {Object.keys(calibration).length > 0 && (
+            {/* <div className="mt-6"></div> */}
+            {/* {Object.keys(calibration).length > 0 && (
               <MachineCal
                 response_API={calibration}
                 state={state}
@@ -304,8 +307,7 @@ function Se1(props) {
                   requestApi_Cal_monthly_detail()
                 }
               />
-            )}
-
+            )} */}
             <div className="mt-6"></div>
             {Object.keys(faiAutoVerify).length > 0 && (
               <FaiAutoVerify
@@ -316,7 +318,6 @@ function Se1(props) {
                 }
               />
             )}
-
             <div className="mt-6"></div>
             {Object.keys(machineData).length > 0 && (
               <MachineData
@@ -359,7 +360,7 @@ function Se1(props) {
             {Object.keys(TempHumIDData).length > 0 && (
               <TempHumID response_API={TempHumIDData} />
             )}
-            <LeaderApprove EWK_ID={EWK_ID} />
+            {/* <LeaderApprove EWK_ID={EWK_ID} /> */}
           </div>
         </>
       )}

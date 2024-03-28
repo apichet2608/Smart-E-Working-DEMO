@@ -11,8 +11,6 @@ function FaiAutoVerify(props) {
 
   useEffect(() => {
     if (response_API.status === "OK") {
-      console.log(response_API);
-      console.log(response_API.data.data.fai_verify_report);
       setTitle("Fai Auto Verify");
       setMessage(response_API.message);
       setDataTable(response_API.data.data.fai_verify_report); // Added this line
@@ -24,31 +22,33 @@ function FaiAutoVerify(props) {
 
   return (
     <>
-      {dataTable && dataTable.length > 0 ? (
-        <div>
-          {response_API.status === "OK" ? (
-            <>
-              {dataTable.length > 0 && (
-                <div className="flex gap-2">
-                  <Chip_FAI_MAIN
-                    datacheck={response_API.data.data.fai_verify_report}
-                    title={title}
-                    message={message}
-                    state={state}
-                    fetchDataForVerification={fetchDataForVerification}
-                  />
-                  {dataTable.map((item, index) => {
-                    return <ChipFAI key={index} data={item} />;
-                  })}
-                </div>
-              )}
-            </>
+      {response_API.status === "OK" ? (
+        <>
+          {dataTable.length > 0 ? (
+            <div className="flex gap-2">
+              <Chip_FAI_MAIN
+                datacheck={response_API.data.data.fai_verify_report}
+                title={title}
+                message={message}
+                state={state}
+                fetchDataForVerification={fetchDataForVerification}
+              />
+              {dataTable.map((item, index) => {
+                return <ChipFAI key={index} data={item} />;
+              })}
+            </div>
           ) : (
-            <ChipError title={title} message={message} />
+            <>
+              <ChipNotFoundData
+                title={title}
+                message={message}
+                onClick={fetchDataForVerification}
+              />
+            </>
           )}
-        </div>
+        </>
       ) : (
-        <ChipNotFoundData title={title} message={message} />
+        <ChipError title={title} message={message} />
       )}
     </>
   );

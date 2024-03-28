@@ -3,7 +3,7 @@ import Badge from "@mui/material/Badge";
 import Chip from "@mui/material/Chip";
 import Typography from "@mui/material/Typography";
 
-function ErrorBadge({ title, message }) {
+function ErrorBadge({ title, message, onClick }) {
   return (
     <div>
       {/* {title} */}
@@ -18,8 +18,8 @@ function ErrorBadge({ title, message }) {
               fontWeight: 500,
               marginBottom: "14px",
               backgroundColor: "red",
+              whiteSpace: "nowrap",
             }}
-            // color={"error"}
           >
             {message}
           </Typography>
@@ -34,6 +34,7 @@ function ErrorBadge({ title, message }) {
             fontFamily: "Inter Variable, sans-serif",
             fontWeight: 500,
           }}
+          onClick={onClick}
         />
       </Badge>
     </div>

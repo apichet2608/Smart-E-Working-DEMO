@@ -20,7 +20,7 @@ function MachineData(props) {
         response_API.data.data.data.length > 0
       ) {
         setDataTable(response_API.data.data.data); // Added this line
-        setStatusChipMain(response_API.data.judgment_machine);
+        setStatusChipMain(response_API.data.ewk_judge);
         setGroupDataTable(response_API.data.data); // Added this line
         console.log("dataTable", dataTable);
         console.log("dataTable", response_API.data.data);
@@ -75,15 +75,27 @@ function MachineData(props) {
               )}
             </>
           ) : (
-            <ChipError title={title} message={message} />
+            <ChipError
+              title={title}
+              message={message}
+              onClick={() => fetchStatusMachine()}
+            />
           )}
         </div>
       ) : (
         <>
           {response_API.status === "OK" ? (
-            <ChipNotFoundData title={title} message={message} />
+            <ChipNotFoundData
+              title={title}
+              message={message}
+              onClick={() => fetchStatusMachine()}
+            />
           ) : (
-            <ChipError title={title} message={message} />
+            <ChipError
+              title={title}
+              message={message}
+              onClick={() => fetchStatusMachine()}
+            />
           )}
         </>
       )}

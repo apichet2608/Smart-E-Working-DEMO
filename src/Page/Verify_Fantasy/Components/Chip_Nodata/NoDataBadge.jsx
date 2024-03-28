@@ -3,7 +3,7 @@ import Badge from "@mui/material/Badge";
 import Chip from "@mui/material/Chip";
 import Typography from "@mui/material/Typography";
 
-function NoDataBadge({ title, message }) {
+function NoDataBadge({ title, message, status, onClick }) {
   return (
     <div>
       {/* {title} */}
@@ -19,9 +19,8 @@ function NoDataBadge({ title, message }) {
               marginBottom: "14px",
               backgroundColor: "#757575",
             }}
-            // color={"error"}
           >
-            {message ? message : "-"}
+            {message ? message : status}
           </Typography>
         }
         sx={{
@@ -37,7 +36,14 @@ function NoDataBadge({ title, message }) {
             maxWidth: "100%",
             fontFamily: "Inter Variable, sans-serif",
             fontWeight: 500,
+            // bgcolor: status === "P" ? "#66BB6A" : "#FFF176",
+            color: "#000",
+            // fontWeight: "bold",
+            borderColor: status === "P" ? "#33691E" : "#F57F17",
+            borderStyle: "solid",
+            borderWidth: "1px",
           }}
+          onClick={onClick}
         />
       </Badge>
     </div>

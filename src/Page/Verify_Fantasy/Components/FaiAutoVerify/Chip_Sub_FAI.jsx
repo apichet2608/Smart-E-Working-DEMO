@@ -47,13 +47,33 @@ function ChipFAI(props) {
             }
             color={
               data.data.filter((item) => item.ewk_judge === "P")
-                ? "primary"
+                ? "success"
                 : "error"
             }
           >
             <Chip
               label={data.jwpv_job_type}
               onClick={() => handleClickOpen(data.data)}
+              sx={{
+                maxWidth: "100%",
+                fontFamily: "Inter Variable, sans-serif",
+                fontWeight: 500,
+                bgcolor: data.data.filter((item) => item.ewk_judge === "P")
+                  ? "#66BB6A"
+                  : "#FFF176",
+                "&:hover": {
+                  bgcolor: data.data.filter((item) => item.ewk_judge === "P")
+                    ? "#43A047"
+                    : "#FFEE58",
+                },
+                color: "#000",
+                // fontWeight: "bold",
+                borderColor: data.data.filter((item) => item.ewk_judge === "P")
+                  ? "#33691E"
+                  : "#F57F17",
+                borderStyle: "solid",
+                borderWidth: "1px",
+              }}
             />
           </Badge>
         </>
@@ -80,7 +100,7 @@ function ChipFAI(props) {
         >
           <Chip
             label={data.jwpv_job_type}
-            color={data.ewk_judge === "P" ? "success" : undefined}
+            color={data.ewk_judge === "P" ? "success" : "error"}
             sx={{
               maxWidth: "100%",
               fontFamily: "Inter Variable, sans-serif",
