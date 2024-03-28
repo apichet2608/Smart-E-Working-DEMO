@@ -17,7 +17,11 @@ import TextInputComponents from "./Components/TextInput/TextInput";
 import Se1 from "./Se1/Se1";
 import Se2 from "./Se2/Se2";
 import Se3 from "./Se3/Se3";
+<<<<<<< HEAD
 
+=======
+import Se4 from "./Se4/Se4";
+>>>>>>> Wiranphat
 import CardInfo from "./Components/CardInfo/CardInfo";
 import Operator from "./Components/Operator/Operator";
 import CountTime from "./Components/Count_Time/Count_Time";
@@ -156,7 +160,7 @@ function Verify_Fantasy() {
         >
           <Tab value="one" label="Seq One" />
           <Tab value="two" label="Seq Two" />
-          <Tab value="three" label="Seq Three" />
+          <Tab value="three" label="Work Status" />
         </Tabs>
       </div>
       <div className="container mx-auto">
