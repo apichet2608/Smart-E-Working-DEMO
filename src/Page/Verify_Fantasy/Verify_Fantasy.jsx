@@ -49,6 +49,7 @@ function Verify_Fantasy() {
     const params = {
       lot: lot,
       is_roll: false,
+      mc_code: mc_code,
     };
     const url = `${
       import.meta.env.VITE_IP_API_E_WORKING
@@ -154,7 +155,7 @@ function Verify_Fantasy() {
           aria-label="secondary tabs example"
         >
           <Tab value="one" label="Seq One" />
-          <Tab value="two" label="Seq Two" />
+          <Tab value="two" label="OP" />
           <Tab value="three" label="Work Status" />
         </Tabs>
       </div>

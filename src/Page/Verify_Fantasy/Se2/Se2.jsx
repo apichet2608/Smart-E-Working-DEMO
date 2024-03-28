@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { Button } from "@nextui-org/react";
+
 import { useSelector, useDispatch } from "react-redux";
 import {
   showSuccessToast,
@@ -61,13 +63,53 @@ function Se2(props) {
     }
   };
 
+  // const opSubmitBtnUrl = `http://10.17.66.242:7010/api/ewk/smart-call-fpc-eworking-set-tooling-code/`;
+  /*Sample body parameter for opSubmitBtnUrl API
+  for op
+  {
+    "p_scan_type": "POS",        // scan type
+    "p_lot_mos": "994035355",   // lot
+    "p_process": "2033",        // process id
+    "p_tools_type": "005",         // tools type //?Fixed
+    "p_tools_code": "5053387",         // tools code
+    "p_machine": "R2-17-11_A",            // mc code
+    "p_user": "A-RCSC",               // employee code
+    "p_station": "R2-17-11_A",             //
+    "ewk_id": "",
+    "ewk_item": "",
+    "ewk_item_detail": ""
+  }
+  for dcc
+  {
+    "p_scan_type": "POS",        // scan type
+    "p_lot_mos": "994035350",   // lot
+    "p_process": "2033",        // process id
+    "p_tools_type": "003",         // tools type //?Fixed
+    "p_tools_code": "EMCS-A1-ECF-21-0361+3",         // tools code
+    "p_machine": "R2-17-11_A",            // mc code
+    "p_user": "A-RCSC",               // employee code
+    "p_station": "R2-17-11_A",             //
+    "ewk_id": "",
+    "ewk_item": "",
+    "ewk_item_detail": ""
+  }
+  */
+
   return (
-    <div>
+    <div className="grid grid-cols-1 gap-4">
       <div>
         {Object.keys(toolingData).length > 0 && (
           <Tooling response_API={toolingData} EWK_ID={EWK_ID} />
           // <>TEST</>
         )}
+      </div>
+      <div className="grid gap-4">
+        <Button color="primary" className="w-full">
+          Scan OP
+        </Button>
+        <Button color="primary" className="w-full">
+          DCC
+        </Button>
       </div>
     </div>
   );
