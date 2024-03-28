@@ -108,7 +108,7 @@ function Chip_Operator(props) {
     console.log(renamedDatacChip);
     try {
       const body = renamedDatacChip;
-      const url = `http://10.17.66.242:7010/api/ewk/smart-call-fpc-eworking-set-tooling-code/`;
+      const url = `http://10.17.66.242:7011/api/ewk/smart-call-fpc-eworking-set-tooling-code/`;
       const response_data = await PostAPI(body, url);
 
       if (response_data.status === "OK") {

@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
 import ChipTempHumID from "./ChipTempHumID";
+import Chip from "@mui/material/Chip";
+import Badge from "@mui/material/Badge";
+import ChipNodata from "../../Chip_Nodata/NoDataBadge";
+import ChipERROR from "../../Chip_Error/ErrorBadge";
 function TempHumID(props) {
   const { response_API } = props;
   const [TempHumIDData, setTempHumIDData] = useState([]);
@@ -20,7 +24,11 @@ function TempHumID(props) {
           TempHumIDStatus={TempHumIDStatus}
         />
       ) : (
-        <>{response_API.data.message}</>
+        // <>{response_API.data.message}</>
+        <ChipNodata
+          title={"Temp & HumID"}
+          message={response_API.data.message}
+        />
       )}
     </div>
   );

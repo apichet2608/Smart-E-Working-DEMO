@@ -22,8 +22,10 @@ import CardInfo from "./Components/CardInfo/CardInfo";
 import Operator from "./Components/Operator/Operator";
 import CountTime from "./Components/Count_Time/Count_Time";
 function Verify_Fantasy() {
-  const [lot, setLot] = useState("994035355");
-  const [mc_code, setMc_code] = useState("R2-17-11_A");
+  // const [lot, setLot] = useState("994035355");
+  // const [mc_code, setMc_code] = useState("R2-17-11_A");
+  const [lot, setLot] = useState("994035352");
+  const [mc_code, setMc_code] = useState("V2-02-82_L");
   const [datainfimation, setdatainfimation] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const dispatchs = useDispatch();
@@ -50,6 +52,7 @@ function Verify_Fantasy() {
     const params = {
       lot: lot,
       is_roll: false,
+      mc_code: mc_code,
     };
     const url = `${
       import.meta.env.VITE_IP_API_E_WORKING
@@ -63,7 +66,7 @@ function Verify_Fantasy() {
       } else if (response_data.status === "ERROR") {
         console.log(response_data);
         setdatainfimation([]);
-        showWarningToast("FPC LOT Search");
+        showWarningToast(`FPC LOT Search  ${response_data.data.message}`);
       } else {
         setdatainfimation([]);
         console.log(response_data);
@@ -93,7 +96,7 @@ function Verify_Fantasy() {
       lot: lot,
       mc_code: mc_code,
     };
-    const url = `http://10.17.66.242:7010/api/ewk/smart-tool-type-operator/`;
+    const url = `http://10.17.66.242:7011/api/ewk/smart-tool-type-operator/`;
     const response_data = await PostAPI(data, url);
     console.log(response_data);
     if (response_data.status === "OK") {

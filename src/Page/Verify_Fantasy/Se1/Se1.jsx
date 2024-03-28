@@ -138,7 +138,7 @@ function Se1(props) {
       ewk_id: EWK_ID,
       // ewk_item: "Machine Data",
     };
-    const url = `http://10.17.66.242:7010/api/ewk/smart-machine-data-scada-realtime-center/`;
+    const url = `http://10.17.66.242:7011/api/ewk/smart-machine-data-scada-realtime-center/`;
     const response_data = await PostAPI(params, url);
 
     if (response_data.status === "OK") {
@@ -154,8 +154,8 @@ function Se1(props) {
   };
 
   const requestholdingtime = async () => {
-    const data = { lot: lot, ewk_id: EWK_ID, ewk_item: "holding time" };
-    const url = `http://10.17.66.242:7010/api/ewk/smart-holding-time/`;
+    const data = { lot: "994035453", ewk_id: "994035352+V2-02-82_L+2369" };
+    const url = `http://10.17.66.242:7011/api/ewk/smart-holding-time/`;
     try {
       console.log("Done");
       const response_data = await PostAPI(data, url);
@@ -185,7 +185,7 @@ function Se1(props) {
       ewk_grr_id: EWK_ID,
       ewk_grr_item: "GR&R",
     };
-    const url = `http://10.17.66.242:7010/api/ewk/smart-lq-approve/`;
+    const url = `http://10.17.66.242:7011/api/ewk/smart-lq-approve/`;
     try {
       console.log("Done");
       const response_data = await PostAPI(data, url);
@@ -212,7 +212,7 @@ function Se1(props) {
       lot: lot,
       mc_code: mc_code,
     };
-    const url = `http://10.17.66.242:7010/api/ewk/smart-tool-type-emcs/`;
+    const url = `http://10.17.66.242:7011/api/ewk/smart-tool-type-emcs/`;
     const response = await PostAPI(data, url);
     console.log(response);
     if (response.status === "OK") {
@@ -233,7 +233,7 @@ function Se1(props) {
       mc_code: mc_code,
     };
     console.log(data);
-    const url = `http://10.17.66.242:7010/api/ewk/smart-tool-type-tool/`;
+    const url = `http://10.17.66.242:7011/api/ewk/smart-tool-type-tool/`;
     const response = await PostAPI(data, url);
     console.log(response);
     if (response.status === "OK") {
@@ -251,7 +251,7 @@ function Se1(props) {
       ewk_id: EWK_ID,
     };
     console.log(data);
-    const url = `http://10.17.66.242:7010/api/ewk/smart-ewk-daily-record/`;
+    const url = `http://10.17.66.242:7011/api/ewk/smart-ewk-daily-record/`;
     const response = await PostAPI(data, url);
     console.log(response);
     if (response.status === "OK") {
@@ -269,7 +269,7 @@ function Se1(props) {
       ewk_id: EWK_ID,
     };
     console.log(data);
-    const url = `http://10.17.66.242:7010/api/ewk/smart-temp-hum-data/`;
+    const url = `http://10.17.66.242:7011/api/ewk/smart-temp-hum-data/`;
     const response = await PostAPI(data, url);
     console.log(response);
     if (response.status === "OK") {

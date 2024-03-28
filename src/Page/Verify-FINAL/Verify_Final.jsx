@@ -274,7 +274,7 @@ function Verify_Final() {
       ewk_id: EWK_ID,
       ewk_item: "Machine Data",
     };
-    const url = `http://10.17.66.242:7010/api/ewk/smart-fpc-scada-realtime-center/`;
+    const url = `http://10.17.66.242:7011/api/ewk/smart-fpc-scada-realtime-center/`;
     const response_data = await GetAPI(params, url);
 
     if (response_data.status === "OK") {
@@ -293,7 +293,7 @@ function Verify_Final() {
 
   const requestholdingtime = async () => {
     const data = { lot: lot, ewk_id: EWK_ID, ewk_item: "holding time" };
-    const url = `http://10.17.66.242:7010/api/ewk/smart-holding-time/`;
+    const url = `http://10.17.66.242:7011/api/ewk/smart-holding-time/`;
     try {
       console.log("Done");
       const response_data = await PostAPI(data, url);
@@ -324,7 +324,7 @@ function Verify_Final() {
       ewk_grr_id: EWK_ID,
       ewk_grr_item: "GR&R",
     };
-    const url = `http://10.17.66.242:7010/api/ewk/smart-lq-approve/`;
+    const url = `http://10.17.66.242:7011/api/ewk/smart-lq-approve/`;
     try {
       console.log("Done");
       const response_data = await PostAPI(data, url);
@@ -351,7 +351,7 @@ function Verify_Final() {
       mc_code: mc_code,
     };
     console.log(data);
-    const url = `http://10.17.66.242:7010/api/ewk/smart-tool-type-tool/`;
+    const url = `http://10.17.66.242:7011/api/ewk/smart-tool-type-tool/`;
     const response_data = await PostAPI(data, url);
     console.log(response_data);
     if (response_data.status === "OK") {
@@ -370,7 +370,7 @@ function Verify_Final() {
       lot: lot,
       mc_code: mc_code,
     };
-    const url = `http://10.17.66.242:7010/api/ewk/smart-tool-type-operator/`;
+    const url = `http://10.17.66.242:7011/api/ewk/smart-tool-type-operator/`;
     const response_data = await PostAPI(data, url);
     console.log(response_data);
     if (response_data.status === "OK") {
@@ -389,7 +389,7 @@ function Verify_Final() {
       lot: lot,
       mc_code: mc_code,
     };
-    const url = `http://10.17.66.242:7010/api/ewk/smart-tool-type-emcs/`;
+    const url = `http://10.17.66.242:7011/api/ewk/smart-tool-type-emcs/`;
     const response_data = await PostAPI(data, url);
     console.log(response_data);
     if (response_data.status === "OK") {

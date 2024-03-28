@@ -32,6 +32,7 @@ function ChipmachineData_sub(props) {
       console.log(hasFailStatus);
       setStatusChip(hasFailStatus ? "F" : "P");
       const column = generateColumns(data, titlename.toUpperCase());
+      console.log("titlename", titlename);
       console.log("column", column);
       setColumnData(column);
     }
@@ -105,6 +106,29 @@ function ChipmachineData_sub(props) {
               "roll",
               "first_lot",
               "end_lot",
+              "id",
+            ].includes(header)
+        )
+        .map((header) => ({
+          field: header,
+          headerName: header,
+          width: 150, // กำหนดความกว้างของคอลัมน์ตามต้องการ
+        }));
+    }
+    if (name === "ALL") {
+      return [...new Set(dataArray.flatMap(Object.keys))]
+        .filter(
+          (header) =>
+            ![
+              // "machine",
+              // "condition",
+              // "parameter_desc",
+              // "usl",
+              // "lsl",
+              // "target",
+              // "result",
+              // "ptime",
+              // "set",
               "id",
             ].includes(header)
         )

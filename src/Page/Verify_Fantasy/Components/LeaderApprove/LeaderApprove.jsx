@@ -14,8 +14,8 @@ function LeaderApprove(props) {
       leader_id: "7044497",
     };
     // const
-    // http://10.17.66.242:7010/api/ewk/smart-ready-leader-approved/
-    const url = `http://10.17.66.242:7010/api/ewk/smart-ready-leader-approved/`;
+    // http://10.17.66.242:7011/api/ewk/smart-ready-leader-approved/
+    const url = `http://10.17.66.242:7011/api/ewk/smart-ready-leader-approved/`;
     try {
       const response1 = await axios.post(url, body);
       console.log(response1);
