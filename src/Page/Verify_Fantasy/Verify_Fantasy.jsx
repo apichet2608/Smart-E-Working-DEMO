@@ -95,7 +95,7 @@ function Verify_Fantasy() {
       lot: lot,
       mc_code: mc_code,
     };
-    const url = `http://10.17.66.242:7011/api/ewk/smart-tool-type-operator/`;
+    const url = `http://10.17.66.242:7010/api/ewk/smart-tool-type-operator/`;
     const response_data = await PostAPI(data, url);
     console.log(response_data);
     if (response_data.status === "OK") {

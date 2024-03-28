@@ -195,7 +195,7 @@ const Timer = ({ EWK_ID, datainfimation, mc_code }) => {
     };
     console.log(body);
     const response = await axios.post(
-      `http://10.17.66.242:7011/api/ewk/smart-start/`,
+      `http://10.17.66.242:7010/api/ewk/smart-start/`,
       body
     );
     console.log(response);

@@ -48,7 +48,7 @@ function Se2(props) {
       mc_code: mc_code,
     };
     console.log(data);
-    const url = `http://10.17.66.242:7011/api/ewk/smart-tool-type-tool/`;
+    const url = `http://10.17.66.242:7010/api/ewk/smart-tool-type-tool/`;
     const response = await PostAPI(data, url);
     console.log(response);
     if (response.status === "OK") {

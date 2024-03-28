@@ -13,6 +13,7 @@ const PostAPI = async (data, url) => {
 
   try {
     const response = await axios.request(config);
+    console.log(response);
     if (response.data.status === "OK") {
       return {
         status: "OK",

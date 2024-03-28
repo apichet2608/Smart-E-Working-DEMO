@@ -6,7 +6,7 @@ const getDataVerify = async (mc_code, proc_grp_name) => {
   let config = {
     method: "post",
     maxBodyLength: Infinity,
-    url: `http://10.17.66.242:7011/api/ewk/smart-verdify-report/`,
+    url: `http://10.17.66.242:7010/api/ewk/smart-verdify-report/`,
     headers: {
       "Content-Type": "application/json",
     },
