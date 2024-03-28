@@ -112,24 +112,7 @@ function Se3({ lot, mc_code, datainfimation, EWK_ID }) {
         setIsSeqStart(true);
         setIsSeqReady(false);
 
-        axios
-          .get(
-            `${
-              import.meta.env.VITE_IP_API
-            }/smart_ewk_job_record/e_working_verify/smart_eworking/getDataJobRecord?ewk_id=${encodeURIComponent(
-              EWK_ID
-            )}&ewk_item_seq=7&ewk_item=Start`
-          )
-          .then((response) => {
-            console.log(response.data);
-            const data = response.data;
-            const createDateStart = data.map((item) => item.create_at);
-            console.log("Create Date Start: ", createDateStart);
-            setCreateDateStart(createDateStart ? createDateStart : "");
-          })
-          .catch((error) => {
-            console.error("Error fetching data:", error);
-          });
+        getCreateDateStart();
 
         return {
           status: "OK",
@@ -175,24 +158,7 @@ function Se3({ lot, mc_code, datainfimation, EWK_ID }) {
         setIsSeqStop(true);
         setIsSeqStart(false);
 
-        axios
-          .get(
-            `${
-              import.meta.env.VITE_IP_API
-            }/smart_ewk_job_record/e_working_verify/smart_eworking/getDataJobRecord?ewk_id=${encodeURIComponent(
-              EWK_ID
-            )}&ewk_item_seq=8&ewk_item=Stop`
-          )
-          .then((response) => {
-            console.log(response.data);
-            const data = response.data;
-            const createDateStop = data.map((item) => item.create_at);
-            console.log("Create Date Stop: ", createDateStop);
-            setCreateDateStop(createDateStop ? createDateStop : "");
-          })
-          .catch((error) => {
-            console.error("Error fetching data:", error);
-          });
+        getCreateDateStop();
 
         return {
           status: "OK",
@@ -247,10 +213,56 @@ function Se3({ lot, mc_code, datainfimation, EWK_ID }) {
       });
   }, [EWK_ID]);
 
+  //get create date for start
+  const getCreateDateStart = () => {
+    axios
+      .get(
+        `${
+          import.meta.env.VITE_IP_API
+        }/smart_ewk_job_record/e_working_verify/smart_eworking/getDataJobRecord?ewk_id=${encodeURIComponent(
+          EWK_ID
+        )}&ewk_item_seq=7&ewk_item=Start`
+      )
+      .then((response) => {
+        console.log(response.data);
+        const data = response.data;
+        const createDateStart = data.map((item) => item.create_at);
+        console.log("Create Date Start: ", createDateStart);
+        setCreateDateStart(createDateStart ? createDateStart : "");
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  };
+
+  //get create date for stop
+  const getCreateDateStop = () => {
+    axios
+      .get(
+        `${
+          import.meta.env.VITE_IP_API
+        }/smart_ewk_job_record/e_working_verify/smart_eworking/getDataJobRecord?ewk_id=${encodeURIComponent(
+          EWK_ID
+        )}&ewk_item_seq=8&ewk_item=Stop`
+      )
+      .then((response) => {
+        console.log(response.data);
+        const data = response.data;
+        const createDateStop = data.map((item) => item.create_at);
+        console.log("Create Date Stop: ", createDateStop);
+        setCreateDateStop(createDateStop ? createDateStop : "");
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  };
+
   console.log("maxItemSeq", maxItemSeq);
 
   //effect for show create date
   useEffect(() => {
+    getCreateDateStart();
+    getCreateDateStop();
     if (maxItemSeq === 6) {
       setIsSeqReady(true);
     } else if (maxItemSeq === 7) {
@@ -259,6 +271,10 @@ function Se3({ lot, mc_code, datainfimation, EWK_ID }) {
       setIsSeqStop(true);
     }
   }, [maxItemSeq, EWK_ID]);
+
+  console.log("createDateReady", createDateReady);
+  console.log("createDateStart", createDateStart);
+  console.log("createDateStop", createDateStop);
 
   return (
     <>
