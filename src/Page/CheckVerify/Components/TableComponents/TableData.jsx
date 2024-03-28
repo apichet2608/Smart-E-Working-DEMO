@@ -78,7 +78,18 @@ function CustomNoRowsOverlay() {
 }
 
 function TableComponents({ data }) {
-  const columns = [{ field: "id", headerName: "ID", width: 150 }];
+  const columns = [
+    { field: "id", headerName: "ID", width: 150 },
+    { field: "ewk_id", headerName: "EWK ID", width: 150 },
+    { field: "lot", headerName: "Lot", width: 150 },
+    { field: "mc_code", headerName: "Machine", width: 150 },
+    { field: "max_seq", headerName: "Max Seq", width: 150 },
+    { field: "proc_id", headerName: "Proc ID", width: 150 },
+    { field: "proc_disp", headerName: "Proc Disp", width: 150 },
+    { field: "factory", headerName: "Factory", width: 150 },
+    { field: "proc_grp_name", headerName: "Proc Grp Name", width: 150 },
+    { field: "status", headerName: "Status", width: 150 },
+  ];
 
   return (
     <div style={{ height: 600, width: "100%" }} className="Paper_Contents">

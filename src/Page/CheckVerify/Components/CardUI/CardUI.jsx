@@ -12,7 +12,7 @@ function CardUI({ data }) {
             >
               <div>
                 <p className="font-bold text-nowrap">{item.value}</p>
-                <p className="text-nowrap">{item.name}</p>
+                <p className="text-nowrap">{item.key}</p>
               </div>
             </div>
           ))}

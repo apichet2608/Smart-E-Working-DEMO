@@ -3,7 +3,28 @@ import RealTimeClock from "./Components/RealTime/RealTimeClock";
 import TableComponents from "./Components/TableComponents/TableData";
 import CardUI from "./Components/CardUI/CardUI";
 import { NavLink } from "react-router-dom";
+import PostAPI from "./API/POST/PostAPI";
 function CheckVerify() {
+  const [dataCard, setDataCard] = useState([]);
+  const [dataTable, setDataTable] = useState([]);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    let url =
+      "http://10.17.66.242:7010/api/ewk/smart-get-ewk-job-record-status-detail/";
+    let data = {};
+    const response = await PostAPI(data, url);
+    if (response.status === "OK") {
+      console.log(response.data);
+      setDataCard(response.data.data.card);
+      setDataTable(response.data.data.table);
+    } else {
+      console.log(response.message);
+    }
+  };
   return (
     <>
       <div className="container mx-auto">
@@ -14,19 +35,13 @@ function CheckVerify() {
       </div>
       <div className="container mx-auto">
         {/* <RealTimeClock /> */}
-        <CardUI
-          data={[
-            { name: "Total", value: 5 },
-            { name: "Finish", value: 5 },
-            { name: "Ongoing", value: 5 },
-          ]}
-        />
+        <CardUI data={dataCard} />
       </div>
       <div className="container mx-auto">
         {/* <RealTimeClock /> */}
         <p className=" font-bold">Planning</p>
         <div>
-          <TableComponents data={[]} />
+          <TableComponents data={dataTable} />
         </div>
       </div>
       <footer className="fixed bottom-0 w-full bg-gray-600 ">
