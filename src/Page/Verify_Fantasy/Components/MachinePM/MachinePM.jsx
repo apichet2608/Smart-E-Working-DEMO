@@ -13,13 +13,11 @@ function MachinePM(props) {
 
   useEffect(() => {
     if (response_API.status === "OK") {
-      setTitle("Machine PM");
       setMessage(response_API.message);
       setDataTable(response_API.data.data);
       setStatuspm(response_API.data.ewk_judge);
     } else {
       setDataTable([]);
-      setTitle("Machine PM");
       setMessage(response_API.message);
       setStatuspm("F");
     }
@@ -36,7 +34,7 @@ function MachinePM(props) {
                 status={statuspm}
                 title={title}
                 state={state}
-                requestApi_PM={requestApi_PM}
+                onClick={requestApi_PM}
               />
             </>
           ) : (

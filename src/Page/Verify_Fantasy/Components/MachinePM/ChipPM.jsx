@@ -10,12 +10,12 @@ import Typography from "@mui/material/Typography";
 import TableData from "./Components/TableData/TableData";
 
 function ChipPM(props) {
-  const { status, title, data, state, requestApi_PM } = props;
+  const { status, title, data, state, onClick } = props;
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = async () => {
     // alert(state.ewk_item_seq);
     if (state.ewk_item_seq <= 1) {
-      await requestApi_PM();
+      await onClick();
     }
     setOpen(true);
   };

@@ -18,10 +18,11 @@ import EMCS from "../Components/EMCS/Operator";
 import LeaderApprove from "../Components/LeaderApprove/LeaderApprove";
 import DailyCheck from "../Components/DailyCheck/DailyCheck";
 import TempHumID from "../Components/TempHumID/TempHumID";
+
 function Se1(props) {
+  const { lot, mc_code, EWK_ID, datainfimation } = props;
   const dispatchs = useDispatch();
   const state = useSelector((state) => state.lqapprovestatus);
-  const { lot, mc_code, EWK_ID, datainfimation } = props;
   const [pm, setpm] = useState({});
   const [calibration, setcalibration] = useState([]);
   const [faiAutoVerify, setFaiAutoVerify] = useState([]);

@@ -4,9 +4,7 @@ import Chip from "@mui/material/Chip";
 import Typography from "@mui/material/Typography";
 
 function Chip_FAI(props) {
-  const { datacheck, title, message, state, fetchDataForVerification } = props;
-  const [hasData, setHasData] = useState(false);
-  const [hasEmptyDataArray, setHasEmptyDataArray] = useState(false);
+  const { datacheck, title, Status, state, fetchDataForVerification } = props;
 
   //   Determine if there is data to verify
   //   const hasData = datacheck && datacheck.length > 0;
@@ -14,12 +12,6 @@ function Chip_FAI(props) {
   //   const hasEmptyDataArray = datacheck.some((item) => item.data.length === 0);
   //   console.log(hasEmptyDataArray); // จะแสดงผลลัพธ์เป็น true เพราะมีอย่างน้อยหนึ่ง object ที่ key data มีค่าเป็นอาร์เรย์ว่าง
   //   console.log(hasData); // จะแสดงผลลัพธ์เป็น true เพราะมีอย่างน้อยหนึ่ง object ที่ key data มีค่าเป็นอาร์เรย์ว่าง
-  useEffect(() => {
-    if (datacheck && datacheck.length > 0) {
-      setHasData(true);
-      setHasEmptyDataArray(datacheck.some((item) => item.data.length === 0));
-    }
-  }, [datacheck]);
 
   const handleClicked = async () => {
     if (state.ewk_item_seq <= 1) {
@@ -30,8 +22,8 @@ function Chip_FAI(props) {
   return (
     <div>
       <Badge
-        badgeContent={!hasEmptyDataArray && hasData ? "P" : "F"}
-        color={!hasEmptyDataArray && hasData ? "success" : "error"}
+        badgeContent={Status === "P" ? "P" : "F"}
+        color={Status === "P" ? "success" : "error"}
       >
         <Chip
           label={title}
@@ -39,12 +31,12 @@ function Chip_FAI(props) {
             maxWidth: "100%",
             fontFamily: "Inter Variable, sans-serif",
             fontWeight: 500,
-            bgcolor: !hasEmptyDataArray && hasData ? "#66BB6A" : "#FFF176",
+            bgcolor: Status === "P" ? "#66BB6A" : "#FFF176",
             "&:hover": {
-              bgcolor: !hasEmptyDataArray && hasData ? "#43A047" : "#FFEE58",
+              bgcolor: Status === "P" ? "#43A047" : "#FFEE58",
             },
             color: "#000",
-            borderColor: !hasEmptyDataArray && hasData ? "#33691E" : "#F57F17",
+            borderColor: Status === "P" ? "#33691E" : "#F57F17",
             borderStyle: "solid",
             borderWidth: "1px",
           }}

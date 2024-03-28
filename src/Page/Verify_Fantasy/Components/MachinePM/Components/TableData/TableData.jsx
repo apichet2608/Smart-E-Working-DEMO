@@ -92,9 +92,20 @@ function TableCheck({ Datas, isDarkMode }) {
       renderCell: (params) => {
         // เพิ่มเงื่อนไขสำหรับการ render cell ของ header "status"
         let colorbg =
-          params.value.toLowerCase() === "lock / inactive" ? "red" : "green";
+          params.value.toLowerCase() === "lock / inactive"
+            ? "#FF5252"
+            : "#66BB6A";
         return (
-          <div style={{ backgroundColor: colorbg }}>
+          <div
+            style={{
+              backgroundColor: colorbg,
+              padding: "10px",
+              borderColor: "#000",
+              borderWidth: "1px",
+              borderStyle: "solid",
+              borderRadius: "10px",
+            }}
+          >
             {params.value.toUpperCase()}
           </div>
         );
@@ -103,7 +114,7 @@ function TableCheck({ Datas, isDarkMode }) {
     {
       field: "mc_desc",
       headerName: "Machine Description",
-      width: 200,
+      width: 350,
     },
     // {
     //   field: "due_date",

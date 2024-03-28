@@ -8,15 +8,27 @@ function FaiAutoVerify(props) {
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
   const [dataTable, setDataTable] = useState([]); // Added this line
+  const [Status, setStatus] = useState("");
 
   useEffect(() => {
     if (response_API.status === "OK") {
       setTitle("Fai Auto Verify");
       setMessage(response_API.message);
       setDataTable(response_API.data.data.fai_verify_report); // Added this line
+      const hasData =
+        response_API.data.data.fai_verify_report &&
+        response_API.data.data.fai_verify_report.length > 0; // Added this line
+      const hasEmptyDataArray = // Added this line
+        response_API.data.data.fai_verify_report && // Added this line
+        response_API.data.data.fai_verify_report.some(
+          // Added this line
+          (item) => item.data.length === 0 // Added this line
+        ); // Added this line
+      setStatus(!hasEmptyDataArray && hasData ? "P" : "F"); // Added this line
     } else {
       setTitle("Fai Auto Verify");
       setMessage(response_API.message);
+      setStatus("F");
     }
   }, [response_API]);
 
@@ -32,6 +44,7 @@ function FaiAutoVerify(props) {
                 message={message}
                 state={state}
                 fetchDataForVerification={fetchDataForVerification}
+                Status={Status}
               />
               {dataTable.map((item, index) => {
                 return <ChipFAI key={index} data={item} />;
